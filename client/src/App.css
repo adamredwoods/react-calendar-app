@@ -1,0 +1,110 @@
+/* CUSTOM STYLES */
+nav {
+  width: 100%;
+  background-color: #555;
+  padding: 10px 0;
+}
+
+nav a {
+  margin: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #4ff;
+}
+
+nav a:hover {
+  color: #7f4dd2;
+}
+
+.footer {
+  background-color: #555;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20px;
+}
+
+.footer-text {
+  color: #fff;
+  font-size: 10px;
+}
+
+.space {
+  margin: 15px 0;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #11f;
+  border-radius: 2px;
+  border: none;
+  padding: 3px;
+}
+
+.btn-primary:hover {
+  background-color: #77f;
+}
+
+.error {
+  background-color: pink;
+  color: red;
+  border: 1px solid red;
+  border-radius: 2px;
+  padding: 10px 30px;
+  width: 75%;
+  margin: 10px auto;
+}
+
+.success {
+  background-color: #ceffce;
+  color: green;
+  border: 1px solid green;
+  border-radius: 2px;
+  padding: 10px 30px;
+  width: 75%;
+  margin: 10px auto;
+}
+
+.no-flash {
+  visibility: hidden;
+  padding: 10px 30px;
+  width: 75%;
+  margin: 10px auto;
+}
+
+.x-button {
+  background-color: red;
+  color: white;
+  border-radius: 2px;
+  float: right;
+}
+
+/* DEFAULT STYLES FROM CREATE REACT APP MODULE */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
