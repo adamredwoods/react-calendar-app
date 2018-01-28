@@ -1,7 +1,11 @@
 # Summary
- A full-stack MERN image editing app, shamelessly ripped from [Jenna Badanowski](https://github.com/jbadan/meanImageEditor)!
+ A full-stack MERN Calendar App
 
 # Demo
+
+TBD
+
+# Live Site
 
 TBD
 
@@ -17,8 +21,8 @@ TBD
 * [FontAwesome](http://fontawesome.io/)
 
 # React Components
-
-![Components Map](/client/public/download.png)
+* Home
+* Profile
 
 # Backend Routes
 METHOD | URL | Purpose
@@ -26,12 +30,19 @@ METHOD | URL | Purpose
 POST | /auth/signup | Adds new user to user database
 POST | /auth/login | Authenticates login details
 POST | /auth/me/from/token | Checks if token is present on browser refresh
-POST | /image/new | Adds new uploaded image to logged in user's database
-POST | /image/grid | Retrieves all images for logged in user from database
-POST | /image/unsplash | Searches Unsplash API for query entered in text field, returns 10 photos
-POST | /image/save | Saves edited image to logged in user's database
-POST | /image/delete | Deletes selected image from logged in user's database
+
+# Frontend Routes
+METHOD | URL | Purpose
+--- | --- | ---
 
 
 # Next Steps
 * TBD
+
+# Getting Started
+* Fork and clone this repository
+* Run `npm install` in both the parent folder and in the client folder to install dependencies
+** Use nodemon to run the whole app (or npm start from the client folder for only the front end)
+** Create a .env file in the parent directory with: 
+*** JWT_SECRET for authentification
+*** API keys
