@@ -37,7 +37,7 @@ class Login extends Component {
   render() {
     let form = '';
     if(this.props.user){
-      return (<Redirect to="/profile" />);
+      return (<Redirect to="/" />);
     }
     else {
       form = (<form onSubmit={this.handleSubmit}>
