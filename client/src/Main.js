@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Home extends Component {
+class Main extends Component {
   render(){
     return (
         <p>Home Page</p>
@@ -8,4 +8,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Main;

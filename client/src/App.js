@@ -4,7 +4,7 @@ import './App.css';
 import axios from 'axios';
 import Flash from './layout/Flash.js';
 import Footer from './layout/Footer.js';
-import Home from './Home.js';
+import Main from './Main.js';
 import Header from './layout/Header.js';
 import Login from './auth/Login.js';
 import Profile from './Profile.js';
@@ -80,7 +80,7 @@ class App extends Component {
             <Header user={this.state.user} />
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" component={Main} />
               <Route path="/login" component={
                 () => (<Login user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
               <Route path="/signup" component={
