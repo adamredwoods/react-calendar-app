@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './App.css';
+import './css/App.css';
 import axios from 'axios';
 import Flash from './layout/Flash.js';
 import Footer from './layout/Footer.js';
