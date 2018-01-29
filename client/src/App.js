@@ -9,6 +9,7 @@ import Nav from './layout/Nav.js';
 import Login from './auth/Login.js';
 import Profile from './Profile.js';
 import Signup from './auth/Signup.js';
+import Foundation from 'react-foundation';
 
 class App extends Component {
   constructor(props){
