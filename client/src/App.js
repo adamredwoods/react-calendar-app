@@ -5,7 +5,7 @@ import axios from 'axios';
 import Flash from './layout/Flash.js';
 import Footer from './layout/Footer.js';
 import Home from './Home.js';
-import Nav from './layout/Nav.js';
+import Header from './layout/Header.js';
 import Login from './auth/Login.js';
 import Profile from './Profile.js';
 import Signup from './auth/Signup.js';
@@ -77,7 +77,7 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            <Nav user={this.state.user} />
+            <Header user={this.state.user} />
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
               <Route exact path="/" component={Home} />

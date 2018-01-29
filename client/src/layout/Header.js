@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Logout from '../auth/Logout.js';
 import { Link } from 'react-router-dom';
 
-class Nav extends Component {
+class Header extends Component {
   render(){
     let links = <span />
     if(this.props.user){
@@ -25,4 +25,4 @@ class Nav extends Component {
   }
 }
 
-export default Nav;
+export default Header;
