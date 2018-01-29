@@ -1,7 +1,7 @@
 /* CUSTOM STYLES */
 nav {
   width: 100%;
-  background-color: #555;
+  background-color: #797B7E;
   padding: 10px 0;
 }
 
@@ -9,15 +9,15 @@ nav a {
   margin: 10px;
   text-decoration: none;
   font-size: 18px;
-  color: #4ff;
+  color: #C5AE8A;
 }
 
 nav a:hover {
-  color: #7f4dd2;
+  color: #4A6C96;
 }
 
 .footer {
-  background-color: #555;
+  background-color: #797B7E;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -25,7 +25,7 @@ nav a:hover {
 }
 
 .footer-text {
-  color: #fff;
+  color: #C5AE8A;
   font-size: 10px;
 }
 
@@ -84,27 +84,13 @@ nav a:hover {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color: #CAD8D9;
+  height: 100px;
   padding: 20px;
-  color: white;
+  color: #4A6C96;
 }
 
 .App-title {
   font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
