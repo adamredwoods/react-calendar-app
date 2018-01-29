@@ -27,9 +27,8 @@ TBD
 
 ## Our Process
 ### Sprint 1:
-* Trello Board: 
 ![Trello Board](/public/images/sprint-1.png)
-* We started by trello-boarding, working on wireframes for the different views, and discussing user stories/what we wanted in the app functionality.
+* We started by trello-boarding, working on wireframes for the different views, and discussing user stories/what we wanted in terms of functionality.
 
 ## Technologies Used
 * Mongodb
