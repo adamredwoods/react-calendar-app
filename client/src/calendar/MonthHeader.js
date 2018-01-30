@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Row, Col } from 'react-grid-system';
 import "../css/Month.css";
 
 class MonthHeader extends Component {
@@ -8,7 +9,7 @@ class MonthHeader extends Component {
          newViewDate: null
       }
    }
-   
+
   render() {
     return (
       <div className="month-header">
