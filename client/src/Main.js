@@ -3,6 +3,7 @@ import './css/Main.css';
 import Month from './calendar/Month.js';
 import Week from './calendar/Week.js';
 import Day from './calendar/Day.js';
+import { Row, Col } from 'react-grid-system';
 import "date-format-lite";
 
 var daysInMonth = [
@@ -29,9 +30,22 @@ class Main extends Component {
       if(this.props.user){
          mainCal = (
             <div className="main-page">
-               <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
-               <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
-               <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+               <Row>
+                  <Col sm={8}>
+                     <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+                  </Col>
+                  <Col sm={4}>
+                     <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+                  </Col>
+               </Row>
+               <Hidden xs sm>
+                  <Row>
+                     <Col sm={1} />
+                     <Col sm={10}>
+                        <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+                     </Col>
+                  </Row>
+               </Hidden>
             </div>
          );
       } else {

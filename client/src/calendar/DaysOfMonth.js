@@ -7,7 +7,7 @@ class SingleDay extends Component {
 
    render() {
       return (
-         <div className="days-in-row-single">
+         <div className="days-single">
             {this.props.dayNum}
          </div>
       )
@@ -18,16 +18,16 @@ export const DaysOfWeek = () => {
     return (
       <Row>
          <Col sm={1}></Col>
-         <Col sm={7}>
-           <span classname="days-of-week">M</span>
-           <span classname="days-of-week">T</span>
-           <span classname="days-of-week">W</span>
-           <span classname="days-of-week">R</span>
-           <span classname="days-of-week">F</span>
-           <span classname="days-of-week">SA</span>
-           <span classname="days-of-week">SU</span>
+         <Col sm={10}>
+           <span className="days-of-week">m</span>
+           <span className="days-of-week">t</span>
+           <span className="days-of-week">w</span>
+           <span className="days-of-week">r</span>
+           <span className="days-of-week">f</span>
+           <span className="days-of-week">sa</span>
+           <span className="days-of-week">su</span>
          </Col>
-         <Col sm={4}></Col>
+         <Col sm={1}></Col>
       </Row>
     );
 }
@@ -60,6 +60,7 @@ class DaysOfMonth extends Component {
 
       //--display one week
       let j=0;
+      console.log(this.findWeekDayNum(date));
       for(let i=this.findWeekDayNum(date); i<7; i++) {
          <SingleDay dayNum={i+j} />;
          j++;
@@ -75,12 +76,12 @@ class DaysOfMonth extends Component {
             <div className="days-in-month">
                <Row>
                   <Col sm={1}></Col>
-                  <Col sm={7}>
+                  <Col sm={10}>
                      {
                         this.showDays(this.props.viewDate)
                      }
                   </Col>
-                  <Col sm={4}></Col>
+                  <Col sm={1}></Col>
                </Row>
             </div>
          </div>
