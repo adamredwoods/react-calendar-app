@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col } from 'react-grid-system';
 import "../css/Month.css";
+import "date-format-lite";
 
 class SingleDay extends Component {
 
@@ -13,10 +14,29 @@ class SingleDay extends Component {
    }
 }
 
+export const DaysOfWeek = () => {
+    return (
+      <Col sm={1}></Col>
+      <Col sm={7}>
+        <span classname="days-of-week">M</span>
+        <span classname="days-of-week">T</span>
+        <span classname="days-of-week">W</span>
+        <span classname="days-of-week">R</span>
+        <span classname="days-of-week">F</span>
+        <span classname="days-of-week">SA</span>
+        <span classname="days-of-week">SU</span>
+      </Col>
+      <Col sm={4}></Col>
+    );
+}
+
 class DaysOfMonth extends Component {
 
-   findWeekDayNum= (currentDate) => {
-      let y=0, m=0, d=0;
+   findWeekDayNum= (date) => {
+      let y=date.date("YYYY"),
+       m=date.date("MM"),
+       d=date.date("DD");
+
       if (m <= 2) { /* Jan or Feb month adjust */
          m += 12;
          y--;
@@ -29,12 +49,12 @@ class DaysOfMonth extends Component {
       return i%7;
    }
 
-   showDays = (currentDate) => {
+   showDays = (date) => {
 
       //--display one week
       let j=0;
-      for(let i=this.findWeekDayNum(currentDate); i<7; i++) {
-         //<SingleDay dayNum={i+j}>;
+      for(let i=this.findWeekDayNum(date); i<7; i++) {
+         <SingleDay dayNum={i+j}>;
          j++;
       }
    }
@@ -43,17 +63,20 @@ class DaysOfMonth extends Component {
 
       //-- find out first day of week and start loop there
       return (
-      <div className="days-in-month">
-         <Row>
-            <Col sm={1}></Col>
-            <Col sm={7}>
-               {
-                  this.showDays(this.props.currentDate)
-               }
-            </Col>
-            <Col sm={4}></Col>
-         </Row>
-      </div>
+         <div>
+            <DaysOfWeek />
+            <div className="days-in-month">
+               <Row>
+                  <Col sm={1}></Col>
+                  <Col sm={7}>
+                     {
+                        this.showDays(this.props.viewDate)
+                     }
+                  </Col>
+                  <Col sm={4}></Col>
+               </Row>
+            </div>
+         </div>
       )
    }
 }

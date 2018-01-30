@@ -3,6 +3,11 @@ import './css/Main.css';
 import Month from './calendar/Month.js';
 import Week from './calendar/Week.js';
 import Day from './calendar/Day.js';
+import "date-format-lite";
+
+var daysInMonth = [
+           [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+           [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]];
 
 class Main extends Component {
 
@@ -12,6 +17,11 @@ class Main extends Component {
          viewDate: null,
          currentDate: null
       }
+   }
+
+   componentDidMount() {
+      let date = new Date();
+      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
    }
 
   render(){
