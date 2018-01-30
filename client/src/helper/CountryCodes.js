@@ -6,24 +6,14 @@ const hd = new Holidays();
 class CountryCodes extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            countryCode: 'US'
-        }
-        this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
-    }
-
-    handleCountryCodeChange(event) {
-        this.setState({countryCode: event.target.value}, () => {
-            let holidays = hd.init(this.state.countryCode);
-            console.log('country code hols: '+holidays);
-        });
     }
 
     render(){
         let countries = {};
         countries = hd.getCountries();
-        var firstOption = <option value="US" selected>United States of America</option>;
-        var countryOptions = [firstOption];
+        var defaultOption = <option value="US" selected>Select a Country</option>;
+        var firstOption = <option value="US">United States of America</option>;
+        var countryOptions = [defaultOption, firstOption];
         for(var country in countries){
             countryOptions.push(
                 <option value={country}>{countries[country]}</option>
@@ -32,7 +22,7 @@ class CountryCodes extends Component {
         return (
             <div className="country-codes-form">
                 <form name="Country Code">
-                    <select value={this.state.countryCode} onChange={this.handleCountryCodeChange}>
+                    <select value={this.props.countryCode} onChange={this.props.handleChange}>
                         {countryOptions}
                     </select>
                 </form>
