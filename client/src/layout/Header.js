@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Logout from '../auth/Logout.js';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'react-grid-system';
+import Menu from '../Menu.js';
 
 class Header extends Component {
   render(){
@@ -13,8 +14,10 @@ class Header extends Component {
       links = <span><Link className="app-logo" to="/">ProlifiCal</Link><Link to="/login">Login</Link><Link to="/signup">Sign Up</Link></span>;
     }
     return(
-        <div className="nav">
+        <div><div className="nav">
           {links}
+        </div>
+        <Menu />
         </div>
       );
   }
