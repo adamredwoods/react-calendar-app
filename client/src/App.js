@@ -4,6 +4,7 @@ import './css/App.css';
 import axios from 'axios';
 import Flash from './layout/Flash.js';
 import Main from './Main.js';
+import ReactDOM from 'react-dom';
 import Header from './layout/Header.js';
 import Login from './auth/Login.js';
 import Profile from './Profile.js';
@@ -17,6 +18,7 @@ class App extends Component {
     }
   }
   componentDidMount = () => {
+
     this.getUser();
   }
 
