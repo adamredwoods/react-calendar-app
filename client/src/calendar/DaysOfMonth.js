@@ -16,26 +16,29 @@ class SingleDay extends Component {
 
 export const DaysOfWeek = () => {
     return (
-      <Col sm={1}></Col>
-      <Col sm={7}>
-        <span classname="days-of-week">M</span>
-        <span classname="days-of-week">T</span>
-        <span classname="days-of-week">W</span>
-        <span classname="days-of-week">R</span>
-        <span classname="days-of-week">F</span>
-        <span classname="days-of-week">SA</span>
-        <span classname="days-of-week">SU</span>
-      </Col>
-      <Col sm={4}></Col>
+      <Row>
+         <Col sm={1}></Col>
+         <Col sm={7}>
+           <span classname="days-of-week">M</span>
+           <span classname="days-of-week">T</span>
+           <span classname="days-of-week">W</span>
+           <span classname="days-of-week">R</span>
+           <span classname="days-of-week">F</span>
+           <span classname="days-of-week">SA</span>
+           <span classname="days-of-week">SU</span>
+         </Col>
+         <Col sm={4}></Col>
+      </Row>
     );
 }
 
 class DaysOfMonth extends Component {
 
    findWeekDayNum= (date) => {
-      let y=date.date("YYYY"),
-       m=date.date("MM"),
-       d=date.date("DD");
+
+      let y=parseInt(date.date("YYYY")),
+       m=parseInt(date.date("MM")),
+       d=parseInt(date.date("DD"));
 
       if (m <= 2) { /* Jan or Feb month adjust */
          m += 12;
@@ -51,10 +54,14 @@ class DaysOfMonth extends Component {
 
    showDays = (date) => {
 
+      if (!date) {
+         return <div></div>
+      }
+
       //--display one week
       let j=0;
       for(let i=this.findWeekDayNum(date); i<7; i++) {
-         <SingleDay dayNum={i+j}>;
+         <SingleDay dayNum={i+j} />;
          j++;
       }
    }
