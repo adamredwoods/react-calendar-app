@@ -6,7 +6,7 @@ class Day extends Component {
       super(props);
 
       this.state={
-         
+
       }
    }
 

@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { Row, Col } from 'react-grid-system';
-import Day from "Day.js";
 import "../css/Month.css";
+
+class SingleDay extends Component {
+
+   render() {
+      return (
+         <div></div>
+      )
+   }
+}
 
 class DaysOfMonth extends Component {
 
