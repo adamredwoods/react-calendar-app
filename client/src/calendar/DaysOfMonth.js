@@ -59,12 +59,23 @@ class DaysOfMonth extends Component {
       }
 
       //--display one week
-      let j=0;
-      console.log(this.findWeekDayNum(date));
-      for(let i=this.findWeekDayNum(date); i<7; i++) {
-         <SingleDay dayNum={i+j} />;
-         j++;
+      let j=0, output=[];
+      let wkStart = this.findWeekDayNum(date);
+      for(let k=0; k<5; k++) {
+         // output.push(<Row>);
+         let row=[];
+         for(let i=0; i<7; i++) {
+            if (i<wkStart && j===0) {
+               row.push (<Col ></Col>);
+            }
+            if (i>=wkStart || j>0) {
+               row.push (<Col ><SingleDay dayNum={j} /></Col>);
+               j++;
+            }
+         }
+         output.push(<Row>{row}</Row>);
       }
+      return output;
    }
 
    render() {
@@ -75,13 +86,13 @@ class DaysOfMonth extends Component {
             <DaysOfWeek />
             <div className="days-in-month">
                <Row>
-                  <Col sm={1}></Col>
-                  <Col sm={10}>
-                     {
+                  <Col sm={2}></Col>
+
+                     <Col sm={8}>{
                         this.showDays(this.props.viewDate)
-                     }
-                  </Col>
-                  <Col sm={1}></Col>
+                     }</Col>
+
+                  <Col sm={2}></Col>
                </Row>
             </div>
          </div>

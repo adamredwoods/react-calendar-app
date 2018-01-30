@@ -30,11 +30,11 @@ class Main extends Component {
       if(this.props.user){
          mainCal = (
             <div className="main-page">
-               <Row>
+               <Row nogutter>
                   <Col sm={8}>
                      <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
                   </Col>
-                  
+
                   <Col sm={4}>
                      <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
                   </Col>
