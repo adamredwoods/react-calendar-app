@@ -2,10 +2,19 @@ import React, { Component } from "react";
 import "../css/Month.css";
 
 class MonthHeader extends Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         newViewDate: null
+      }
+   }
+   
   render() {
     return (
       <div className="month-header">
-        (Month/Year)
+         <Col lg={4} sm={1}>Arr Left</Col>
+         <Col lg={4} sm={10}>(Month/Year)</Col>
+         <Col lg={4} sm={1}>Arr right</Col>
       </div>
     );
   }
