@@ -2,6 +2,13 @@ import React, { Component } from "react";
 import "../css/Month.css";
 
 class MonthHeader extends Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         newViewDate: null
+      }
+   }
+   
   render() {
     return (
       <div className="month-header">

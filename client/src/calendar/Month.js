@@ -6,18 +6,18 @@ import MonthHeader from './MonthHeader.js';
 export const DaysOfWeek = () => {
     return (
         <div classname="days-of-week">
-        M T W R F Sa Su
+         M T W R F Sa Su
         </div>
     );
 }
 
-class Month extends Component { 
+class Month extends Component {
     render(){
         return (
             <div className="month-container">
                 <MonthHeader />
                 <DaysOfWeek />
-                <DaysOfMonth />
+                <DaysOfMonth currentDate={this.props.currentDate}/>
             </div>
         );
     }
