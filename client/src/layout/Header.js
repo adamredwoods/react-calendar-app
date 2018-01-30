@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Logout from '../auth/Logout.js';
 import { Link } from 'react-router-dom';
+import { Row, Col } from 'react-grid-system';
 
 class Header extends Component {
   render(){
