@@ -1,18 +1,18 @@
 /* CUSTOM STYLES */
-nav {
+.nav {
   width: 100%;
   background-color: #797B7E;
   padding: 10px 0;
 }
 
-nav a {
+.nav a {
   margin: 10px;
   text-decoration: none;
   font-size: 18px;
   color: #C5AE8A;
 }
 
-nav a:hover {
+.nav a:hover {
   color: #4A6C96;
 }
 

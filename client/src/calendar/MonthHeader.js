@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Foundation from "react-foundation";
 import "../css/Month.css";
 
 class MonthHeader extends Component {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Foundation from 'react-foundation';
 import '../css/Month.css';
 import DaysOfMonth from './DaysOfMonth.js';
 import MonthHeader from './MonthHeader.js';
