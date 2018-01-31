@@ -32,10 +32,28 @@ function makeNewCalendar(user, callback) {
      console.log("makeNewCalendar:",calendar);
      if(user.calendars) {
       //   user.calendars.push({calendarId: calendar._id});
-         User.update({_id: user.id},{$push: {calendarId: userCalendar._id}}, ()=>(callback(null,userCalendar)) ); //TODO: return function that return callback with calendar
+      console.log('did this cal add...from push');
+      console.log(userCalendar);
+      console.log(userCalendar._id);
+         User.update({_id: user.id},{$push: {
+           calendars: {calendarId: userCalendar._id}
+          }}, function(err,userCalendar){
+            if(err){
+              console.log(err)
+            }
+          }); //TODO: return function that return callback with calendar
      } else {
+       console.log("did this cal add...from set");
+       console.log(userCalendar);
+       console.log(userCalendar._id);
       //   user.calendars = [{calendarId: calendar._id}];
-         User.update({_id: user.id},{$set: {calendarId: userCalendar._id}}, ()=>(callback(null,userCalendar)) );
+         User.update({_id: user.id},{$addToSet: {
+           calendars: {calendarId: userCalendar._id}
+          }}, function(err,userCalendar){
+            if(err){
+              console.log(err)
+            }
+          });
      }
    })
 }
@@ -152,7 +170,8 @@ router.post('/signup', function(req, res, next) {
 router.post('/me/from/token', function(req, res, next) {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token;
-  var calendar = req.body.calendar || req.query.calendar;
+  var calendar = JSON.parse(req.body.calendar);
+  console.log(calendar._id);
   if (!token) {
     return res.status(401).send({error: true, message: 'You Must Pass a Token!'});
   }

@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var Calendar = require('./calendar').Calendar;
 
 var userSchema = new mongoose.Schema({
   name: {
@@ -24,8 +25,8 @@ var userSchema = new mongoose.Schema({
   },
   calendars: [{
     calendarId: {
-      type: String,
-      required: true
+      type: Schema.Types.ObjectId,
+      ref: 'Calendar'
     }
   }]
 });
