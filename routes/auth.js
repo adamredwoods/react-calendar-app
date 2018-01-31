@@ -11,7 +11,7 @@ var jwt = require('jsonwebtoken');
 
 
 function makeNewCalendar(user, callback) {
-   // var userCalendar = {};
+   var userCalendar = {};
    Calendar.create({
      name: 'My Calendar',
      userId: user._id,
@@ -22,24 +22,21 @@ function makeNewCalendar(user, callback) {
      }]
    }, function(err, calendar){
      if (err){
-       console.log('Cal DB error', err);
-       res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
-       //TODO: return callback( err, calendar);
+       console.log('Cal DB create error: ', err);
+       //res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
+       return callback( err, null);
      }
-     //userCalendar = calendar;
 
      //--write calendar id back to user
+     userCalendar = calendar;
      console.log("makeNewCalendar:",calendar);
      if(user.calendars) {
       //   user.calendars.push({calendarId: calendar._id});
-         User.update({_id: user.id},{$push: {calendarId: calendar._id}}, callback); //TODO: return function that return callback with calendar
+         User.update({_id: user.id},{$push: {calendarId: userCalendar._id}}, ()=>(callback(null,userCalendar)) ); //TODO: return function that return callback with calendar
      } else {
       //   user.calendars = [{calendarId: calendar._id}];
-         User.update({_id: user.id},{$set: {calendarId: calendar._id}}, callback);
+         User.update({_id: user.id},{$set: {calendarId: userCalendar._id}}, ()=>(callback(null,userCalendar)) );
      }
-     //-- returns user
-     //user.save(callback);
-
    })
 }
 
@@ -50,11 +47,12 @@ function getUserCalendar(user, callback) {
       makeNewCalendar(user, function(err, calendar) {
          if(err) {
             console.log("db error: could not make new calendar: ",err);
-            res.status(400).send({error: true, message: 'Cal error in getCalendar - ' + err.message});
+            return callback( err, null);
          } else {
             Calendar.findOne({_id: calendar._id}, function(err, calendar){
                if(err){
-                  res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
+                  console.log('DB error - calendar not found: ', err);
+                  return callback( err, null);
                }
                //userCalendar = calendar;
                callback(null, calendar);
@@ -65,7 +63,8 @@ function getUserCalendar(user, callback) {
 
       Calendar.findOne({_id: user.calendars[0].calendarId}, function(err, calendar){
          if(err){
-            res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
+            console.log('DB error - calendar not found: ', err);
+            return callback( err, null);
          }
          //userCalendar = calendar;
          callback(null, calendar);
@@ -92,18 +91,13 @@ router.post('/login', function(req, res, next) {
     // compare passwords
     passwordMatch = bcrypt.compareSync(req.body.password, hashedPass);
     if (passwordMatch) {
-      var userCalendar = {};
-      Calendar.findOne({_id: req.body.calendar.id, userId: req.body.user.id}, function(err, calendar){
-        if(err){
-          res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
-        }
-        userCalendar = calendar;
-      })
-      // Make a token and return it as JSON
-      var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-        expiresIn: 60 * 60 * 24 // expires in 24 hours
+      getUserCalendar(user, function(err,calendar) {
+         // Make a token and return it as JSON
+         var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
+            expiresIn: 60 * 60 * 24 // expires in 24 hours
+         });
+         res.send({user: user, calendar: calendar, token: token});
       });
-      res.send({user: user, calendar: userCalendar, token: token});
     }
     else {
       // Return an error
