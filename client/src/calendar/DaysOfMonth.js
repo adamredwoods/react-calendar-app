@@ -12,14 +12,17 @@ var mondayIsFirst = true;
 
 class SingleDay extends Component {
 
+
+
    render() {
 
       let addClass = "days-card";
 
       if (this.props.today) addClass=addClass+" day-current";
+      if (this.props.selected) addClass=addClass+" day-selected";
 
       return (
-         <div className={addClass} >
+         <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
             <div className="days-num">{this.props.dayNum}</div>
          </div>
       )
@@ -84,6 +87,7 @@ class DaysOfMonth extends Component {
 
       //leap year
       let year = parseInt(date.date("YYYY"));
+      let selectedDay = parseInt(date.date("DD"));
       let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
       let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
@@ -107,12 +111,22 @@ class DaysOfMonth extends Component {
             if ((i===wkStart || d>0) && d<maxDay) {
                d++;
                let todayBoolean = (d===today) ? true : false;
-               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} /></Col>);
+               let selectBoolean = (d===selectedDay) ? true : false;
+               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} selected={selectBoolean} onClickDay={this.onClickDay}/></Col>);
             }
          }
          output.push(<Row>{row}</Row>);
       }
       return output;
+   }
+
+   onClickDay = (day) => {
+      //--get new day data from backend
+
+      //--send new date
+      let newDate = (this.props.viewDate.date("YYYY-MM")+"-"+day).date();
+      this.props.onClickDay(newDate);
+
    }
 
    render() {

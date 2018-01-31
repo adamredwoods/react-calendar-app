@@ -25,6 +25,19 @@ class Main extends Component {
       this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
    }
 
+   clickChangeDay = (newDate) => {
+      console.log("..click: change date",newDate);
+      this.setState({viewDate: newDate});
+   }
+
+   clickEditEvent = () => {
+
+   }
+
+   clickAddEvent = () => {
+
+   }
+
   render(){
       let mainCal = <div />
       console.log(this.props.calendar);
@@ -33,7 +46,7 @@ class Main extends Component {
             <div className="main-page">
                <Row nogutter>
                   <Col sm={8}>
-                     <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+                     <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} onClickDay={this.clickChangeDay}/>
                   </Col>
 
                   <Col sm={4}>
@@ -44,7 +57,7 @@ class Main extends Component {
                   <Row>
 
                      <Col sm={12}>
-                        <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+                        <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickDayChange={this.clickChangeDay}/>
                      </Col>
                   </Row>
                </Hidden>
