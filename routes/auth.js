@@ -43,7 +43,7 @@ function makeNewCalendar(user, callback) {
    })
 }
 
-function getCalendar(user, callback) {
+function getUserCalendar(user, callback) {
    var userCalendar = {};
    //-- user must always have a calendar[0]
    if(!user.calendars || !user.calendars[0]) {
@@ -188,7 +188,7 @@ router.post('/me/from/token', function(req, res, next) {
          expiresIn: 60 * 60 * 24 // expires in 24 hours
       });
 
-      getCalendar(user, function(err, calendar) {
+      getUserCalendar(user, function(err, calendar) {
          if (err) {
             console.log("DB error - getCalendar:",err);
          }
