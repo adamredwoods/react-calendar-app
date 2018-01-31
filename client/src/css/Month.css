@@ -2,16 +2,33 @@
     border: 1px solid blue;
 }
 
+.month-header {
+   color: #776655;
+   font-size: 2.0rem;
+   text-align: center;
+}
 
 .days-of-week {
    margin: 0 1.2rem;
    font-weight: 200;
    font-size: 2.0rem;
    text-align: center;
-   margin: 1px;
+   color: #776655;
 }
 
-.days-single {
+.days-card {
    text-align: left;
-   background-color: #ccddee;
+   background-color: #ddeeff;
+   margin: 0.5px;
+   padding: 30%;
+}
+
+.days-num {
+   font-size: 2.5rem;
+   font-weight: 200;
+   text-align: center;
+}
+
+.day-current {
+   background-color: #bbccdd
 }
