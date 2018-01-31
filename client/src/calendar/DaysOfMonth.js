@@ -3,6 +3,10 @@ import { Row, Col } from 'react-grid-system';
 import "../css/Month.css";
 import "date-format-lite";
 
+const daysInMonth = [
+           [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+           [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]];
+
 class SingleDay extends Component {
 
    render() {
@@ -17,17 +21,19 @@ class SingleDay extends Component {
 export const DaysOfWeek = () => {
     return (
       <Row>
-         <Col sm={1}></Col>
-         <Col sm={10}>
-           <span className="days-of-week">m</span>
-           <span className="days-of-week">t</span>
-           <span className="days-of-week">w</span>
-           <span className="days-of-week">r</span>
-           <span className="days-of-week">f</span>
-           <span className="days-of-week">sa</span>
-           <span className="days-of-week">su</span>
+
+         <Col sm={12}>
+            <Row>
+           <Col className="days-of-week">m</Col>
+           <Col className="days-of-week">t</Col>
+           <Col className="days-of-week">w</Col>
+           <Col className="days-of-week">r</Col>
+           <Col className="days-of-week">f</Col>
+           <Col className="days-of-week">sa</Col>
+           <Col className="days-of-week">su</Col>
+           </Row>
          </Col>
-         <Col sm={1}></Col>
+
       </Row>
     );
 }
@@ -38,7 +44,7 @@ class DaysOfMonth extends Component {
 
       let y=parseInt(date.date("YYYY")),
        m=parseInt(date.date("MM")),
-       d=parseInt(date.date("DD"));
+       d=1; //get the FIRST day
 
       if (m <= 2) { /* Jan or Feb month adjust */
          m += 12;
@@ -60,17 +66,21 @@ class DaysOfMonth extends Component {
 
       //--display one week
       let j=0, output=[];
+
       let wkStart = this.findWeekDayNum(date);
+      let maxDay = daysInMonth[0][parseInt(date.date("MM"))];
+
+      console.log(wkStart, maxDay);
       for(let k=0; k<5; k++) {
          // output.push(<Row>);
          let row=[];
          for(let i=0; i<7; i++) {
-            if (i<wkStart && j===0) {
+            if (i<wkStart && j===0 || j>=maxDay) {
                row.push (<Col ></Col>);
             }
-            if (i>=wkStart || j>0) {
-               row.push (<Col ><SingleDay dayNum={j} /></Col>);
+            if ((i===wkStart || j>0) && j<maxDay) {
                j++;
+               row.push (<Col ><SingleDay dayNum={j} /></Col>);
             }
          }
          output.push(<Row>{row}</Row>);
@@ -86,13 +96,9 @@ class DaysOfMonth extends Component {
             <DaysOfWeek />
             <div className="days-in-month">
                <Row>
-                  <Col sm={2}></Col>
-
-                     <Col sm={8}>{
-                        this.showDays(this.props.viewDate)
-                     }</Col>
-
-                  <Col sm={2}></Col>
+                  <Col sm={12}>{
+                     this.showDays(this.props.viewDate)
+                  }</Col>
                </Row>
             </div>
          </div>

@@ -20,9 +20,9 @@ class MonthHeader extends Component {
       <Row>
 
 
-            <Col sm={1}>Arr Left</Col>
-            <Col sm={10}><div className="month-header">{date.date("MMMM")} / {date.date("YYYY")} </div></Col>
-            <Col sm={1}>Arr right</Col>
+            <Col sm={1}></Col>
+            <Col sm={10}><span> &lt;-- </span><span className="month-header">{date.date("MMMM")} / {date.date("YYYY")} </span><span> --&gt; </span></Col>
+            <Col sm={1}></Col>
 
 
       </Row>
