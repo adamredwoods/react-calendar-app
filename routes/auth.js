@@ -9,6 +9,71 @@ var bcrypt = require('bcrypt');
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 
+
+function makeNewCalendar(user, callback) {
+   // var userCalendar = {};
+   Calendar.create({
+     name: 'My Calendar',
+     userId: user._id,
+     eventTypes: [{eventTypeId: 0, name: 'Holiday'}],
+     people: [{
+       userId: user._id,
+       permission: 'edit'
+     }]
+   }, function(err, calendar){
+     if (err){
+       console.log('Cal DB error', err);
+       res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
+       //TODO: return callback( err, calendar);
+     }
+     //userCalendar = calendar;
+
+     //--write calendar id back to user
+     console.log("makeNewCalendar:",calendar);
+     if(user.calendars) {
+      //   user.calendars.push({calendarId: calendar._id});
+         User.update({_id: user.id},{$push: {calendarId: calendar._id}}, callback); //TODO: return function that return callback with calendar
+     } else {
+      //   user.calendars = [{calendarId: calendar._id}];
+         User.update({_id: user.id},{$set: {calendarId: calendar._id}}, callback);
+     }
+     //-- returns user
+     //user.save(callback);
+
+   })
+}
+
+function getCalendar(user, callback) {
+   var userCalendar = {};
+   //-- user must always have a calendar[0]
+   if(!user.calendars || !user.calendars[0]) {
+      makeNewCalendar(user, function(err, calendar) {
+         if(err) {
+            console.log("db error: could not make new calendar: ",err);
+            res.status(400).send({error: true, message: 'Cal error in getCalendar - ' + err.message});
+         } else {
+            Calendar.findOne({_id: calendar._id}, function(err, calendar){
+               if(err){
+                  res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
+               }
+               //userCalendar = calendar;
+               callback(null, calendar);
+            });
+         }
+      });
+   } else {
+
+      Calendar.findOne({_id: user.calendars[0].calendarId}, function(err, calendar){
+         if(err){
+            res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
+         }
+         //userCalendar = calendar;
+         callback(null, calendar);
+      });
+
+   }
+}
+
 // POST /auth/login route - returns a JWT
 router.post('/login', function(req, res, next) {
   console.log('/auth/login post route', req.body);
@@ -71,29 +136,19 @@ router.post('/signup', function(req, res, next) {
           res.status(500).send({error: true, message: 'Database Error - ' + err.message});
         }
         else {
-          var userCalendar = {};
-          Calendar.create({
-            name: 'My Calendar',
-            userId: user._id,
-            eventTypes: [{eventTypeId: 0, name: 'Holiday'}],
-            people: [{
-              userId: user._id,
-              permission: 'edit'
-            }]
-          }, function(err, calendar){
-            if (err){
-              console.log('Cal DB error', err);
-              res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
-            }
-            userCalendar = calendar;
-            console.log(userCalendar);
-          })
-          // make a token & send it as JSON
-          var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-            expiresIn: 60 * 60 * 24 // expires in 24 hours
-          });
-          res.send({user: user, calendar: userCalendar, token: token});
-        }
+          makeNewCalendar(user, function(err){
+             if (err){
+               console.log('DB error: user update: ', err);
+               //could send error
+               //res.status(500).send({error: true, message: 'Database Error - ' + err.message});
+             }
+             // make a token & send it as JSON
+             var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
+                   expiresIn: 60 * 60 * 24 // expires in 24 hours
+                });
+                res.send({user: user, calendar: userCalendar, token: token});
+             });
+          }
       });
     }
   });
@@ -125,26 +180,26 @@ router.post('/me/from/token', function(req, res, next) {
         console.log('User not found error');
         return res.status(400).json({error: true, message: 'User Not Found!'});
       }
-      var userCalendar = {};
-      Calendar.findOne({_id: calendar._id}, function(err, calendar){
-        if(err){
-          res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
-        }
-        userCalendar = calendar;
-      })
+
       //Note: you can renew token by creating new token(i.e.
       //refresh it) w/ new expiration time at this point, but I’m
       //passing the old token back.
       var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-        expiresIn: 60 * 60 * 24 // expires in 24 hours
+         expiresIn: 60 * 60 * 24 // expires in 24 hours
       });
-      res.json({
-        user: user,
-        calendar: userCalendar,
-        token: token
+
+      getCalendar(user, function(err, calendar) {
+         if (err) {
+            console.log("DB error - getCalendar:",err);
+         }
+         res.json({
+            user: user,
+            calendar: calendar,
+            token: token
+         });
       });
+     });
     });
   });
-});
 
 module.exports = router;
