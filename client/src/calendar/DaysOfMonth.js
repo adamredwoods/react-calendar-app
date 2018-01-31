@@ -7,6 +7,9 @@ const daysInMonth = [
            [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
            [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]];
 
+//TODO: mondayIsFIrst is user defined
+var mondayIsFirst = true;
+
 class SingleDay extends Component {
 
    render() {
@@ -19,21 +22,31 @@ class SingleDay extends Component {
 }
 
 export const DaysOfWeek = () => {
+   let daysOfWeek = (mondayIsFirst) ?
+      (<Row>
+        <Col className="days-of-week">m</Col>
+        <Col className="days-of-week">t</Col>
+        <Col className="days-of-week">w</Col>
+        <Col className="days-of-week">r</Col>
+        <Col className="days-of-week">f</Col>
+        <Col className="days-of-week">sa</Col>
+        <Col className="days-of-week">su</Col>
+     </Row>) :
+     (<Row>
+       <Col className="days-of-week">su</Col>
+       <Col className="days-of-week">m</Col>
+       <Col className="days-of-week">t</Col>
+       <Col className="days-of-week">w</Col>
+       <Col className="days-of-week">r</Col>
+       <Col className="days-of-week">f</Col>
+       <Col className="days-of-week">sa</Col>
+    </Row>)
+
     return (
       <Row>
-
          <Col sm={12}>
-            <Row>
-           <Col className="days-of-week">m</Col>
-           <Col className="days-of-week">t</Col>
-           <Col className="days-of-week">w</Col>
-           <Col className="days-of-week">r</Col>
-           <Col className="days-of-week">f</Col>
-           <Col className="days-of-week">sa</Col>
-           <Col className="days-of-week">su</Col>
-           </Row>
+         { daysOfWeek }
          </Col>
-
       </Row>
     );
 }
@@ -67,12 +80,17 @@ class DaysOfMonth extends Component {
       //--display one week
       let j=0, output=[];
 
+      //TODO: Incorporate leap Year
+      let leapyear =0;
+      let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
-      let maxDay = daysInMonth[0][parseInt(date.date("MM"))];
 
-      console.log(wkStart, maxDay);
+      if(mondayIsFirst) {
+         wkStart = (wkStart===0) ? 6 : wkStart-1;
+      }
+
       for(let k=0; k<5; k++) {
-         // output.push(<Row>);
+
          let row=[];
          for(let i=0; i<7; i++) {
             if (i<wkStart && j===0 || j>=maxDay) {
