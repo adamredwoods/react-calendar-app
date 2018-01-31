@@ -12,14 +12,6 @@ TBD
 * Implement thoughtful user stories
 * Have a visually impressive design
 * Be deployed online so it's publicly accessible
-* A `readme.md` file with:
-    * A screenshot of the site
-    * Explanations of the technologies used
-    * Explanation of general approach you took
-    * Installation instructions for any dependencies
-    * Link to your user stories – who are your users, what do they want, and why?
-    * Link to your wireframes – sketches of major views / interfaces in your application
-    * Descriptions of any unsolved problems or major hurdles your team had to overcome
 
 ## User Stories
 * When I look at my calendar, I want to be able to see not only if I have events on a particular day but also how many events I have that day. For easier visiblity, I want to be able to assign colors to my events and have those colors show up on the month view. I'd also like to be able to see a snapshot of my day or week (the ability to choose) below my monthly view so that I can see general AND more specific. 

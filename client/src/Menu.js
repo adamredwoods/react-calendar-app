@@ -28,18 +28,14 @@ class Menu extends Component {
         event.preventDefault();
         let base = this;
         let currentUser = this.props.user;
-        let currentCalendar = this.props.calendar;
-        console.log(currentCalendar);
-        let fromLocalCal = JSON.parse(localStorage.getItem('calendar'));
-        console.log(fromLocalCal);
+        let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         let currentYear = this.state.currentYear;
         let holidays = this.state.currentYearHolidays;
 		axios.post('/calendar',{
             holidays: holidays,
             year: currentYear,
             user: currentUser,
-            calendar: currentCalendar,
-            calendarTwo: fromLocalCal
+            calendar: currentCalendar
         }).then(response => {
             console.log(response)
         }).catch(err => {
