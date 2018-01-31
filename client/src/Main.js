@@ -6,7 +6,7 @@ import Day from './calendar/Day.js';
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';
 import "date-format-lite";
 
-var daysInMonth = [
+const daysInMonth = [
            [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
            [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]];
 
@@ -41,8 +41,8 @@ class Main extends Component {
                </Row>
                <Hidden xs sm>
                   <Row>
-                     <Col sm={1} />
-                     <Col sm={10}>
+
+                     <Col sm={12}>
                         <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
                      </Col>
                   </Row>
