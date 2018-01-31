@@ -46,7 +46,7 @@ class Main extends Component {
             <div className="main-page">
                <Row nogutter>
                   <Col sm={8}>
-                     <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickDayChange={this.clickChangeDay}/>
+                     <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} onClickDay={this.clickChangeDay}/>
                   </Col>
 
                   <Col sm={4}>

@@ -19,7 +19,7 @@
 .days-card {
    text-align: left;
    background-color: #ddeeff;
-   margin: 0.5px;
+   border:0.5px solid #fff;
    padding: 30%;
    cursor: pointer;
 }
@@ -38,7 +38,7 @@
 }
 
 .day-selected {
-   border: 1px solid #904080;
+   border: 0.5px solid #9040b0;
 }
 
 .button-round {

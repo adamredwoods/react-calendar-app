@@ -12,16 +12,7 @@ var mondayIsFirst = true;
 
 class SingleDay extends Component {
 
-   clickChangeDay = (e) => {
-      //--get new day data from backend
 
-      //--send new date
-      let d = this.props.viewDate;
-      let newDate = (d.date("YYYY")+" "+d.date("MM")+" "+e.target.id).date();
-
-      this.props.clickDayChange(newDate);
-
-   }
 
    render() {
 
@@ -31,7 +22,7 @@ class SingleDay extends Component {
       if (this.props.selected) addClass=addClass+" day-selected";
 
       return (
-         <div className={addClass} id={this.props.dayNum} onClick={this.clickChangeDay}>
+         <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
             <div className="days-num">{this.props.dayNum}</div>
          </div>
       )
@@ -121,12 +112,21 @@ class DaysOfMonth extends Component {
                d++;
                let todayBoolean = (d===today) ? true : false;
                let selectBoolean = (d===selectedDay) ? true : false;
-               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} select={selectBoolean}/></Col>);
+               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} selected={selectBoolean} onClickDay={this.onClickDay}/></Col>);
             }
          }
          output.push(<Row>{row}</Row>);
       }
       return output;
+   }
+
+   onClickDay = (day) => {
+      //--get new day data from backend
+
+      //--send new date
+      let newDate = (this.props.viewDate.date("YYYY-MM")+"-"+day).date();
+      this.props.onClickDay(newDate);
+
    }
 
    render() {
