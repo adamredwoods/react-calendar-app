@@ -56,11 +56,7 @@ METHOD | URL | Purpose
 POST | /auth/signup | Adds new user to user database
 POST | /auth/login | Authenticates login details
 POST | /auth/me/from/token | Checks if token is present on browser refresh
-
-## Frontend Routes
-METHOD | URL | Purpose
---- | --- | ---
-
+POST | /calendar | Adds holidays to the user's chosen calendar
 
 ## Next Steps
 * TBD
