@@ -20,9 +20,13 @@ class MonthHeader extends Component {
       <Row>
 
 
-            <Col sm={1}></Col>
-            <Col sm={10}><span> &lt;-- </span><span className="month-header">{date.date("MMMM")} - {date.date("YYYY")} </span><span> --&gt; </span></Col>
-            <Col sm={1}></Col>
+            <Col sm={4} style={{textAlign:"right"}}><span className="button-round" >&lt;</span></Col>
+            <Col sm={4}>
+
+               <span className="month-header">{date.date("MMMM")} {date.date("YYYY")} </span>
+
+            </Col>
+            <Col sm={4} style={{textAlign:"left"}}><span className="button-round" >&gt;</span></Col>
 
 
       </Row>
