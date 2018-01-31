@@ -1,4 +1,4 @@
-# Calendar App
+# prolifiCal - Calendar App
 
 ## Summary
  A full-stack MERN Calendar App
@@ -29,6 +29,16 @@ TBD
 ### Sprint 1:
 ![Trello Board](/public/images/sprint-1.png)
 * We started by trello-boarding, working on wireframes for the different views, and discussing user stories/what we wanted in terms of functionality.
+
+### Wireframes:
+![Mobile View: Month](/public/images/mobile-month-view.png)
+![Mobile View: Week](/public/images/mobile-week-view.png)
+![Mobile View: Day](/public/images/mobile-day-view.png)
+![Desktop View: Month](/public/images/desktop-month-view.png)
+![Desktop View: Week](/public/images/desktop-week-view.png)
+
+### Sprint 2:
+![Trello Board](/public/images/sprint-2.png)
 
 ## Technologies Used
 * Mongodb
