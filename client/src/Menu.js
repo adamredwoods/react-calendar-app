@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Row, Col } from 'react-grid-system';
 import Holidays from 'date-holidays';
 import CountryCodes from './helper/CountryCodes.js';
@@ -23,10 +24,33 @@ class Menu extends Component {
         });
     }
 
+    addHolidays = (event) => {
+        event.preventDefault();
+        let base = this;
+        let currentUser = this.props.user;
+        let currentCalendar = this.props.calendar;
+        console.log(currentCalendar);
+        let fromLocalCal = JSON.parse(localStorage.getItem('calendar'));
+        console.log(fromLocalCal);
+        let currentYear = this.state.currentYear;
+        let holidays = this.state.currentYearHolidays;
+		axios.post('/calendar',{
+            holidays: holidays,
+            year: currentYear,
+            user: currentUser,
+            calendar: currentCalendar,
+            calendarTwo: fromLocalCal
+        }).then(response => {
+            console.log(response)
+        }).catch(err => {
+            console.log('backend error we hope', err)
+        })
+	}
+
     render(){
-        return(
+        return (
             <div className="menu-page">
-                <CountryCodes countryCode={this.state.countryCode} handleChange={(event) => this.handleCountryCodeChange(event)}/>
+                <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
             </div>
         );
     }

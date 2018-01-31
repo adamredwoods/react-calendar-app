@@ -14,33 +14,41 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      user: {}
+      user: {},
+      calendar: {}
     }
   }
   componentDidMount = () => {
-
     this.getUser();
   }
 
   getUser = () => {
         // If there is a token in localStorage
     var token = localStorage.getItem('mernToken');
+    var calendar = localStorage.getItem('calendar');
     if (token === 'undefined' || token === null || token === '' || token === undefined) {
       localStorage.removeItem('mernToken');
+      localStorage.removeItem('calendar');
+      localStorage.removeItem('user');
       this.setState({
         token: '',
-        user: null
+        user: null,
+        calendar: null
       });
     } else {
       //   Validate the token against the server
       axios.post('/auth/me/from/token', {
-        token: token
+        token: token,
+        calendar: calendar
       }).then(response => {
         //   Store the token and user
         localStorage.setItem('mernToken', response.data.token);
+        localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
+        localStorage.setItem('user', JSON.stringify(response.data.user._id));
         this.setState({
           token: response.data.token,
-          user: response.data.user
+          user: response.data.user,
+          calendar: response.data.calendar
         });
         //   Pass User into child components and display main app
       }).catch(err => {
@@ -48,7 +56,8 @@ class App extends Component {
         console.log('cdm', err);
         this.setState({
           token: '',
-          user: null
+          user: null,
+          calendar: null
         });
       })
     }
@@ -77,14 +86,14 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            <Header user={this.state.user} />
+            <Header user={this.state.user} calendar={this.state.calendar} />
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
-              <Route exact path="/" component={() => (<Main user={this.state.user} />)} />
+              <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user} />)} />
               <Route path="/login" component={
-                () => (<Login user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
+                () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
               <Route path="/signup" component={
-                () => (<Signup user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
+                () => (<Signup calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
               <Route path="/profile" component={
                 () => (<Profile user={this.state.user} setFlash={this.setFlash} />)} />
             </div>

@@ -21,7 +21,13 @@ var userSchema = new mongoose.Schema({
     required: true,
     minlength: 8,
     maxlength: 99
-  }
+  },
+  calendars: [{
+    calendarId: {
+      type: String,
+      required: true
+    }
+  }]
 });
 
 // Override 'toJSON' to prevent the password from being returned with the user

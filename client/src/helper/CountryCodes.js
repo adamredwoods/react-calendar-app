@@ -21,10 +21,11 @@ class CountryCodes extends Component {
         }
         return (
             <div className="country-codes-form">
-                <form name="Country Code">
+                <form name="Country Code" onSubmit={this.props.addHolidays}>
                     <select value={this.props.countryCode} onChange={this.props.handleChange}>
                         {countryOptions}
                     </select>
+                    <input type="submit" value="Add Holidays" />
                 </form>
             </div>
         );

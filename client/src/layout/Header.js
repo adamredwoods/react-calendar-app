@@ -17,7 +17,7 @@ class Header extends Component {
         <div><div className="nav">
           {links}
         </div>
-        <Menu />
+        <Menu calendar={this.props.calendar} user={this.props.user}/>
         </div>
       );
   }

@@ -9,7 +9,7 @@ const eventSchema = new mongoose.Schema({
     startTime: Date,
     endTime: Date,
     repeating: Number,
-    priority: Number,
+    priority: { type: Number, default: 1},
     icon: String
 })
 
@@ -24,9 +24,19 @@ const calendarSchema = new mongoose.Schema({
       eventTypeId: Number,
       name: String
   }],
-  events: [eventSchema]
+  events: [eventSchema],
+  people: [{
+    userId: {
+      type: String
+    },
+    permission: {
+      type: String,
+      default: 'view'
+    }
+  }]
 });
 
 var Calendar = mongoose.model("Calendar", calendarSchema);
+var CalEvent = mongoose.model("CalEvent", eventSchema);
 
-module.exports = Calendar;
+module.exports = { Calendar, CalEvent };

@@ -30,6 +30,8 @@ class Signup extends Component {
       password: this.state.password
     }).then(result => {
       localStorage.setItem('mernToken', result.data.token);
+      localStorage.setItem('calendar', result.data.calendar);
+      localStorage.setItem('user', result.data.user);
       this.props.updateUser();
     }).catch(error => {
       console.log(error.response);

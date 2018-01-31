@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
+var Calendar = require('../models/calendar').Calendar;
 var bcrypt = require('bcrypt');
 // Used for creating and sending tokens and protecting backend routes
 var expressJWT = require('express-jwt');
@@ -26,11 +27,18 @@ router.post('/login', function(req, res, next) {
     // compare passwords
     passwordMatch = bcrypt.compareSync(req.body.password, hashedPass);
     if (passwordMatch) {
+      var userCalendar = {};
+      Calendar.findOne({_id: req.body.calendar.id, userId: req.body.user.id}, function(err, calendar){
+        if(err){
+          res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
+        }
+        userCalendar = calendar;
+      })
       // Make a token and return it as JSON
       var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
         expiresIn: 60 * 60 * 24 // expires in 24 hours
       });
-      res.send({user: user, token: token});
+      res.send({user: user, calendar: userCalendar, token: token});
     }
     else {
       // Return an error
@@ -63,11 +71,28 @@ router.post('/signup', function(req, res, next) {
           res.status(500).send({error: true, message: 'Database Error - ' + err.message});
         }
         else {
+          var userCalendar = {};
+          Calendar.create({
+            name: 'My Calendar',
+            userId: user._id,
+            eventTypes: [{eventTypeId: 0, name: 'Holiday'}],
+            people: [{
+              userId: user._id,
+              permission: 'edit'
+            }]
+          }, function(err, calendar){
+            if (err){
+              console.log('Cal DB error', err);
+              res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
+            }
+            userCalendar = calendar;
+            console.log(userCalendar);
+          })
           // make a token & send it as JSON
           var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 24 // expires in 24 hours
           });
-          res.send({user: user, token: token});
+          res.send({user: user, calendar: userCalendar, token: token});
         }
       });
     }
@@ -78,6 +103,7 @@ router.post('/signup', function(req, res, next) {
 router.post('/me/from/token', function(req, res, next) {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token;
+  var calendar = req.body.calendar || req.query.calendar;
   if (!token) {
     return res.status(401).send({error: true, message: 'You Must Pass a Token!'});
   }
@@ -99,6 +125,13 @@ router.post('/me/from/token', function(req, res, next) {
         console.log('User not found error');
         return res.status(400).json({error: true, message: 'User Not Found!'});
       }
+      var userCalendar = {};
+      Calendar.findOne({_id: calendar._id}, function(err, calendar){
+        if(err){
+          res.status(400).send({error: true, message: 'Cal error in auth - ' + err.message});
+        }
+        userCalendar = calendar;
+      })
       //Note: you can renew token by creating new token(i.e.
       //refresh it) w/ new expiration time at this point, but I’m
       //passing the old token back.
@@ -107,6 +140,7 @@ router.post('/me/from/token', function(req, res, next) {
       });
       res.json({
         user: user,
+        calendar: userCalendar,
         token: token
       });
     });

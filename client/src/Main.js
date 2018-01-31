@@ -27,6 +27,7 @@ class Main extends Component {
 
   render(){
       let mainCal = <div />
+      console.log(this.props.calendar);
       if(this.props.user){
          mainCal = (
             <div className="main-page">
