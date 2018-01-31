@@ -70,6 +70,7 @@ router.post('/', function(req, res, next){
                         }, function(err, newEvent){
                             if(err){
                                 console.log(err);
+                                console.log('we don know');
                             }
                         });
                     }
@@ -83,14 +84,12 @@ router.post('/', function(req, res, next){
                 });
                 console.log('finished the map');
             }
-        }).then(function(err,updatedCalendar){
-            if(err){
-                console.log(err);
-            }
-            else{
+        }).then(function(updatedCalendar){
                 res.json({calendar: updatedCalendar});
+                console.log('hi from the new cal');
+                console.log(updatedCalendar);
             }
-        });
+        );
 		// newLocation.userId = user.id;
 		// newLocation.save(function(err, location){
 		// 	if (err){
