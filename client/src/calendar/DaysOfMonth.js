@@ -19,7 +19,7 @@ class SingleDay extends Component {
       if (this.props.today) addClass=addClass+" day-current";
 
       return (
-         <div className={addClass}>
+         <div className={addClass} >
             <div className="days-num">{this.props.dayNum}</div>
          </div>
       )
@@ -82,8 +82,9 @@ class DaysOfMonth extends Component {
          return <div></div>
       }
 
-      //TODO: Incorporate leap Year
-      let leapyear =0;
+      //leap year
+      let year = parseInt(date.date("YYYY"));
+      let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
       let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
       let today = 0;

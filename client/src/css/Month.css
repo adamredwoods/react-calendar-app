@@ -21,6 +21,10 @@
    background-color: #ddeeff;
    margin: 0.5px;
    padding: 30%;
+   cursor: pointer;
+}
+.days-card:hover {
+   color: #999;
 }
 
 .days-num {
@@ -31,4 +35,24 @@
 
 .day-current {
    background-color: #bbccdd
+}
+
+.button-round {
+    display:inline-block;
+    width:30px;
+    height:30px;
+    line-height:30px;
+    border: 0;
+    border-radius: 50%;
+    color:#f5f5f5;
+    text-align:center;
+    text-decoration:none;
+    background: #bbaf9f;
+    font-size:1.2rem;
+    font-weight:bold;
+    margin-top: 0.4rem;
+    cursor: pointer;
+}
+.button-round:hover {
+    background: #262626;
 }
