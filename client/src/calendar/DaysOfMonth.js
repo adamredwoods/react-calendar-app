@@ -13,9 +13,14 @@ var mondayIsFirst = true;
 class SingleDay extends Component {
 
    render() {
+
+      let addClass = "days-card";
+
+      if (this.props.today) addClass=addClass+" day-current";
+
       return (
-         <div className="days-single">
-            {this.props.dayNum}
+         <div className={addClass}>
+            <div className="days-num">{this.props.dayNum}</div>
          </div>
       )
    }
@@ -71,34 +76,37 @@ class DaysOfMonth extends Component {
       return i%7;
    }
 
-   showDays = (date) => {
+   showDays = (date, currentDate) => {
 
       if (!date) {
          return <div></div>
       }
 
-      //--display one week
-      let j=0, output=[];
-
       //TODO: Incorporate leap Year
       let leapyear =0;
       let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
+      let today = 0;
+
+      if (date.date("YYYY-MM") === currentDate.date("YYYY-MM")) today = parseInt(currentDate.date("DD"));
 
       if(mondayIsFirst) {
          wkStart = (wkStart===0) ? 6 : wkStart-1;
       }
 
+      let d=0, output=[];
+
       for(let k=0; k<5; k++) {
 
          let row=[];
          for(let i=0; i<7; i++) {
-            if (i<wkStart && j===0 || j>=maxDay) {
+            if (i<wkStart && d===0 || d>=maxDay) {
                row.push (<Col ></Col>);
             }
-            if ((i===wkStart || j>0) && j<maxDay) {
-               j++;
-               row.push (<Col ><SingleDay dayNum={j} /></Col>);
+            if ((i===wkStart || d>0) && d<maxDay) {
+               d++;
+               let todayBoolean = (d===today) ? true : false;
+               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} /></Col>);
             }
          }
          output.push(<Row>{row}</Row>);
@@ -115,7 +123,7 @@ class DaysOfMonth extends Component {
             <div className="days-in-month">
                <Row>
                   <Col sm={12}>{
-                     this.showDays(this.props.viewDate)
+                     this.showDays(this.props.viewDate, this.props.currentDate)
                   }</Col>
                </Row>
             </div>

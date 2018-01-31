@@ -21,7 +21,7 @@ class MonthHeader extends Component {
 
 
             <Col sm={1}></Col>
-            <Col sm={10}><span> &lt;-- </span><span className="month-header">{date.date("MMMM")} / {date.date("YYYY")} </span><span> --&gt; </span></Col>
+            <Col sm={10}><span> &lt;-- </span><span className="month-header">{date.date("MMMM")} - {date.date("YYYY")} </span><span> --&gt; </span></Col>
             <Col sm={1}></Col>
 
 
