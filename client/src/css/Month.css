@@ -37,6 +37,10 @@
    background-color: #bbccdd
 }
 
+.day-selected {
+   border: 1px solid #904080;
+}
+
 .button-round {
     display:inline-block;
     width:30px;
