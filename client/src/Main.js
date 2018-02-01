@@ -60,7 +60,7 @@ class Main extends Component {
        user: currentUser
      }).then(response => {
        console.log(response.data);
-       //this.setState({calendar: response.data.calendar});
+       this.setState({calendar: response.data.calendar});
      }).catch(err => {
        console.log('backend cal err on db send - '+err);
      });

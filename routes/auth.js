@@ -170,8 +170,6 @@ router.post('/signup', function(req, res, next) {
 router.post('/me/from/token', function(req, res, next) {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token;
-  var calendar = JSON.parse(req.body.calendar);
-  console.log(calendar._id);
   if (!token) {
     return res.status(401).send({error: true, message: 'You Must Pass a Token!'});
   }

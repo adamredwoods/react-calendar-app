@@ -122,6 +122,15 @@ router.post('/events', function(req,res,next){
     console.log(req.body.endDate);
     console.log(req.body.calendar._id);
     console.log(req.body.user.id);
+    Calendar.find({
+        _id: req.body.calendar._id,
+        "events.startDate": {$gt: req.body.startDate, $lt: req.body.endDate}
+    }, function(err,calendar){
+        if(err){
+            console.log(err);
+        }
+        res.json({calendar:calendar});
+    })
 });
 
 module.exports = router;
