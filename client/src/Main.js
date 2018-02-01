@@ -32,7 +32,8 @@ class Main extends Component {
         countryCode: '',
         currentYear: '2018',
         currentYearHolidays: [],
-        dateQuery: ['2018-01-01', '2018-02-18']
+        dateQuery: ['2018-01-01', '2018-02-18'],
+        calendar: null
       }
       this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
       this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -44,12 +45,12 @@ class Main extends Component {
       let date = new Date();
       this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
       this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"])
-      
+
     }
 
   getAllEvents = (dateQuery) => {
     let startDate = dateQuery[0];
-    let endDate = dateQuery[1]; 
+    let endDate = dateQuery[1];
     let currentUser = this.props.user;
     let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
     axios.post('/calendar/events', {
@@ -59,6 +60,7 @@ class Main extends Component {
        user: currentUser
      }).then(response => {
        console.log(response.data);
+       //this.setState({calendar: response.data.calendar});
      }).catch(err => {
        console.log('backend cal err on db send - '+err);
      });
