@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Row, Col } from 'react-grid-system';
 import Holidays from 'date-holidays';
 import CountryCodes from './helper/CountryCodes.js';
+import EditCalendar from './helper/EditCalendar.js';
 const hd = new Holidays();
 
 class Menu extends Component {
@@ -37,16 +38,32 @@ class Menu extends Component {
             user: currentUser,
             calendar: currentCalendar
         }).then(response => {
-            console.log(response)
+            localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
         }).catch(err => {
-            console.log('backend error we hope', err)
-        })
-	}
+            console.log('backend error we hope', err);
+        });
+    }
+    
+    editCal = (event) => {
+        event.preventDefault();
+        let base = this;
+        let currentUser = this.props.user;
+        let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+        axios.post('/calendar/edit',{
+            user: currentUser,
+            calendar: currentCalendar
+        }).then(response => {
+            console.log(response.data);
+        }).catch(err => {
+            console.log('backend error with change database and send', err);
+        });
+    }
 
     render(){
         return (
             <div className="menu-page">
                 <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
+                <EditCalendar editCal={this.editCal} />
             </div>
         );
     }
