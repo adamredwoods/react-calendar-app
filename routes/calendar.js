@@ -117,4 +117,6 @@ router.post('/edit', function(req,res,next){
     });
 });
 
+// router.post('/events')
+
 module.exports = router;

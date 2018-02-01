@@ -54,7 +54,7 @@ class Main extends Component {
     let startDate = this.state.dateQuery[0];
     let endDate = this.state.dateQuery[1]; 
     let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-    axios.post('/calendar/events', {
+    axios.get('/calendar/events', {
        startDate: startDate,
        endDate: endDate,
        calendar: currentCalendar
