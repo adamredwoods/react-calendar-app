@@ -5,13 +5,19 @@ class EditCalendar extends Component {
     render(){
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
-            <form name="Edit" onSubmit={this.props.editCal}>
-                <label value="Name" />
-                <input type="text" value={currentCalendar.name} />
-                <label value="Add Contributors" />
-                <input type="" />
-                <input type="submit" value="Edit Calendar" />
-            </form>
+            <div className="form edit-form">
+                <form name="Edit" onSubmit={this.props.editCal}>
+                    <div className="form-field-container">
+                        <label value="Name" />
+                        <input className="form-field" type="text" value={currentCalendar.name} />
+                    </div>
+                    <div className="form-field-container">
+                        <label value="Add Contributor by Email" />
+                        <input className="form-field" type="text" onChange={this.props.handleChange} value={this.state.email} />
+                    </div>
+                    <input type="submit" value="Edit Calendar" />
+                </form>
+            </div>
         );
     }
 }

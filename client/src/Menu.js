@@ -15,7 +15,8 @@ class Menu extends Component {
             currentYear: '2018',
             currentYearHolidays: [],
             menuClass: "menu-page",
-            menuToggle: 0
+            menuToggle: 0,
+            email: null
         }
         this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
     }
@@ -26,6 +27,10 @@ class Menu extends Component {
             let allHolidays = holidays.getHolidays(this.state.currentYear);
             this.setState({currentYearHolidays: allHolidays});
         });
+    }
+
+    handleEmailChange = (event) => {
+        this.setState({email: event.target.value});
     }
 
     addHolidays = (event) => {
@@ -50,11 +55,13 @@ class Menu extends Component {
     editCal = (event) => {
         event.preventDefault();
         let base = this;
+        let email = this.state.email;
         let currentUser = this.props.user;
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         axios.post('/calendar/edit',{
             user: currentUser,
-            calendar: currentCalendar
+            calendar: currentCalendar,
+            email: email
         }).then(response => {
             console.log(response.data);
         }).catch(err => {
@@ -73,7 +80,7 @@ class Menu extends Component {
                <div className="menu-button" onClick={this.onClickToggleMenu}>&lt;</div>
                 <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
                 <div className="menu-spacer"></div>
-                <a className="menu-topitem" href="#"><div className="menu-item" id="1">Edit<EditCalendar editCal={this.editCal} /></div></a>
+                <a className="menu-topitem" href="#"><div className="menu-item" id="1">Edit<EditCalendar handleChange={event => this.handleEmailChange(event)} editCal={this.editCal} /></div></a>
                 <a className="menu-topitem" href="#"><div className="menu-item" id="2">Item 2</div></a>
                 <a className="menu-topitem" href="#"><div className="menu-item" id="3">Item 3</div></a>
                 <div className="menu-spacer"></div>
