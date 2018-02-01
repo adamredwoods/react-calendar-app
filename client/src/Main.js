@@ -40,19 +40,9 @@ class Main extends Component {
       this.handleNameChange = this.handleNameChange.bind(this);
    }
 
-   componentDidMount() {
-      let date = new Date();
-      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
-   }
-
-   clickChangeDay = (newDate) => {
-      console.log("..click: change date",newDate);
-      this.setState({viewDate: newDate});
-   }
-
    getAllEvents = (dateQuery) => {
-    let startDate = this.state.dateQuery[0];
-    let endDate = this.state.dateQuery[1]; 
+    let startDate = dateQuery[0];
+    let endDate = dateQuery[1]; 
     let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
     axios.get('/calendar/events', {
        startDate: startDate,
@@ -63,6 +53,16 @@ class Main extends Component {
      }).catch(err => {
        console.log('backend cal err on db send - '+err);
      });
+   }
+   componentDidMount() {
+      let date = new Date();
+      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
+      this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"]);
+    }
+
+   clickChangeDay = (newDate) => {
+      console.log("..click: change date",newDate);
+      this.setState({viewDate: newDate});
    }
 
    handleCountryCodeChange(event) {
