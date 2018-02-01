@@ -26,6 +26,9 @@ class AddEvent extends Component {
 }
 
 class AddHoliday extends Component {
+    onClickCancel = (e) => {
+      this.props.onClickEventAction(0);
+   }
     render(){
         let countries = {};
         countries = hd.getCountries();
@@ -52,6 +55,9 @@ class AddHoliday extends Component {
 }
 
 class AddContributor extends Component {
+    onClickCancel = (e) => {
+      this.props.onClickEventAction(0);
+   }
     render(){
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
@@ -69,13 +75,18 @@ class AddContributor extends Component {
                     </div>
                     <input type="submit" value="Edit Contributors" />
                 </form>
+                <div onClick={this.onClickCancel}>cancel</div>
             </div>
         );
     }
 }
 
 class EditCalendar extends Component {
+    onClickCancel = (e) => {
+      this.props.onClickEventAction(0);
+   }
     render(){
+        console.log('we tried to render edit cal');
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
             <div className="form edit-form">
@@ -86,6 +97,7 @@ class EditCalendar extends Component {
                     </div>
                     <input type="submit" value="Edit Calendar" />
                 </form>
+                <div onClick={this.onClickCancel}>cancel</div>
             </div>
         );
     }

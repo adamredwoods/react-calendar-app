@@ -8,7 +8,7 @@ import {
   AddHoliday,
   AddContributor,
   EditCalendar
-} from "./Event.js";
+} from "./Edit.js";
 import Holidays from 'date-holidays';
 import axios from 'axios';
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';
@@ -32,7 +32,7 @@ class Main extends Component {
         countryCode: '',
         currentYear: '2018',
         currentYearHolidays: [],
-
+        dateQuery: []
       }
       this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
       this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -48,14 +48,6 @@ class Main extends Component {
    clickChangeDay = (newDate) => {
       console.log("..click: change date",newDate);
       this.setState({viewDate: newDate});
-   }
-
-   clickEditEvent = () => {
-
-   }
-
-   clickAddEvent = () => {
-
    }
 
    handleCountryCodeChange(event) {

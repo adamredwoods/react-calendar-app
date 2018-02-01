@@ -28,7 +28,7 @@ class Menu extends Component {
             <div className={c}>
                <div className="menu-button" onClick={this.props.onClickToggleMenu}>&lt;</div>
                 <div className="menu-spacer"></div>
-                <a className="menu-topitem" href="#" onCLick={this.onClickEvent}><div className="menu-item" id="1">Edit Calendar</div></a>
+                <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="1">Edit Calendar</div></a>
                 <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="2">Add Event</div></a>
                 <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="3">Add Contributor</div></a>
                 <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="4">Add Holidays</div></a>
