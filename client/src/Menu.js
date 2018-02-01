@@ -69,7 +69,8 @@ class Menu extends Component {
         axios.post('/calendar/edit',{
             user: currentUser,
             calendar: currentCalendar,
-            email: email
+            email: email,
+            permission: permission
         }).then(response => {
             console.log(response.data);
         }).catch(err => {
