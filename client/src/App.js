@@ -15,7 +15,8 @@ class App extends Component {
     super(props);
     this.state = {
       user: {},
-      calendar: {}
+      calendar: {},
+      eventAction: ""
     }
   }
   componentDidMount = () => {
@@ -81,17 +82,20 @@ class App extends Component {
     });
   }
 
-
+  onClickEventAction = (actionType) => {
+     console.log("event action x", actionType);
+     this.setState({eventAction: actionType});
+ }
 
   render() {
     return (
       <div className="App">
         <Router>
           <div>
-            <Header user={this.state.user} calendar={this.state.calendar} />
+            <Header user={this.state.user} calendar={this.state.calendar} onClickEventAction={this.onClickEventAction}/>
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
-              <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user}/>)} />
+              <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} onClickEventAction={this.onClickEventAction} />)} />
               <Route path="/login" component={
                 () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
               <Route path="/signup" component={
