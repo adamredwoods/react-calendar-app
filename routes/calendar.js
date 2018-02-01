@@ -95,7 +95,7 @@ router.post('/edit', function(req,res,next){
                 }
                 newContributor = contributor;
                 if(newContributor._id){
-                    Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}},function(err,newContributor){
+                    Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}, name: req.body.name},function(err,newContributor){
                         if(err){
                             console.log(err);
                         }

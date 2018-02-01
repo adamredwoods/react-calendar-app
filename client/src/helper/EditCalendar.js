@@ -9,7 +9,7 @@ class EditCalendar extends Component {
                 <form name="Edit" onSubmit={this.props.editCal}>
                     <div className="form-field-container">
                         <label value="Name" />
-                        <input className="form-field" type="text" value={currentCalendar.name} />
+                        <input className="form-field" onChange={this.props.handleName} type="text" value={this.props.name} />
                     </div>
                     <div className="form-field-container">
                         <label value="Add Contributor by Email" />
