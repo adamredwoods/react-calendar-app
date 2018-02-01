@@ -82,7 +82,7 @@ router.post('/', function(req, res, next){
 	});
 });
 
-router.post('/one', function(req,res,next){
+router.post('/edit', function(req,res,next){
     console.log('add a cal');
 });
 
