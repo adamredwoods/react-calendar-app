@@ -40,7 +40,14 @@ class Main extends Component {
       this.handleNameChange = this.handleNameChange.bind(this);
    }
 
-   getAllEvents = (dateQuery) => {
+   componentDidMount() {
+      let date = new Date();
+      let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
+      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
+      if(currentCalendar){this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"])};
+    }
+
+  getAllEvents = (dateQuery) => {
     let startDate = dateQuery[0];
     let endDate = dateQuery[1]; 
     let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
@@ -54,11 +61,6 @@ class Main extends Component {
        console.log('backend cal err on db send - '+err);
      });
    }
-   componentDidMount() {
-      let date = new Date();
-      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
-      this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"]);
-    }
 
    clickChangeDay = (newDate) => {
       console.log("..click: change date",newDate);
