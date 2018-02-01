@@ -81,6 +81,8 @@ class App extends Component {
     });
   }
 
+
+
   render() {
     return (
       <div className="App">
@@ -89,7 +91,7 @@ class App extends Component {
             <Header user={this.state.user} calendar={this.state.calendar} />
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
-              <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user} />)} />
+              <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user}/>)} />
               <Route path="/login" component={
                 () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
               <Route path="/signup" component={
