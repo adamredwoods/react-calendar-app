@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from 'react-grid-system';
 import "date-format-lite";
 import "../css/Month.css";
+import "../css/ButtonsAndMore.css";
 
 class MonthHeader extends Component {
    constructor(props) {
@@ -41,13 +42,13 @@ class MonthHeader extends Component {
       <Row>
 
 
-            <Col sm={4} style={{textAlign:"right"}}><span className="button-round" id="1" onClick={this.onClickChangeMonth}>&lt;</span></Col>
+            <Col sm={4} style={{textAlign:"right"}}><span className="btn-circle" id="1" onClick={this.onClickChangeMonth}>&lt;</span></Col>
             <Col sm={4}>
 
                <span className="month-header">{date.date("MMMM")} {date.date("YYYY")} </span>
 
             </Col>
-            <Col sm={4} style={{textAlign:"left"}}><span className="button-round" id="2" onClick={this.onClickChangeMonth}>&gt;</span></Col>
+            <Col sm={4} style={{textAlign:"left"}}><span className="btn-circle" id="2" onClick={this.onClickChangeMonth}>&gt;</span></Col>
 
 
       </Row>
