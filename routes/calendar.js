@@ -20,8 +20,6 @@ router.post('/', function(req, res, next){
             if(err){
                 console.log(err);
             }
-            console.log('this is the cal after finding it: ');
-            console.log(calendar);
             if(calendar.people[0].permission === "edit"){
                 let holidays = req.body.holidays;
                 holidays.map((holiday) => {
@@ -29,14 +27,6 @@ router.post('/', function(req, res, next){
                     let holiStart = holiday.start;
                     let holiEnd = holiday.end;
                     let holiType = holiday.type
-                    // var newHoliday = new CalEvent({
-                    //     name: holiName,
-                    //     startDate: holiStart,
-                    //     endDate: holiEnd,
-                    //     priority: 0,
-                    //     icon: holiName,
-                    //     eventTypeId: 0
-                    // });
                     if(calendar.events){
                         Calendar.update({ _id: calendar._id }, 
                             { $push: { 
@@ -54,7 +44,6 @@ router.post('/', function(req, res, next){
                                 console.log(err);
                             }
                         });
-                        console.log('we tried to add one and push it in');
                     }else{
                         Calendar.update({ _id: calendar_id }, 
                             { $addToSet: { 
@@ -74,30 +63,22 @@ router.post('/', function(req, res, next){
                             }
                         });
                     }
-                    // newHoliday.save(function(err){
-                    //     if(err){
-                    //         console.log(err);
-                    //     }
-                    //     console.log('successfully saved holiday event we think');
-                    // });
                     console.log('still in the map');
                 });
                 console.log('finished the map');
             }
         }).then(function(updatedCalendar){
-                res.json({calendar: updatedCalendar});
-                console.log('hi from the new cal');
-                console.log(updatedCalendar);
-            }
-        );
-		// newLocation.userId = user.id;
-		// newLocation.save(function(err, location){
-		// 	if (err){
-		// 		return console.log("save error: " + err);
-		// 	}
-		// 	console.log("saved",location.name,"to",location.user);
-		// 	res.json(location);
-		// });
+            // res.json({calendar: updatedCalendar});
+            // console.log('hi from the new cal');
+            // console.log(updatedCalendar);
+            Calendar.findOne({_id: updatedCalendar._id}, function(err,calendar){
+                if(err){
+                    console.log(err);
+                    console.log('error in the second cal db call');
+                }
+                res.json({calendar: calendar});
+            });
+        });
 	});
 });
 
