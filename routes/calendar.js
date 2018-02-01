@@ -101,9 +101,7 @@ router.post('/edit', function(req,res,next){
                         }
                     });
                 }else{
-                    console.log(newContributor);
-                    console.log('failed - is there a contributor');
-                    console.log(newContributor._id);
+                    res.status(500).send({error: true, message: err.message});
                 }
             });
         }else{
