@@ -94,18 +94,18 @@ router.post('/edit', function(req,res,next){
                     res.status(500).send({error: true, message: 'user does not have an account yet! '+err.message});
                 }
                 newContributor = contributor;
+                if(newContributor._id){
+                    Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}},function(err,newContributor){
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                }else{
+                    console.log(newContributor);
+                    console.log('failed - is there a contributor');
+                    console.log(newContributor._id);
+                }
             });
-            if(newContributor._id){
-                Calendar.update({_id: calendar._id},{$push:{people:{name:newContributor.name,userId:newContributor._id}}},function(err,newContributor){
-                    if(err){
-                        console.log(err);
-                    }
-                });
-            }else{
-                console.log(newContributor);
-                console.log('failed - is there a contributor');
-                console.log(newContributor._id);
-            }
         }else{
             res.status(500).send({error: true, message: 'user does not have permission to edit! '+err.message});
         }
