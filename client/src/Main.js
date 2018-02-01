@@ -42,19 +42,21 @@ class Main extends Component {
 
    componentDidMount() {
       let date = new Date();
-      let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
       this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
-      if(currentCalendar){this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"])};
+      this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"])
+      
     }
 
   getAllEvents = (dateQuery) => {
     let startDate = dateQuery[0];
     let endDate = dateQuery[1]; 
-    let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-    axios.get('/calendar/events', {
+    let currentUser = this.props.user;
+    let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
+    axios.post('/calendar/events', {
        startDate: startDate,
        endDate: endDate,
-       calendar: currentCalendar
+       calendar: currentCalendar,
+       user: currentUser
      }).then(response => {
        console.log(response.data);
      }).catch(err => {

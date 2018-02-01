@@ -117,7 +117,7 @@ router.post('/edit', function(req,res,next){
     });
 });
 
-router.get('/events', function(req,res,next){
+router.post('/events', function(req,res,next){
     console.log(req.body.startDate);
     console.log(req.body.endDate);
     console.log(req.body.calendar._id);
