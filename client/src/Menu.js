@@ -62,15 +62,13 @@ class Menu extends Component {
         });
     }
 
-   onClickToggleMenu = (e) => {
-      let c= (this.state.menuToggle===0) ? "menu-page action-slide-out" : "menu-page action-slide-in";
-      this.setState({menuClass: c, menuToggle: 1-this.state.menuToggle});
-   }
 
     render(){
+      let c= (this.props.showMenu===true) ? "menu-page action-slide-out" : "menu-page action-slide-in";
+
         return (
-            <div className={this.state.menuClass}>
-               <div className="menu-button" onClick={this.onClickToggleMenu}>&lt;</div>
+            <div className={c}>
+               <div className="menu-button" onClick={this.props.onClickToggleMenu}>&lt;</div>
                 <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
                 <div className="menu-spacer"></div>
                 <a className="menu-topitem" href="#"><div className="menu-item" id="1">Edit<EditCalendar editCal={this.editCal} /></div></a>
