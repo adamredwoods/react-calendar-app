@@ -86,6 +86,10 @@ class Menu extends Component {
         });
     }
 
+    onClickEvent = (e) => {
+      this.props.onClickEventAction(e.target.id);
+   }
+
 
     render(){
       let c= (this.props.showMenu===true) ? "menu-page action-slide-out" : "menu-page action-slide-in";
@@ -96,7 +100,7 @@ class Menu extends Component {
                 <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
                 <div className="menu-spacer"></div>
                 <a className="menu-topitem" href="#"><div className="menu-item" id="1">Edit<EditCalendar handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} editCal={this.editCal} name={this.state.name} handleName={event => this.handleNameChange(event)}/></div></a>
-                <a className="menu-topitem" href="#"><div className="menu-item" id="2">Item 2</div></a>
+                <a className="menu-topitem" href="#" onClick={this.onClickEvent} id="add"><div className="menu-item" id="2">Add Event</div></a>
                 <a className="menu-topitem" href="#"><div className="menu-item" id="3">Item 3</div></a>
                 <div className="menu-spacer"></div>
             </div>

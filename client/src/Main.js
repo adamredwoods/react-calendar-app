@@ -3,6 +3,7 @@ import './css/Main.css';
 import Month from './calendar/Month.js';
 import Week from './calendar/Week.js';
 import Day from './calendar/Day.js';
+import {AddEvent} from "./Event.js";
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';
 import "date-format-lite";
 
@@ -40,29 +41,37 @@ class Main extends Component {
 
   render(){
       let mainCal = <div />
+      let action = this.props.eventAction; //--could be a string or number
+
       console.log(this.props.calendar);
       if(this.props.user){
-         mainCal = (
-            <div className="main-page">
-               <Row nogutter>
-                  <Col sm={8}>
-                     <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
-                  </Col>
+         if(action==2) {
+            mainCal = (
+               <AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction}/>
+            )
+         } else {
+            mainCal = (
+               <div className="main-page">
+                  <Row nogutter>
+                     <Col sm={8}>
+                        <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
+                     </Col>
 
-                  <Col sm={4}>
-                     <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
-                  </Col>
-               </Row>
-               <Hidden xs sm>
-                  <Row>
-
-                     <Col sm={12}>
-                        <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
+                     <Col sm={4}>
+                        <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
                      </Col>
                   </Row>
-               </Hidden>
-            </div>
-         );
+                  <Hidden xs sm>
+                     <Row>
+
+                        <Col sm={12}>
+                           <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
+                        </Col>
+                     </Row>
+                  </Hidden>
+               </div>
+            );
+         }
       } else {
          mainCal = <div className="main-no-user"><h1>Please login or signup.</h1></div>
       }

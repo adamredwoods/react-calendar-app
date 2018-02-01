@@ -29,7 +29,7 @@ class Header extends Component {
         <div><div className="nav">
           {links}
         </div>
-        <Menu calendar={this.props.calendar} user={this.props.user} onClickToggleMenu={this.onClickToggleMenu} showMenu={this.state.showMenu}/>
+        <Menu calendar={this.props.calendar} user={this.props.user} onClickToggleMenu={this.onClickToggleMenu} showMenu={this.state.showMenu} onClickEventAction={this.props.onClickEventAction}/>
         </div>
       );
   }
