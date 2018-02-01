@@ -16,7 +16,8 @@ class Menu extends Component {
             currentYearHolidays: [],
             menuClass: "menu-page",
             menuToggle: 0,
-            email: null
+            email: '',
+            permission: 'view'
         }
         this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
     }
@@ -31,6 +32,10 @@ class Menu extends Component {
 
     handleEmailChange = (event) => {
         this.setState({email: event.target.value});
+    }
+
+    handlePermissionChange = (event) => {
+        this.setState({permission: event.target.value});
     }
 
     addHolidays = (event) => {
@@ -57,6 +62,7 @@ class Menu extends Component {
         let base = this;
         let email = this.state.email;
         let currentUser = this.props.user;
+        let permission = this.props.permission;
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         axios.post('/calendar/edit',{
             user: currentUser,
@@ -75,17 +81,29 @@ class Menu extends Component {
    }
 
     render(){
-        return (
-            <div className={this.state.menuClass}>
-               <div className="menu-button" onClick={this.onClickToggleMenu}>&lt;</div>
-                <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
-                <div className="menu-spacer"></div>
-                <a className="menu-topitem" href="#"><div className="menu-item" id="1">Edit<EditCalendar handleChange={event => this.handleEmailChange(event)} editCal={this.editCal} /></div></a>
-                <a className="menu-topitem" href="#"><div className="menu-item" id="2">Item 2</div></a>
-                <a className="menu-topitem" href="#"><div className="menu-item" id="3">Item 3</div></a>
-                <div className="menu-spacer"></div>
+        return <div className={this.state.menuClass}>
+            <div className="menu-button" onClick={this.onClickToggleMenu}>
+              &lt;
             </div>
-        );
+            <CountryCodes countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
+            <div className="menu-spacer" />
+            <a className="menu-topitem" href="#">
+              <div className="menu-item" id="1">
+                Edit<EditCalendar handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} editCal={this.editCal} />
+              </div>
+            </a>
+            <a className="menu-topitem" href="#">
+              <div className="menu-item" id="2">
+                Item 2
+              </div>
+            </a>
+            <a className="menu-topitem" href="#">
+              <div className="menu-item" id="3">
+                Item 3
+              </div>
+            </a>
+            <div className="menu-spacer" />
+          </div>;
     }
 }
 

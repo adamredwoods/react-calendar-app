@@ -13,7 +13,13 @@ class EditCalendar extends Component {
                     </div>
                     <div className="form-field-container">
                         <label value="Add Contributor by Email" />
-                        <input className="form-field" type="text" onChange={this.props.handleChange} value={this.state.email} />
+                        <input className="form-field" type="text" onChange={this.props.handleChange} value={this.props.email} />
+                    </div>
+                    <div className="form-field-container">
+                        <select value={this.props.permission} onChange={this.props.handlePermChange}>
+                            <option value="edit">Can Edit</option>
+                            <option value="view">View Only</option>
+                        </select>
                     </div>
                     <input type="submit" value="Edit Calendar" />
                 </form>

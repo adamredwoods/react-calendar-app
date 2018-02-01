@@ -83,7 +83,40 @@ router.post('/', function(req, res, next){
 });
 
 router.post('/edit', function(req,res,next){
-    console.log('add a cal');
+    Calendar.findOne({_id: req.body.calendar._id, people: {$elemMatch: {userId: req.body.user.id}}}, function(err, calendar){
+        if(err){
+            console.log(err);
+        }
+        if(calendar.people[0].permission === 'edit'){
+            var newContributor = {};
+            User.findOne({email: req.body.email}, function(err,contributor){
+                if(err){
+                    res.status(500).send({error: true, message: 'user does not have an account yet! '+err.message});
+                }
+                newContributor = contributor;
+            });
+            if(newContributor._id){
+                Calendar.update({_id: calendar._id},{$push:{people:{name:newContributor.name,userId:newContributor._id}}},function(err,newContributor){
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            }else{
+                console.log(newContributor);
+                console.log('failed - is there a contributor');
+                console.log(newContributor._id);
+            }
+        }else{
+            res.status(500).send({error: true, message: 'user does not have permission to edit! '+err.message});
+        }
+    }).then(function(updatedCalendar){
+        Calendar.findOne({_id: updatedCaledar._id}, function(err,calendar){
+            if(err){
+                console.log('err in cal database for add contributor - '+err);
+            }
+            res.json({calendar: calendar});
+        });
+    });
 });
 
 module.exports = router;
