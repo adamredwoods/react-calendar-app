@@ -32,7 +32,7 @@ class Main extends Component {
         countryCode: '',
         currentYear: '2018',
         currentYearHolidays: [],
-        dateQuery: []
+        dateQuery: ['2018-01-01', '2018-02-18']
       }
       this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
       this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -48,6 +48,21 @@ class Main extends Component {
    clickChangeDay = (newDate) => {
       console.log("..click: change date",newDate);
       this.setState({viewDate: newDate});
+   }
+
+   getAllEvents = (dateQuery) => {
+    let startDate = this.state.dateQuery[0];
+    let endDate = this.state.dateQuery[1]; 
+    let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+    axios.post('/calendar/events', {
+       startDate: startDate,
+       endDate: endDate,
+       calendar: currentCalendar
+     }).then(response => {
+       console.log(response.data);
+     }).catch(err => {
+       console.log('backend cal err on db send - '+err);
+     });
    }
 
    handleCountryCodeChange(event) {
