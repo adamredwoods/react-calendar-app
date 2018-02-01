@@ -29,7 +29,7 @@ class MonthHeader extends Component {
          }
       }
       newDate = (y+"-"+m+"-"+this.props.viewDate.date("DD")).date();
-      this.props.onClickDay(newDate);
+      this.props.clickChangeDay(newDate);
    }
 
   render() {

@@ -9,8 +9,8 @@ class Month extends Component {
     render(){
         return (
             <div className="month-container">
-                <MonthHeader viewDate={this.props.viewDate} onClickDay={this.clickChangeDay}/>
-                <DaysOfMonth currentDate={this.props.currentDate} viewDate={this.props.viewDate} onClickDay={this.props.onClickDay}/>
+                <MonthHeader viewDate={this.props.viewDate} clickChangeDay={this.props.clickChangeDay}/>
+                <DaysOfMonth currentDate={this.props.currentDate} viewDate={this.props.viewDate} onClickDay={this.props.clickChangeDay}/>
             </div>
         );
     }
