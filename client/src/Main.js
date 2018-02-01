@@ -158,11 +158,11 @@ class Main extends Component {
                <div className="main-page">
                   <Row nogutter>
                      <Col sm={8}>
-                        <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
+                        <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendar}/>
                      </Col>
 
                      <Col sm={4}>
-                        <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate}/>
+                        <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar}/>
                      </Col>
                   </Row>
                   <Hidden xs sm>
