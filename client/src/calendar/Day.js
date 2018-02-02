@@ -10,30 +10,45 @@ class Day extends Component {
       }
    }
 
-   getEvents(date, calendar) {
-      var arr=[];
+   getDayEvents(date, calendar) {
+      var arr = [], j=0;
+      //console.log(calendar);
+      if (!calendar) return arr;
 
-      if(!date) return arr;
+      for(let i=0; i<calendar[0].events.length; i++) {
+        let day = 0
+        if(calendar[0].events[i].startDate) day = calendar[0].events[i].startDate.date('MM-DD');
 
-      var currDate = date.date("YYYY-MM-DD");
-
-      if (!calendar || !calendar.events) return arr;
-
-      for(let i=0; i<calendar.events.length; i++) {
-         if(calendar.events[i].startDate.date("YYYY-MM-DD")=== currDate) {
-            arr.push(calendar.events[i]);
-
-         }
+        if (day === date.date('MM-DD')) {
+           arr[j] = (calendar[0].events[i]);
+           j++;
+        }
       }
+
+      //TODO: sort by time HH:MM 24-hr system
+
+      return arr;
    }
 
     render(){
       //parse through props.viewDate to match what is in the props.calendar
-      var arr = this.getEvents(this.props.viewDate, this.props.calendar);
-      //console.log(arr);
+      var arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
+
+      const list = arr.map((eventObj) => (
+         <div>
+           <h2>{eventObj.name}</h2>
+           <div>
+              <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>
+              <h4>{eventObj.startDate.date("HH:MM")}</h4>
+           </div>
+        </div>
+     ));
+
+
+      console.log(arr);
         return(
             <div className="day-container">
-                <h1>{arr}</h1>
+                {list}
             </div>
         );
     }
