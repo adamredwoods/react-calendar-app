@@ -229,7 +229,9 @@ router.post('/one', function(req,res,next){
                         events: {
                             name: name,
                             startDate: startDate,
+                            startTime: startTime,
                             endDate: endDate,
+                            endTime: endTime,
                             priority: priority,
                             icon: name,
                             eventTypeId: eventType
@@ -248,7 +250,9 @@ router.post('/one', function(req,res,next){
                         events: {
                             name: name,
                             startDate: startDate,
+                            startTime: startTime,
                             endDate: endDate,
+                            endTime: endTime,
                             priority: priority,
                             icon: holiName,
                             eventTypeId: eventType
