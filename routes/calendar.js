@@ -10,6 +10,7 @@ var mongoose = require("mongoose");
 var User = require("../models/user");
 var Calendar = require('../models/calendar').Calendar;
 var CalEvent = require('../models/calendar').CalEvent;
+var Mongoose = require("mongoose");
 require('date-format-lite');
 
 router.post('/', function(req, res, next){
@@ -133,7 +134,7 @@ router.post('/edit', function(req,res,next){
 //                 "$filter": {
 //                     "input": "$translation",
 //                     "as": "page",
-//                     "cond": { 
+//                     "cond": {
 //                         "$eq": ["$$page.lang_key", lang]
 //                     }
 //                 }
@@ -166,7 +167,7 @@ router.post('/events', function(req,res,next){
 //     $project: {events: {
 //         $filter: {
 //             input: "$events",
-//             as: "event", 
+//             as: "event",
 //             cond: {
 //                 $and: [{
 //                     $gte: ["$$event.startDate",1517472000000]
@@ -177,22 +178,30 @@ router.post('/events', function(req,res,next){
 //          }
 //     }}
 // ]
-    const aggregate = Calendar.aggregate([
-        {$match: {_id: req.body.calendar._id}},
-        {
-            "$unwind": "$events"},
-            {"$match":{"events.startDate":{$gte: start}}}
-        ]);
-        console.log(aggregate);
-    //     ,function(err,events){
-    //     if(err){
-    //         console.log(err);
-    //     }
-    //     if (events) {
-    //       console.log(events);
-    //     }
+    Calendar.aggregate([
+        {$match: {_id: Mongoose.Types.ObjectId(req.body.calendar._id)}},
+        {$unwind: "$events"},
+		  {"$match":{"events.startDate":{$gte: start, $lte: end}}}
+	  ], function(err, events) {
+			  if(err){
+		         console.log(err);
+		     }
+		     if (events) {
+		       console.log(events);
+				 res.json({events: events});
+		     }
+		  });
 
-    //     res.json({events: events});
+	// Calendar.aggregate({$match: {_id: Mongoose.Types.ObjectId(req.body.calendar._id)}}, function(err, result) {
+	// 		 if(err){
+	// 			  console.log(err);
+	// 		 }
+	// 		 if (result) {
+	// 			console.log(result);
+	// 		 }
+	// 	 });
+
+
     // });
 });
 
