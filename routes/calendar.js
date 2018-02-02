@@ -163,6 +163,7 @@ router.post('/one', function(req,res,next){
             let endDate = Number(req.body.endDate.date('U'));
             let endTime = req.body.endTime;
             let eventType = req.body.eventType;
+            let priority = req.body.priority;
             if(calendar.events){
                 Calendar.update({ _id: calendar._id },
                     { $push: {
@@ -170,7 +171,7 @@ router.post('/one', function(req,res,next){
                             name: name,
                             startDate: startDate,
                             endDate: endDate,
-                            priority: 1,
+                            priority: priority,
                             icon: name,
                             eventTypeId: eventType
                         }
@@ -179,6 +180,7 @@ router.post('/one', function(req,res,next){
                         if(err){
                             console.log(err);
                         }
+                        res.json({event: newEvent});
                     }
                 );
             }else{
@@ -188,7 +190,7 @@ router.post('/one', function(req,res,next){
                             name: name,
                             startDate: startDate,
                             endDate: endDate,
-                            priority: 1,
+                            priority: priority,
                             icon: holiName,
                             eventTypeId: eventType
                         }
@@ -198,20 +200,26 @@ router.post('/one', function(req,res,next){
                             console.log(err);
                             console.log('we don know');
                         }
+                        res.json({event: newEvent});
                     }
                 );
             }
-        }).then(function(updatedCalendar){
-            // console.log('hi from the new cal');
-            // console.log(updatedCalendar);
-            Calendar.findOne({_id: updatedCalendar._id}, function(err,calendar){
-                if(err){
-                    console.log(err);
-                    console.log('error in the second cal db call');
-                }
-                res.json({calendar: calendar});
-            });
-        });
+        })
+        // .then(function(err,updatedCalendar){
+        //     if(err){
+        //         console.log(err);
+        //     }
+        //     console.log('hi from the new cal');
+        //     console.log(updatedCalendar);
+        //     res.json({calendar: updatedCalendar});
+            // Calendar.findOne({_id: updatedCalendar._id}, function(err,calendar){
+            //     if(err){
+            //         console.log(err);
+            //         console.log('error in the second cal db call');
+            //     }
+            //     res.json({calendar: calendar});
+            // });
+        // });
 	});
 });
 

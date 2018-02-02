@@ -15,7 +15,7 @@ function makeNewCalendar(user, callback) {
    Calendar.create({
      name: 'My Calendar',
      userId: user._id,
-     eventTypes: [{eventTypeId: 0, name: 'Holiday'}],
+     eventTypes: [{eventTypeId: 0, name: 'Holiday'},{eventTypeId: 1, name: 'Meeting'},{eventTypeId: 2,name: 'Work'},{eventTypeId:3, name:'Appointment'},{eventTypeId: 4, name: 'Birthday'}],
      people: [{
        userId: user._id,
        permission: 'edit'
