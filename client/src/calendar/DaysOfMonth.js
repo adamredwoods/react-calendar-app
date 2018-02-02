@@ -158,7 +158,7 @@ class DaysOfMonth extends Component {
    }
 
    render() {
-      console.log(this.props.calendar);
+      //console.log(this.props.calendar);
       //-- find out first day of week and start loop there
       return (
          <div>
