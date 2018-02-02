@@ -27,7 +27,9 @@ router.post('/', function(req, res, next){
                 holidays.map((holiday) => {
                     let holiName = holiday.name;
                     let holiStart = Number(holiday.start.date('U'));
+                    let startTime = holiday.start.date("HH:MM");
                     let holiEnd = Number(holiday.end.date('U'));
+                    let endTime = holiday.end.date("HH:MM");
                     console.log('start', holiStart, typeof holiStart);
                     let holiType = holiday.type
                     if(calendar.events){
@@ -36,7 +38,9 @@ router.post('/', function(req, res, next){
                                 events: {
                                     name: holiName,
                                     startDate: holiStart,
+                                    startTime: startTime,
                                     endDate: holiEnd,
+                                    endTime: endTime,
                                     priority: 0,
                                     icon: holiName,
                                     eventTypeId: 0
@@ -53,7 +57,9 @@ router.post('/', function(req, res, next){
                                 events: {
                                     name: holiName,
                                     startDate: holiStart,
+                                    startTime: startTime,
                                     endDate: holiEnd,
+                                    endTime: endTime,
                                     priority: 0,
                                     icon: holiName,
                                     eventTypeId: 0
