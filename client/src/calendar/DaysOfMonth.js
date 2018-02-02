@@ -7,15 +7,23 @@ const daysInMonth = [
            [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
            [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]];
 
+
+
 //TODO: mondayIsFIrst is user defined
 var mondayIsFirst = true;
+
+var starSvg, circleSvg;
 
 class SingleDay extends Component {
 
    render() {
 
+
+      const circleSvg = <span className="circle-svg"><svg className="circle-svg" xmlns="http://www.w3.org/2000/svg"><circle cx='5' cy='5' r='5'></circle></svg></span>;
+
       let addClass = "days-card";
-      let events = <div></div>;
+      let events = [];
+      let svg = 0;
 
       if (this.props.today) addClass=addClass+" day-current";
       if (this.props.selected) addClass=addClass+" day-selected";
@@ -23,7 +31,9 @@ class SingleDay extends Component {
          for (let i=0; i<this.props.events.length; i++) {
             //console.log(this.props.events[i].startDate.date("YYYY-MM"),"   ",this.props.yearMonth);
             if(this.props.events[i].startDate.date("YYYY-MM")===this.props.yearMonth) {
-               events = <div className="days-event">!</div>;
+               svg = circleSvg;
+               if(this.props.events[i].eventTypeId===0) svg = <img src="icon-star.svg" width="10" height="10"/>;
+               events.push(svg);
             }
          }
       }
@@ -31,7 +41,7 @@ class SingleDay extends Component {
       return (
          <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
             <div className="days-num">{this.props.dayNum}</div>
-            {events}
+            <div className="days-event">{events}</div>
          </div>
       )
    }
