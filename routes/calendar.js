@@ -118,32 +118,82 @@ router.post('/edit', function(req,res,next){
         });
     });
 });
-
+// Model.aggregate([{
+//         $lookup: {
+//             from: 'translations',
+//             localField: '_id',
+//             foreignField: 'item_id',
+//             as: 'translation'
+//         },
+//     }, {
+//         $project: {
+//             "label": "$label",
+//             "items": "$items",
+//             "translation": {
+//                 "$filter": {
+//                     "input": "$translation",
+//                     "as": "page",
+//                     "cond": { 
+//                         "$eq": ["$$page.lang_key", lang]
+//                     }
+//                 }
+//             }
+//         }
+//     }])
+// db.transactions.aggregate([
+//   {
+//     $match: {
+//       transactionDate: {
+//         $gte: ISODate("2017-01-01T00:00:00.000Z"),
+//         $lt: ISODate("2017-01-31T23:59:59.000Z")
+//       }
+//     }
+//   },
+//   {
+//     $group: {
+//       _id: null,
+//       total: {
+//         $sum: "$amount"
+//       }
+//     }
+//   }
+// ]);
 router.post('/events', function(req,res,next){
-    console.log(req.body.startDate);
-    console.log(req.body.endDate);
     console.log(req.body.calendar._id);
-    console.log(req.body.user.id);
     var start = Number(req.body.startDate.date('U'));
     var end = Number(req.body.endDate.date('U'));
-    console.log(start, typeof start);
-    console.log(end);
-    Calendar.find({
-        _id: req.body.calendar._id},
-	  {events: {$elemMatch: {"startDate": {
-            $gte: start,
-            $lte: end
-        }}}}
-    , function(err,events){
-        if(err){
-            console.log(err);
-        }
-        if (events) {
-          console.log(events);
-        }
+//     mongoose.connection.db.collection('calendars').aggregate([{$match: {"_id": "5a739665d178e672483d43ae"}},{
+//     $project: {events: {
+//         $filter: {
+//             input: "$events",
+//             as: "event", 
+//             cond: {
+//                 $and: [{
+//                     $gte: ["$$event.startDate",1517472000000]
+//                     },{
+//                     $lte: ["$$event.startDate",1520064000000]
+//                  }]
+//             }}
+//          }
+//     }}
+// ]
+    const aggregate = Calendar.aggregate([
+        {$match: {_id: req.body.calendar._id}},
+        {
+            "$unwind": "$events"},
+            {"$match":{"events.startDate":{$gte: start}}}
+        ]);
+        console.log(aggregate);
+    //     ,function(err,events){
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     if (events) {
+    //       console.log(events);
+    //     }
 
-        res.json({events: events});
-    });
+    //     res.json({events: events});
+    // });
 });
 
 router.post('/one', function(req,res,next){
