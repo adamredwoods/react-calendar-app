@@ -89,18 +89,12 @@ class DaysOfMonth extends Component {
 
    sortEventsToArray(calendar) {
       var arr = [];
-
-      for(let i=0; i<calendar.events.length; i++) {
-         if(calendar.events[i].length>0) {
-            for(let j=0; j<calendar.events[i].events.length; j++) {
-               let day = 0;
-               console.log("sortEvents ",calendar.events[i].events[j]);
-               if(calendar.events[i].events[j].startDate) day = parseInt(calendar.events[i].events[j].startDate.date("DD"));
-               if(!arr[day]) arr[day]=[];
-               arr[day].push(calendar.events[i].events[j]);
-            }
-
-         }
+    console.log(calendar);
+      for(let i=0; i<calendar[0].events.length; i++) {
+        let day = 0
+        if(calendar[0].events[i].startDate) day = parseInt(calendar[0].events[i].startDate.date('DD'));
+        if(!arr[day])arr[day]=[];
+        arr[day].push(calendar[0].events[i]);
       }
 
       return arr;

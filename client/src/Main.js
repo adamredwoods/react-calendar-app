@@ -33,12 +33,21 @@ class Main extends Component {
         currentYear: '2018',
         currentYearHolidays: [],
         dateQuery: ['2018-01-01', '2018-02-18'],
-        calendar: null
+        calendar: null,
+        eventName: '',
+        eStartDate: '',
+        eStartTime: '',
+        eEndDate: '',
+        eEndTime: '',
+        eventType: '3',
+        fullCalendar: null
       }
       this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
+      this.handleAddEventChange = this.handleAddEventChange.bind(this);
+      this.handleTypeChange = this.handleTypeChange.bind(this);
    }
 
    componentDidMount() {
@@ -66,13 +75,25 @@ class Main extends Component {
        console.log('backend cal err on db send - '+err);
      });
    }
+   handleEventNameChange = (event) => {
+     this.setState({eventName: event.target.value});
+   }
+   handleAddEventChange = (event) => {
+    //  let stateChange =  event.target.name;
+     console.log(event.target.value);
+    this.setState({ [event.target.name]: event.target.value});
+   }
+
+   handleTypeChange = (event) => {
+     this.setState({eventType: event.target.value})
+   }
 
    clickChangeDay = (newDate) => {
       console.log("..click: change date",newDate);
       this.setState({viewDate: newDate});
    }
 
-   handleCountryCodeChange(event) {
+   handleCountryCodeChange = (event) => {
         this.setState({countryCode: event.target.value}, () => {
             let holidays = new Holidays(this.state.countryCode);
             let allHolidays = holidays.getHolidays(this.state.currentYear);
@@ -106,9 +127,37 @@ class Main extends Component {
             calendar: currentCalendar
         }).then(response => {
             localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
+            base.setState({ fullCalendar: response.data.calendar});
+            base.getAllEvents([
+              new Date.format("YYYY-MM") + "-01",
+              new Date.format("YYYY-MM") + "-31"
+            ]);
         }).catch(err => {
             console.log('backend error we hope', err);
         });
+    }
+
+    addEvent = (event) => {
+      event.preventDefault();
+      let name = this.state.eventName;
+      let base = this;
+      let startDate = this.state.eStartDate;
+      let startTime = this.state.eStartTime;
+      let endDate = this.state.eEndDate;
+      let endTime = this.state.eEndTime;
+      let eventType = this.state.eventType;
+      axios.post('/calendar/one',{
+        name: name,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        eventType: eventType
+      }).then(response => {
+        console.log(response.data);
+      }).catch(err => {
+        console.log('backend err w add event', err);
+      });
     }
 
     editCal = (event) => {
@@ -140,7 +189,7 @@ class Main extends Component {
       if(this.props.user){
          if(action==2) {
             mainCal = (
-               <AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction}/>
+               <AddEvent handleEventNameChange={(event) => this.handleEventNameChange(event)} viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} handleChange={(event) => this.handleAddEventChange(event)} name={this.state.eventName} startDate={this.state.eStartDate} startTime={this.state.eStartTime} endDate={this.state.eEndDate} endTime={this.state.eEndTime} eventType={this.state.eventType} handleTypeChange={(event)=>this.handleTypeChange(event)} />
             )
          } else if(action==4){
           mainCal = (

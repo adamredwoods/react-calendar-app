@@ -18,7 +18,26 @@ class AddEvent extends Component {
        let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
       return(
          <div>
-            <div>EVENT ADD</div>
+            <form name="Add Event" onSubmit={this.props.addEvent} >
+                <h3>Event Name</h3>
+                <input type="text" name="name" onChange={this.props.handleChange} value={this.props.name}/>
+                <h4>Start Date</h4>
+                <input type="date" name="eStartDate" onChange={this.props.handleChange} value={this.props.startDate} />
+                <h5>Start Time</h5>
+                <input type="time" name="eStartTime" onChange={this.props.handleChange} value={this.props.startTime} />
+                <h4>End Date</h4>
+                <input type="date" name="eEndDate" onChange={this.props.handleChange} value={this.props.endDate} />
+                <h5>End Time</h5>
+                <input type="time" name="eEndTime" onChange={this.props.handleChange} value={this.props.endTime} />
+                <select value={this.props.eventType} onChange={this.props.handleTypeChange} name="Event Type">
+                    <option value="1">Meeting</option>
+                    <option value="2">Work</option>
+                    <option value="3">Appointment</option>
+                    <option value="4">Birthday</option>
+                    <option value="0">Holiday</option>
+                </select>
+                <input type="submit" value="Add Event" />
+            </form>
             <div onClick={this.onClickCancel}>cancel</div>
          </div>
       );
@@ -32,7 +51,7 @@ class AddHoliday extends Component {
     render(){
         let countries = {};
         countries = hd.getCountries();
-        var defaultOption = <option value="US" selected>Select a Country</option>;
+        var defaultOption = <option selected>Select a Country</option>;
         var firstOption = <option value="US">United States of America</option>;
         var countryOptions = [defaultOption, firstOption];
         for(var country in countries){

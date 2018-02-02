@@ -146,4 +146,8 @@ router.post('/events', function(req,res,next){
     });
 });
 
+router.post('/one', function(req,res,next){
+    console.log(req.body);
+});
+
 module.exports = router;
