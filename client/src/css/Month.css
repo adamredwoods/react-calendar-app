@@ -22,6 +22,7 @@
    border:0.5px solid #fff;
    padding: 30%;
    cursor: pointer;
+   position: relative;
 }
 .days-card:hover {
    color: #999;
@@ -35,6 +36,9 @@
 
 .days-event {
    display:inline-block;
+   position: absolute;
+   top: 50px;
+   left: 50px;
 }
 
 .day-current {

@@ -89,12 +89,14 @@ class DaysOfMonth extends Component {
 
    sortEventsToArray(calendar) {
       var arr = [];
-      //console.log(calendar);
-      for(let i=0; i<calendar[0].events.length; i++) {
+      console.log(calendar);
+      if(!calendar) return arr;
+
+      for(let i=0; i<calendar.length; i++) {
         let day = 0
-        if(calendar[0].events[i].startDate) day = parseInt(calendar[0].events[i].startDate.date('DD'));
+        if(calendar[i].events.startDate) day = parseInt(calendar[i].events.startDate.date('DD'));
         if(!arr[day])arr[day]=[];
-        arr[day].push(calendar[0].events[i]);
+        arr[day].push(calendar[i].events);
       }
 
       return arr;
@@ -108,9 +110,9 @@ class DaysOfMonth extends Component {
 
       let eventsArray = [];
 
-      if (Array.isArray(this.props.calendar) && this.props.calendar.length>0) {
+      //if (Array.isArray(this.props.calendar) && this.props.calendar.length>0) {
          eventsArray = this.sortEventsToArray(this.props.calendar);
-      }
+      //}
 
       //leap year
       let year = parseInt(date.date("YYYY"));

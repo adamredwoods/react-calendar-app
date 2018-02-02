@@ -15,12 +15,12 @@ class Day extends Component {
       //console.log(calendar);
       if (!calendar) return arr;
 
-      for(let i=0; i<calendar[0].events.length; i++) {
+      for(let i=0; i<calendar.length; i++) {
         let day = 0
-        if(calendar[0].events[i].startDate) day = calendar[0].events[i].startDate.date('MM-DD');
+        if(calendar[i].events) day = calendar[i].events.startDate.date('MM-DD');
 
         if (day === date.date('MM-DD')) {
-           arr[j] = (calendar[0].events[i]);
+           arr[j] = (calendar[i].events);
            j++;
         }
       }
@@ -39,7 +39,7 @@ class Day extends Component {
            <h2>{eventObj.name}</h2>
            <div>
               <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>
-              <h4>{eventObj.startDate.date("HH:MM")}</h4>
+              <h4>{eventObj.startTime}</h4>
            </div>
         </div>
      ));
