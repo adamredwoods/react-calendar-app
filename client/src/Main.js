@@ -46,7 +46,7 @@ class Main extends Component {
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
-      this.handleAddEventChange = this.handleAddEventChange.bind(this);
+      //this.handleAddEventChange = this.handleAddEventChange.bind(this);
       this.handleTypeChange = this.handleTypeChange.bind(this);
    }
 
@@ -80,8 +80,10 @@ class Main extends Component {
    }
    handleAddEventChange = (event) => {
     //  let stateChange =  event.target.name;
-     console.log(event.target.value);
-    this.setState({ [event.target.name]: event.target.value});
+     console.log(event.target.name);
+     var en=event.target.name;
+     var et=event.target.value;
+    this.setState({ [en]: et});
    }
 
    handleTypeChange = (event) => {
@@ -185,11 +187,11 @@ class Main extends Component {
       let mainCal = <div />
       let action = this.props.eventAction; //--could be a string or number
 
-      console.log(this.props.calendar);
+      //console.log(this.props.calendar);
       if(this.props.user){
          if(action==2) {
             mainCal = (
-               <AddEvent handleEventNameChange={(event) => this.handleEventNameChange(event)} viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} handleChange={(event) => this.handleAddEventChange(event)} name={this.state.eventName} startDate={this.state.eStartDate} startTime={this.state.eStartTime} endDate={this.state.eEndDate} endTime={this.state.eEndTime} eventType={this.state.eventType} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+               <AddEvent handleEventNameChange={(event) => this.handleEventNameChange(event)} viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} handleChange={this.handleAddEventChange} name={this.state.eventName} startDate={this.state.eStartDate} startTime={this.state.eStartTime} endDate={this.state.eEndDate} endTime={this.state.eEndTime} eventType={this.state.eventType} handleTypeChange={(event)=>this.handleTypeChange(event)} />
             )
          } else if(action==4){
           mainCal = (

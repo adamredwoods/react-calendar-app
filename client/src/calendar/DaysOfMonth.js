@@ -89,7 +89,7 @@ class DaysOfMonth extends Component {
 
    sortEventsToArray(calendar) {
       var arr = [];
-    console.log(calendar);
+      //console.log(calendar);
       for(let i=0; i<calendar[0].events.length; i++) {
         let day = 0
         if(calendar[0].events[i].startDate) day = parseInt(calendar[0].events[i].startDate.date('DD'));

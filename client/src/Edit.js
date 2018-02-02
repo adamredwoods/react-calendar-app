@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './css/Event.css';
+import "./css/ButtonsAndMore.css";
 import Month from './calendar/Month.js';
 import Week from './calendar/Week.js';
 import Day from './calendar/Day.js';
@@ -17,10 +18,10 @@ class AddEvent extends Component {
    render() {
        let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
       return(
-         <div>
-            <form name="Add Event" onSubmit={this.props.addEvent} >
+         <div className="nice-form-div">
+            <form className="nice-form" name="Add Event" onSubmit={this.props.addEvent} >
                 <h3>Event Name</h3>
-                <input type="text" name="name" onChange={this.props.handleChange} value={this.props.name}/>
+                <input type="text" name="eventName" onChange={this.props.handleChange} value={this.props.name}/>
                 <h4>Start Date</h4>
                 <input type="date" name="eStartDate" onChange={this.props.handleChange} value={this.props.startDate} />
                 <h5>Start Time</h5>
@@ -36,9 +37,9 @@ class AddEvent extends Component {
                     <option value="4">Birthday</option>
                     <option value="0">Holiday</option>
                 </select>
-                <input type="submit" value="Add Event" />
+                <div className="margin-top-50"><input type="submit" value="Add Event" /></div>
             </form>
-            <div onClick={this.onClickCancel}>cancel</div>
+            <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
          </div>
       );
    }

@@ -9,6 +9,16 @@
 	display:inline-block;
 	text-align:center;
 	background-color:#DDDDDD;
+	cursor: pointer;
+}
+
+.btn.outline{
+	background-color: rgba(255,0,0,0);
+	border: 1px solid #333;
+}
+
+.btn.outline:hover{
+	background-color: rgba(200,200,200,30);
 }
 
 .btn.red{
@@ -114,4 +124,61 @@
 .btn-group .btn + .btn{
 	border-left: 1px solid rgba(0, 0, 0, .1);
 	margin-left:-1px;
+}
+
+
+/* FORMS ---------------------------------------- */
+.nice-form-div {
+	width: 50%;
+	margin: 0 auto;
+	text-align: left;
+}
+.nice-form input[type=submit],
+.nice-form button[type=submit] {
+	background-color: #00C5BE;
+	color: #fff;
+	font-size: 0.8rem;
+	padding: 10px 50px;
+	text-transform: uppercase;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+.nice-form input[type=time],
+.nice-form input[type=date],
+.nice-form input[type=text] {
+	padding: 0.4rem 2rem;
+	font-size: 1.1rem;
+	border: 1px solid #ddd;
+	box-sizing: border-box;
+	width: 40%;
+}
+.nice-form input[type=text]:focus {
+    border: 3px solid #555;
+	 outline:none;
+}
+
+.nice-form select {
+	border: none;
+	background-color: #ccc;
+	padding: 0.4rem 2rem;
+	font-size: 1.1rem;
+	margin: 1px 10px;
+}
+
+/* MARGINS --------------------------------------- */
+.margin-10 {
+	margin: 10px;
+}
+
+.margin-30 {
+	margin: 30px;
+}
+
+.margin-top-30 {
+	margin-top: 30px;
+}
+
+.margin-top-50 {
+	margin-top: 50px;
 }

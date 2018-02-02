@@ -147,6 +147,7 @@ router.post('/events', function(req,res,next){
 });
 
 router.post('/one', function(req,res,next){
+	console.log("/one");
     console.log(req.body);
 });
 
