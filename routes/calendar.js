@@ -30,34 +30,34 @@ router.post('/', function(req, res, next){
                     console.log('start', holiStart, typeof holiStart);
                     let holiType = holiday.type
                     if(calendar.events){
-                        Calendar.update({ _id: calendar._id }, 
-                            { $push: { 
-                                events: { 
-                                    name: holiName, 
-                                    startDate: holiStart, 
-                                    endDate: holiEnd, 
-                                    priority: 0, 
-                                    icon: holiName, 
-                                    eventTypeId: 0 
+                        Calendar.update({ _id: calendar._id },
+                            { $push: {
+                                events: {
+                                    name: holiName,
+                                    startDate: holiStart,
+                                    endDate: holiEnd,
+                                    priority: 0,
+                                    icon: holiName,
+                                    eventTypeId: 0
                                 }
-                            } 
+                            }
                         }, function(err, newEvent){
                             if(err){
                                 console.log(err);
                             }
                         });
                     }else{
-                        Calendar.update({ _id: calendar_id }, 
-                            { $addToSet: { 
-                                events: { 
-                                    name: holiName, 
-                                    startDate: holiStart, 
-                                    endDate: holiEnd, 
-                                    priority: 0, 
-                                    icon: holiName, 
-                                    eventTypeId: 0 
-                                } 
-                            } 
+                        Calendar.update({ _id: calendar_id },
+                            { $addToSet: {
+                                events: {
+                                    name: holiName,
+                                    startDate: holiStart,
+                                    endDate: holiEnd,
+                                    priority: 0,
+                                    icon: holiName,
+                                    eventTypeId: 0
+                                }
+                            }
                         }, function(err, newEvent){
                             if(err){
                                 console.log(err);
@@ -129,18 +129,19 @@ router.post('/events', function(req,res,next){
     console.log(start, typeof start);
     console.log(end);
     Calendar.find({
-        _id: req.body.calendar._id},{events: {$elemMatch: {"startDate": {
+        _id: req.body.calendar._id},
+	  {events: {$elemMatch: {"startDate": {
             $gte: start,
             $lte: end
-        }}},
-    }, function(err,events){
+        }}}}
+    , function(err,events){
         if(err){
             console.log(err);
         }
         if (events) {
           console.log(events);
         }
-        
+
         res.json({events: events});
     });
 });

@@ -10,7 +10,7 @@ class Month extends Component {
         return (
             <div className="month-container">
                 <MonthHeader viewDate={this.props.viewDate} clickChangeDay={this.props.clickChangeDay}/>
-                <DaysOfMonth currentDate={this.props.currentDate} viewDate={this.props.viewDate} onClickDay={this.props.clickChangeDay}/>
+                <DaysOfMonth currentDate={this.props.currentDate} viewDate={this.props.viewDate} onClickDay={this.props.clickChangeDay} calendar={this.props.calendar}/>
             </div>
         );
     }

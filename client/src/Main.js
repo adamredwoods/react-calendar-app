@@ -53,6 +53,7 @@ class Main extends Component {
     let endDate = dateQuery[1];
     let currentUser = this.props.user;
     let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
+    let base = this;
     axios.post('/calendar/events', {
        startDate: startDate,
        endDate: endDate,
@@ -60,7 +61,7 @@ class Main extends Component {
        user: currentUser
      }).then(response => {
        console.log(response.data);
-       this.setState({calendar: response.data.calendar});
+       base.setState({calendar: response.data.events});
      }).catch(err => {
        console.log('backend cal err on db send - '+err);
      });

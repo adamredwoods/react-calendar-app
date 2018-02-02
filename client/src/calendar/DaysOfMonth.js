@@ -12,18 +12,26 @@ var mondayIsFirst = true;
 
 class SingleDay extends Component {
 
-
-
    render() {
 
       let addClass = "days-card";
+      let events = <div></div>;
 
       if (this.props.today) addClass=addClass+" day-current";
       if (this.props.selected) addClass=addClass+" day-selected";
+      if (this.props.events && this.props.events.length>0) {
+         for (let i=0; i<this.props.events.length; i++) {
+            //console.log(this.props.events[i].startDate.date("YYYY-MM"),"   ",this.props.yearMonth);
+            if(this.props.events[i].startDate.date("YYYY-MM")===this.props.yearMonth) {
+               events = <div className="days-event">!</div>;
+            }
+         }
+      }
 
       return (
          <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
             <div className="days-num">{this.props.dayNum}</div>
+            {events}
          </div>
       )
    }
@@ -79,10 +87,35 @@ class DaysOfMonth extends Component {
       return i%7;
    }
 
+   sortEventsToArray(calendar) {
+      var arr = [];
+
+      for(let i=0; i<calendar.events.length; i++) {
+         if(calendar.events[i].length>0) {
+            for(let j=0; j<calendar.events[i].events.length; j++) {
+               let day = 0;
+               console.log("sortEvents ",calendar.events[i].events[j]);
+               if(calendar.events[i].events[j].startDate) day = parseInt(calendar.events[i].events[j].startDate.date("DD"));
+               if(!arr[day]) arr[day]=[];
+               arr[day].push(calendar.events[i].events[j]);
+            }
+
+         }
+      }
+
+      return arr;
+   }
+
    showDays = (date, currentDate) => {
 
       if (!date) {
          return <div></div>
+      }
+
+      let eventsArray = [];
+
+      if (Array.isArray(this.props.calendar) && this.props.calendar.length>0) {
+         eventsArray = this.sortEventsToArray(this.props.calendar);
       }
 
       //leap year
@@ -100,6 +133,7 @@ class DaysOfMonth extends Component {
       }
 
       let d=0, output=[];
+      let yearMonth = date.date("YYYY-MM"); //--used to filter events forn the big calendar list
 
       for(let k=0; k<5; k++) {
 
@@ -112,7 +146,7 @@ class DaysOfMonth extends Component {
                d++;
                let todayBoolean = (d===today) ? true : false;
                let selectBoolean = (d===selectedDay) ? true : false;
-               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} selected={selectBoolean} onClickDay={this.onClickDay}/></Col>);
+               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} selected={selectBoolean} events={eventsArray[d]} onClickDay={this.onClickDay} yearMonth={yearMonth}/></Col>);
             }
          }
          output.push(<Row>{row}</Row>);
@@ -130,7 +164,7 @@ class DaysOfMonth extends Component {
    }
 
    render() {
-
+      console.log(this.props.calendar);
       //-- find out first day of week and start loop there
       return (
          <div>
