@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 const eventSchema = new mongoose.Schema({
     name: String,
     eventTypeId: Number,
-    startDate: { type: Date, default: Date.now},
-    endDate: { type: Date, default: Date.now },
-    startTime: Date,
-    endTime: Date,
+    startDate: Number,
+    endDate: Number,
+    startTime: Number,
+    endTime: Number,
     repeating: Number,
     priority: { type: Number, default: 1},
     icon: String

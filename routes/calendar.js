@@ -10,6 +10,7 @@ var mongoose = require("mongoose");
 var User = require("../models/user");
 var Calendar = require('../models/calendar').Calendar;
 var CalEvent = require('../models/calendar').CalEvent;
+require('date-format-lite');
 
 router.post('/', function(req, res, next){
 	User.findOne({_id: req.body.user.id}, function(err, user) {
@@ -24,8 +25,9 @@ router.post('/', function(req, res, next){
                 let holidays = req.body.holidays;
                 holidays.map((holiday) => {
                     let holiName = holiday.name;
-                    let holiStart = holiday.start;
-                    let holiEnd = holiday.end;
+                    let holiStart = Number(holiday.start.date('U'));
+                    let holiEnd = Number(holiday.end.date('U'));
+                    console.log('start', holiStart, typeof holiStart);
                     let holiType = holiday.type
                     if(calendar.events){
                         Calendar.update({ _id: calendar._id }, 
@@ -122,15 +124,25 @@ router.post('/events', function(req,res,next){
     console.log(req.body.endDate);
     console.log(req.body.calendar._id);
     console.log(req.body.user.id);
+    var start = Number(req.body.startDate.date('U'));
+    var end = Number(req.body.endDate.date('U'));
+    console.log(start, typeof start);
+    console.log(end);
     Calendar.find({
-        _id: req.body.calendar._id,
-        "events.startDate": {$gt: req.body.startDate, $lt: req.body.endDate}
-    }, function(err,calendar){
+        _id: req.body.calendar._id},{events: {$elemMatch: {"startDate": {
+            $gte: start,
+            $lte: end
+        }}},
+    }, function(err,events){
         if(err){
             console.log(err);
         }
-        res.json({calendar:calendar});
-    })
+        if (events) {
+          console.log(events);
+        }
+        
+        res.json({events: events});
+    });
 });
 
 module.exports = router;
