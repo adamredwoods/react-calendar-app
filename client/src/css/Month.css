@@ -24,6 +24,7 @@
    cursor: pointer;
    position: relative;
 }
+
 .days-card:hover {
    color: #999;
 }
@@ -37,8 +38,10 @@
 .days-event {
    display:inline-block;
    position: absolute;
-   top: 50px;
-   left: 50px;
+   top: 75%;
+   width: 100%;
+   text-align: center;
+   left: -30%;
 }
 
 .day-current {
@@ -47,4 +50,9 @@
 
 .day-selected {
    border: 0.5px solid #9040b0;
+}
+
+.circle-svg {
+   width: 10px;
+   height: 10px;
 }
