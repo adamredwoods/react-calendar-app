@@ -40,6 +40,7 @@ class Main extends Component {
         eEndDate: '',
         eEndTime: '',
         eventType: '3',
+        eventPriority: '2',
         fullCalendar: null
       }
       this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
@@ -48,7 +49,8 @@ class Main extends Component {
       this.handleNameChange = this.handleNameChange.bind(this);
       //this.handleAddEventChange = this.handleAddEventChange.bind(this);
       this.handleTypeChange = this.handleTypeChange.bind(this);
-   }
+      this.handlePriorityChange = this.handlePriorityChange.bind(this);
+    }
 
    componentDidMount() {
       let date = new Date();
@@ -103,6 +105,10 @@ class Main extends Component {
         });
     }
 
+    handlePriorityChange = (event) => {
+      this.setState({eventPriority: event.target.value});
+    }
+
     handleNameChange = (event) => {
         this.setState({calName: event.target.value});
     }
@@ -143,6 +149,7 @@ class Main extends Component {
       event.preventDefault();
       let name = this.state.eventName;
       let base = this;
+      let priority = this.state.eventPriority;
       let startDate = this.state.eStartDate;
       let startTime = this.state.eStartTime;
       let endDate = this.state.eEndDate;
@@ -158,6 +165,7 @@ class Main extends Component {
         endTime: endTime,
         eventType: eventType,
         user: currentUser,
+        priority: priority,
         calendar: currentCalendar,
       }).then(response => {
         console.log(response.data);
@@ -195,7 +203,7 @@ class Main extends Component {
       if(this.props.user){
          if(action==2) {
             mainCal = (
-               <AddEvent handleEventNameChange={(event) => this.handleEventNameChange(event)} viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} handleChange={this.handleAddEventChange} name={this.state.eventName} startDate={this.state.eStartDate} startTime={this.state.eStartTime} endDate={this.state.eEndDate} endTime={this.state.eEndTime} eventType={this.state.eventType} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+               <AddEvent handlePriorityChange={(event)=>this.handlePriorityChange(event)} priority={this.state.eventPriority} handleEventNameChange={(event) => this.handleEventNameChange(event)} viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} handleChange={this.handleAddEventChange} name={this.state.eventName} startDate={this.state.eStartDate} startTime={this.state.eStartTime} endDate={this.state.eEndDate} endTime={this.state.eEndTime} eventType={this.state.eventType} handleTypeChange={(event)=>this.handleTypeChange(event)} />
             )
          } else if(action==4){
           mainCal = (
