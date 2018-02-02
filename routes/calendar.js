@@ -286,4 +286,14 @@ router.post('/one', function(req,res,next){
 	});
 });
 
+router.post('/event/delete',function(req,res,next){
+    console.log('delete');
+    console.log(req.body);
+});
+
+router.post('/calendar/edit/one',function(req,res,next){
+    console.log('edit');
+    console.log(req.body);
+});
+
 module.exports = router;

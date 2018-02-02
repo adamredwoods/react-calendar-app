@@ -87,6 +87,11 @@ class Main extends Component {
      var et=event.target.value;
     this.setState({ [en]: et});
    }
+   handleEditEventChange = (event) => {
+     var en = event.target.name;
+     var et = event.target.value;
+     this.setState({ [en]: et });
+   }
 
    handleTypeChange = (event) => {
      this.setState({eventType: event.target.value})
@@ -136,10 +141,11 @@ class Main extends Component {
         }).then(response => {
             localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
             base.setState({ fullCalendar: response.data.calendar});
-            base.getAllEvents([
-              new Date.format("YYYY-MM") + "-01",
-              new Date.format("YYYY-MM") + "-31"
-            ]);
+            // base.getAllEvents([
+            //   new Date.format("YYYY-MM") + "-01",
+            //   new Date.format("YYYY-MM") + "-31"
+            // ]);
+            base.props.onClickEventAction(0);
         }).catch(err => {
             console.log('backend error we hope', err);
         });
@@ -166,11 +172,58 @@ class Main extends Component {
         eventType: eventType,
         user: currentUser,
         priority: priority,
-        calendar: currentCalendar,
+        calendar: currentCalendar
       }).then(response => {
         console.log(response.data);
+        this.props.onClickEventAction(0);
       }).catch(err => {
         console.log('backend err w add event', err);
+      });
+    }
+
+    editEvent = (event) => {
+      event.preventDefault();
+      let name = this.state.eventName;
+      let base = this;
+      let priority = this.state.eventPriority;
+      let startDate = this.state.eStartDate;
+      let startTime = this.state.eStartTime;
+      let endDate = this.state.eEndDate;
+      let endTime = this.state.eEndTime;
+      let eventType = this.state.eventType;
+      let currentUser = this.props.user;
+      let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+      axios.post("/calendar/edit/one", {
+        name: name,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        eventType: eventType,
+        user: currentUser,
+        priority: priority,
+        calendar: currentCalendar
+      }).then(response =>{
+        console.log(response.data);
+        this.props.onClickEventAction(0);
+      }).catch(err=>{
+        console.log('backend error with edit',err);
+      });
+    }
+
+    handleDeleteEvent = (event) => {
+      event.preventDefault()
+      let base = this;
+      let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+      let deleteEvent = event.target.value;
+      axios.post('/calendar/event/delete',{
+        calendar: currentCalendar,
+        event: deleteEvent
+      }).then(response =>{
+        console.log(response);
+        this.props.onClickEventAction(0);
+      }).catch(err=>{
+        console.log('err deleting - ',err);
       });
     }
 
@@ -190,6 +243,7 @@ class Main extends Component {
             name: name
         }).then(response => {
             console.log(response.data);
+            this.props.onClickEventAction(0);
         }).catch(err => {
             console.log('backend error with change database and send', err);
         });
@@ -226,7 +280,7 @@ class Main extends Component {
                      </Col>
 
                      <Col sm={4}>
-                        <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar}/>
+                        <Day handleDelete={this.handleDelete} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
                      </Col>
                   </Row>
                   <Hidden xs sm>
