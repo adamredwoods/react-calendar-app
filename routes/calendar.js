@@ -149,6 +149,70 @@ router.post('/events', function(req,res,next){
 router.post('/one', function(req,res,next){
 	console.log("/one");
     console.log(req.body);
+    User.findOne({_id: req.body.user.id},function(err,user){
+        if(err){
+            console.log(err);
+        }
+        Calendar.findOne({_id: req.body.calendar._id, userId: req.body.user.id},function(err,calendar){
+            if(err){
+                console.log(err);
+            }
+            let name = req.body.name;
+            let startDate = Number(req.body.startDate.date('U'));
+            let startTime = req.body.startTime;
+            let endDate = Number(req.body.endDate.date('U'));
+            let endTime = req.body.endTime;
+            let eventType = req.body.eventType;
+            if(calendar.events){
+                Calendar.update({ _id: calendar._id },
+                    { $push: {
+                        events: {
+                            name: name,
+                            startDate: startDate,
+                            endDate: endDate,
+                            priority: 1,
+                            icon: name,
+                            eventTypeId: eventType
+                        }
+                    }
+                    }, function(err, newEvent){
+                        if(err){
+                            console.log(err);
+                        }
+                    }
+                );
+            }else{
+                Calendar.update({ _id: calendar_id },
+                    { $addToSet: {
+                        events: {
+                            name: name,
+                            startDate: startDate,
+                            endDate: endDate,
+                            priority: 1,
+                            icon: holiName,
+                            eventTypeId: eventType
+                        }
+                    }
+                    }, function(err, newEvent){
+                        if(err){
+                            console.log(err);
+                            console.log('we don know');
+                        }
+                    }
+                );
+            }
+        }).then(function(updatedCalendar){
+            // console.log('hi from the new cal');
+            // console.log(updatedCalendar);
+            Calendar.findOne({_id: updatedCalendar._id}, function(err,calendar){
+                if(err){
+                    console.log(err);
+                    console.log('error in the second cal db call');
+                }
+                res.json({calendar: calendar});
+            });
+        });
+	});
 });
 
 module.exports = router;

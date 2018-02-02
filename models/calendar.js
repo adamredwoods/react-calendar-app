@@ -6,8 +6,8 @@ const eventSchema = new mongoose.Schema({
     eventTypeId: Number,
     startDate: Number,
     endDate: Number,
-    startTime: Number,
-    endTime: Number,
+    startTime: String,
+    endTime: String,
     repeating: Number,
     priority: { type: Number, default: 1},
     icon: String

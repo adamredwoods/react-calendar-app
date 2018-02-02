@@ -148,13 +148,17 @@ class Main extends Component {
       let endDate = this.state.eEndDate;
       let endTime = this.state.eEndTime;
       let eventType = this.state.eventType;
+      let currentUser = this.props.user;
+      let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
       axios.post('/calendar/one',{
         name: name,
         startDate: startDate,
         startTime: startTime,
         endDate: endDate,
         endTime: endTime,
-        eventType: eventType
+        eventType: eventType,
+        user: currentUser,
+        calendar: currentCalendar,
       }).then(response => {
         console.log(response.data);
       }).catch(err => {
