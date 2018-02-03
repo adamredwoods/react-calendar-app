@@ -159,11 +159,13 @@
 }
 
 .nice-form select {
-	border: none;
-	background-color: #ccc;
-	padding: 0.4rem 2rem;
+	border: 1px solid #666;
+	border-radius: 0px;
+	background-color: #fff;
+	padding: 1.0rem 2rem;
 	font-size: 1.1rem;
-	margin: 1px 10px;
+	margin: 5px 10px 0 0;
+	width: 400px;
 }
 
 /* MARGINS --------------------------------------- */

@@ -120,9 +120,10 @@ class Main extends Component {
       console.log(eventObj);
       localStorage.setItem('currentEvent', JSON.stringify(eventObj))
       this.setState({eventToEdit: eventObj}, () => {
-        console.log(this.state.eventToEdit);
+        //console.log(this.state.eventToEdit);
+        //--********* This is a bug, we lose eventToEdit when this.props.onClickEventAction is called!!!!!
         this.props.onClickEventAction(5);
-      }); 
+      });
    }
 
    handleCountryCodeChange = (event) => {
@@ -278,9 +279,6 @@ class Main extends Component {
       let mainCal = <div />
       let action = this.props.eventAction; //--could be a string or number
 
-      console.log("magic ",this.state.eventToEdit);
-
-      //console.log(this.props.calendar);
       if(this.props.user){
          if(action==2) {
             mainCal = (
@@ -300,7 +298,7 @@ class Main extends Component {
           )
        }else if(action==5){
           mainCal = (
-          <EditEvent eventObj={this.state.eventToEdit} handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
+          <EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
           )
         }else{
             mainCal = (
