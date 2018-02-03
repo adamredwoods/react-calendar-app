@@ -43,7 +43,7 @@ class Day extends Component {
       const list = arr.map((eventObj) => (
          <div>
             <Row>
-               <Col xs={3}><div className="day-time">{eventObj.startTime}</div></Col>
+               <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
                <Col xs={9}><div className="day-title">{eventObj.name}</div></Col>
            </Row>
            <div>
