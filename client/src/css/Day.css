@@ -3,7 +3,9 @@
 }
 
 .day-card {
-
+   margin: 0;
+   padding: 0;
+   width: 100%;
 }
 
 .day-card:hover {
