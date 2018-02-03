@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Row, Col } from 'react-grid-system';
 import '../css/Day.css';
 
 class Day extends Component {
@@ -26,6 +27,11 @@ class Day extends Component {
       }
 
       //TODO: sort by time HH:MM 24-hr system
+      arr = arr.sort(function(a,b) {
+         if(a.startTime<b.startTime) return -1;
+         if(a.startTime>b.startTime) return 1;
+         return 0;
+      })
 
       return arr;
    }
@@ -36,16 +42,19 @@ class Day extends Component {
 
       const list = arr.map((eventObj) => (
          <div>
-           <h2>{eventObj.name}</h2>
+            <Row>
+               <Col xs={3}><div className="day-time">{eventObj.startTime}</div></Col>
+               <Col xs={9}><div className="day-title">{eventObj.name}</div></Col>
+           </Row>
            <div>
               <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>
-              <h4>{eventObj.startTime}</h4>
+
            </div>
         </div>
      ));
 
 
-      console.log(arr);
+      //console.log(arr);
         return(
             <div className="day-container">
                 {list}

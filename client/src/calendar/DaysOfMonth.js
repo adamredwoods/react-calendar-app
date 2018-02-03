@@ -99,7 +99,7 @@ class DaysOfMonth extends Component {
 
    sortEventsToArray(calendar) {
       var arr = [];
-      console.log(calendar);
+      //console.log(calendar);
       if(!calendar) return arr;
 
       for(let i=0; i<calendar.length; i++) {

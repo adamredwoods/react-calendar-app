@@ -56,3 +56,6 @@
    width: 10px;
    height: 10px;
 }
+.circle-svg svg {
+  fill: #999;
+}

@@ -53,7 +53,8 @@ class Main extends Component {
     }
 
    componentDidMount() {
-      let date = new Date();
+      let date = this.state.viewDate;
+      if(date ===null) date = new Date();
       this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
       this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"])
 
@@ -77,6 +78,7 @@ class Main extends Component {
        console.log('backend cal err on db send - '+err);
      });
    }
+
    handleEventNameChange = (event) => {
      this.setState({eventName: event.target.value});
    }
@@ -99,7 +101,14 @@ class Main extends Component {
 
    clickChangeDay = (newDate) => {
       console.log("..click: change date",newDate);
-      this.setState({viewDate: newDate});
+      //-- watch for race conditions
+      if (newDate.date("YYYY-MM")!==(this.state.viewDate.date("YYYY-MM"))) {
+            let ym = newDate.date("YYYY-MM");
+            this.getAllEvents([ ym+"-01", ym+"-31" ]);
+      }
+      this.setState({viewDate: newDate}, function(err, result) {
+
+      });
    }
 
    handleCountryCodeChange = (event) => {
