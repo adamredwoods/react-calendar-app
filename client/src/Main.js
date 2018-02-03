@@ -206,26 +206,28 @@ class Main extends Component {
 
     editEvent = (event) => {
       event.preventDefault();
-      let name = this.state.eventName;
-      let base = this;
-      let priority = this.state.eventPriority;
-      let startDate = this.state.eStartDate;
-      let startTime = this.state.eStartTime;
-      let endDate = this.state.eEndDate;
-      let endTime = this.state.eEndTime;
-      let eventType = this.state.eventType;
+      let currentEvent = JSON.parse(localStorage.getItem('currentEvent'));
+      // let name = this.state.eventName;
+      // let base = this;
+      // let priority = this.state.eventPriority;
+      // let startDate = this.state.eStartDate;
+      // let startTime = this.state.eStartTime;
+      // let endDate = this.state.eEndDate;
+      // let endTime = this.state.eEndTime;
+      // let eventType = this.state.eventType;
       let currentUser = this.props.user;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
       axios.post("/calendar/edit/one", {
-        name: name,
-        startDate: startDate,
-        startTime: startTime,
-        endDate: endDate,
-        endTime: endTime,
-        eventType: eventType,
+        // name: name,
+        currentEvent: currentEvent,
+        // startDate: startDate,
+        // startTime: startTime,
+        // endDate: endDate,
+        // endTime: endTime,
+        // eventType: eventType,
         user: currentUser,
-        priority: priority,
-        calendar: currentCalendar
+        // priority: priority,
+        calendarId: currentCalendar._id
       }).then(response =>{
         console.log(response.data);
         this.props.onClickEventAction(0);

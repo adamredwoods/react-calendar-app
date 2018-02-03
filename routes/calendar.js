@@ -207,34 +207,37 @@ router.post('/one', function(req,res,next){
 
 router.post("/edit/one", function(req, res, next) {
   console.log("delete");
-  let name = req.body.name;
-  let startDate = req.body.startDate;
-  console.log("is in year-month-day");
-  let startTime = req.body.startTime;
-  let endTime = req.body.endTime;
-  let endDate = req.body.endDate;
-  let eventType = req.body.eventType;
-  let priority = req.body.priority;
-  console.log("user - ", req.body.user.id);
-  console.log("cal id - ", req.body.calendar._id);
-  Calendar.findOne({ _id: req.body.calendar._id }, function(err, calendar) {
-    if (err) {
-      console.log(err);
-    }
-    if (calendar.people) {
-      for (let i = 0; i < people.length; i++) {
-        if (
-          people[i].userId == req.body.user.id &&
-          people[i].permission == "edit"
-        ) {
-          // Calendar.update({_id: req.body.calendar._id, events: {$elemMatch:{}}})
-          console.log("edit perms");
-        }
-      }
-    } else {
-      console.log("no edit perms");
-    }
-  });
+  console.log(req.body.event);
+//   let eventId = req.body.eventId;
+//   console.log(eventId);
+//   let name = req.body.name;
+//   let startDate = req.body.startDate;
+//   console.log("is in year-month-day");
+//   let startTime = req.body.startTime;
+//   let endTime = req.body.endTime;
+//   let endDate = req.body.endDate;
+//   let eventType = req.body.eventType;
+//   let priority = req.body.priority;
+//   console.log("user - ", req.body.user.id);
+//   console.log("cal id - ", req.body.calendarId);
+//   Calendar.findOne({ _id: req.body.calendarId }, function(err, calendar) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     if (calendar.people) {
+//       for (let i = 0; i < people.length; i++) {
+//         if (
+//           people[i].userId == req.body.user.id &&
+//           people[i].permission == "edit"
+//         ) {
+//           // Calendar.update({_id: req.body.calendar._id, events: {$elemMatch:{}}})
+//           console.log("edit perms");
+//         }
+//       }
+//     } else {
+//       console.log("no edit perms");
+//     }
+//   });
 });
 
 router.post('/event/delete',function(req,res,next){
