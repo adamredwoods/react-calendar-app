@@ -60,28 +60,31 @@ class EditEvent extends Component {
    }
 
    render() {
-       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+    let currentEvent = JSON.parse(localStorage.getItem('currentEvent'));  
+    let startDate = currentEvent.startDate.date('YYYY-MM-DD');
+    let endDate = currentEvent.endDate.date('YYYY-MM-DD');
+    //let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
       return(
          <div className="nice-form-div">
             <form name="Edit Event" className="nice-form" onSubmit={this.props.editEvent} >
                 <h3>Event Name</h3>
-                <input type="text" name="eventName" onChange={this.props.handleChange} value={this.props.name}/>
+                <input type="text" name="eventName" onChange={this.props.handleChange} value={currentEvent.name}/>
                 <h4>Start Date</h4>
-                <input type="date" name="eStartDate" onChange={this.props.handleChange} value={this.props.startDate} />
+                <input type="date" name="eStartDate" onChange={this.props.handleChange} value={startDate} />
                 <h5>Start Time</h5>
-                <input type="time" name="eStartTime" onChange={this.props.handleChange} value={this.props.startTime} />
+                <input type="time" name="eStartTime" onChange={this.props.handleChange} value={currentEvent.startTime} />
                 <h4>End Date</h4>
-                <input type="date" name="eEndDate" onChange={this.props.handleChange} value={this.props.endDate} />
+                <input type="date" name="eEndDate" onChange={this.props.handleChange} value={endDate} />
                 <h5>End Time</h5>
-                <input type="time" name="eEndTime" onChange={this.props.handleChange} value={this.props.endTime} />
-                <select value={this.props.eventType} onChange={this.props.handleTypeChange} name="Event Type">
+                <input type="time" name="eEndTime" onChange={this.props.handleChange} value={currentEvent.endTime} />
+                <select value={currentEvent.eventType} onChange={this.props.handleTypeChange} name="Event Type">
                     <option value="1">Meeting</option>
                     <option value="2">Work</option>
                     <option value="3">Appointment</option>
                     <option value="4">Birthday</option>
                     <option value="0">Holiday</option>
                 </select>
-                <select value={this.props.priority} onChange={this.props.handlePriorityChange} name="Event Priority">
+                <select value={currentEvent.priority} onChange={this.props.handlePriorityChange} name="Event Priority">
                     <option value="0">Lowest Priority</option>
                     <option value="1">Low Priority</option>
                     <option value="2">Medium Priority</option>
@@ -89,6 +92,10 @@ class EditEvent extends Component {
                     <option value="4">Highest Priority</option>
                 </select>
                 <div className="margin-top-50">
+                {console.log(currentEvent._id)}
+                {console.log('helllloooooo')}
+                {console.log(currentEvent)}
+                <input type="hidden" value={currentEvent._id} />
                 <input type="submit" value="Edit Event" />
                 </div>
             </form>
@@ -114,14 +121,14 @@ class AddHoliday extends Component {
             );
         }
         return (
-            <div className="country-codes-form">
-                <form name="Country Code" onSubmit={this.props.addHolidays}>
+            <div className="country-codes-form nice-form-div">
+                <form name="Country Code" className="nice-form" onSubmit={this.props.addHolidays}>
                     <select value={this.props.countryCode} onChange={this.props.handleChange}>
                         {countryOptions}
                     </select>
                     <input type="submit" value="Add Holidays" />
                 </form>
-                <div onClick={this.onClickCancel}>cancel</div>
+                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
             </div>
         );
     }
@@ -134,8 +141,8 @@ class AddContributor extends Component {
     render(){
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
-            <div className="form edit-form">
-                <form name="Edit Contributors" onSubmit={this.props.editCal}>
+            <div className="form edit-form nice-form-div">
+                <form name="Edit Contributors" className="nice-form" onSubmit={this.props.editCal}>
                     <div className="form-field-container">
                         <label name="Add Contributor by Email" />
                         <input className="form-field" type="text" onChange={this.props.handleChange} value={this.props.email} />
@@ -148,7 +155,7 @@ class AddContributor extends Component {
                     </div>
                     <input type="submit" value="Edit Contributors" />
                 </form>
-                <div onClick={this.onClickCancel}>cancel</div>
+                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
             </div>
         );
     }
@@ -162,15 +169,15 @@ class EditCalendar extends Component {
         console.log('we tried to render edit cal');
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
-            <div className="form edit-form">
-                <form name="Edit Calendar" onSubmit={this.props.editCal}>
+            <div className="form edit-form nice-form-div">
+                <form name="Edit Calendar" className="nice-form" onSubmit={this.props.editCal}>
                     <div className="form-field-container">
                         <label name="Calendar Name" />
                         <input className="form-field" onChange={this.props.handleName} type="text" value={this.props.name} />
                     </div>
                     <input type="submit" value="Edit Calendar" />
                 </form>
-                <div onClick={this.onClickCancel}>cancel</div>
+                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
             </div>
         );
     }

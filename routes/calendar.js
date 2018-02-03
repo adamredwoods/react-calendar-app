@@ -37,7 +37,7 @@ router.post('/', function(req, res, next){
                             { $push: {
                                 events: {
                                     name: holiName,
-                                    startDate: holiStart,
+                                    startDate: holiEnd,
                                     startTime: startTime,
                                     endDate: holiEnd,
                                     endTime: endTime,
@@ -56,7 +56,7 @@ router.post('/', function(req, res, next){
                             { $addToSet: {
                                 events: {
                                     name: holiName,
-                                    startDate: holiStart,
+                                    startDate: holiEnd,
                                     startTime: startTime,
                                     endDate: holiEnd,
                                     endTime: endTime,
@@ -109,6 +109,7 @@ router.post('/edit', function(req,res,next){
                             console.log(err);
                         }
                     });
+                    res.json({newContributor: newContributor});
                 }else{
                     res.status(500).send({error: true, message: err.message});
                 }
@@ -116,74 +117,13 @@ router.post('/edit', function(req,res,next){
         }else{
             res.status(500).send({error: true, message: 'user does not have permission to edit! '+err.message});
         }
-    }).then(function(updatedCalendar){
-        Calendar.findOne({_id: updatedCaledar._id}, function(err,calendar){
-            if(err){
-                console.log('err in cal database for add contributor - '+err);
-            }
-            res.json({calendar: calendar});
-        });
     });
 });
-// Model.aggregate([{
-//         $lookup: {
-//             from: 'translations',
-//             localField: '_id',
-//             foreignField: 'item_id',
-//             as: 'translation'
-//         },
-//     }, {
-//         $project: {
-//             "label": "$label",
-//             "items": "$items",
-//             "translation": {
-//                 "$filter": {
-//                     "input": "$translation",
-//                     "as": "page",
-//                     "cond": {
-//                         "$eq": ["$$page.lang_key", lang]
-//                     }
-//                 }
-//             }
-//         }
-//     }])
-// db.transactions.aggregate([
-//   {
-//     $match: {
-//       transactionDate: {
-//         $gte: ISODate("2017-01-01T00:00:00.000Z"),
-//         $lt: ISODate("2017-01-31T23:59:59.000Z")
-//       }
-//     }
-//   },
-//   {
-//     $group: {
-//       _id: null,
-//       total: {
-//         $sum: "$amount"
-//       }
-//     }
-//   }
-// ]);
+
 router.post('/events', function(req,res,next){
     console.log(req.body.calendar._id);
     var start = Number(req.body.startDate.date('U'));
     var end = Number(req.body.endDate.date('U'));
-//     mongoose.connection.db.collection('calendars').aggregate([{$match: {"_id": "5a739665d178e672483d43ae"}},{
-//     $project: {events: {
-//         $filter: {
-//             input: "$events",
-//             as: "event",
-//             cond: {
-//                 $and: [{
-//                     $gte: ["$$event.startDate",1517472000000]
-//                     },{
-//                     $lte: ["$$event.startDate",1520064000000]
-//                  }]
-//             }}
-//          }
-//     }}
-// ]
     Calendar.aggregate([
         {$match: {_id: Mongoose.Types.ObjectId(req.body.calendar._id)}},
         {$unwind: "$events"},
@@ -197,18 +137,6 @@ router.post('/events', function(req,res,next){
 				 res.json({events: events});
 		     }
 		  });
-
-	// Calendar.aggregate({$match: {_id: Mongoose.Types.ObjectId(req.body.calendar._id)}}, function(err, result) {
-	// 		 if(err){
-	// 			  console.log(err);
-	// 		 }
-	// 		 if (result) {
-	// 			console.log(result);
-	// 		 }
-	// 	 });
-
-
-    // });
 });
 
 router.post('/one', function(req,res,next){
@@ -273,31 +201,43 @@ router.post('/one', function(req,res,next){
                     }
                 );
             }
-        })
-        // .then(function(err,updatedCalendar){
-        //     if(err){
-        //         console.log(err);
-        //     }
-        //     console.log('hi from the new cal');
-        //     console.log(updatedCalendar);
-        //     res.json({calendar: updatedCalendar});
-            // Calendar.findOne({_id: updatedCalendar._id}, function(err,calendar){
-            //     if(err){
-            //         console.log(err);
-            //         console.log('error in the second cal db call');
-            //     }
-            //     res.json({calendar: calendar});
-            // });
-        // });
+        });
 	});
 });
 
-router.post('/event/delete',function(req,res,next){
-    console.log('delete');
-    console.log(req.body);
+router.post("/edit/one", function(req, res, next) {
+  console.log("delete");
+  let name = req.body.name;
+  let startDate = req.body.startDate;
+  console.log("is in year-month-day");
+  let startTime = req.body.startTime;
+  let endTime = req.body.endTime;
+  let endDate = req.body.endDate;
+  let eventType = req.body.eventType;
+  let priority = req.body.priority;
+  console.log("user - ", req.body.user.id);
+  console.log("cal id - ", req.body.calendar._id);
+  Calendar.findOne({ _id: req.body.calendar._id }, function(err, calendar) {
+    if (err) {
+      console.log(err);
+    }
+    if (calendar.people) {
+      for (let i = 0; i < people.length; i++) {
+        if (
+          people[i].userId == req.body.user.id &&
+          people[i].permission == "edit"
+        ) {
+          // Calendar.update({_id: req.body.calendar._id, events: {$elemMatch:{}}})
+          console.log("edit perms");
+        }
+      }
+    } else {
+      console.log("no edit perms");
+    }
+  });
 });
 
-router.post('/calendar/edit/one',function(req,res,next){
+router.post('/event/delete',function(req,res,next){
     console.log('edit');
     console.log(req.body);
 });

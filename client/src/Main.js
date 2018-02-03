@@ -36,6 +36,7 @@ class Main extends Component {
         dateQuery: ['2018-01-01', '2018-02-18'],
         calendar: null,
         eventName: '',
+        eventId: '',
         eStartDate: '',
         eStartTime: '',
         eEndDate: '',
@@ -52,6 +53,8 @@ class Main extends Component {
       //this.handleAddEventChange = this.handleAddEventChange.bind(this);
       this.handleTypeChange = this.handleTypeChange.bind(this);
       this.handlePriorityChange = this.handlePriorityChange.bind(this);
+      this.handleEditEventChange = this.handleEditEventChange.bind(this);
+      this.onClickEditDayEvent = this.onClickEditDayEvent.bind(this);
     }
 
    componentDidMount() {
@@ -114,9 +117,12 @@ class Main extends Component {
    }
 
    onClickEditDayEvent = (eventObj) => {
-      this.props.onClickEventAction(5);
       console.log(eventObj);
-      this.setState({eventToEdit: eventObj});
+      localStorage.setItem('currentEvent', JSON.stringify(eventObj))
+      this.setState({eventToEdit: eventObj}, () => {
+        console.log(this.state.eventToEdit);
+        this.props.onClickEventAction(5);
+      }); 
    }
 
    handleCountryCodeChange = (event) => {
@@ -270,6 +276,8 @@ class Main extends Component {
       let mainCal = <div />
       let action = this.props.eventAction; //--could be a string or number
 
+      console.log("magic ",this.state.eventToEdit);
+
       //console.log(this.props.calendar);
       if(this.props.user){
          if(action==2) {
@@ -290,9 +298,9 @@ class Main extends Component {
           )
        }else if(action==5){
           mainCal = (
-            <EditEvent eventObj={this.state.eventObj} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
-         )
-       }else{
+          <EditEvent eventObj={this.state.eventToEdit} handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
+          )
+        }else{
             mainCal = (
                <div className="main-page">
                   <Row nogutter>
