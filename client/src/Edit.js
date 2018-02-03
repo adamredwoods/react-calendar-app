@@ -86,6 +86,12 @@ class EditEvent extends Component {
       });
    }
 
+   editCurrentEvent = (e) => {
+       e.preventDefault();
+       let eventObj = this.state;
+       this.props.editEvent(eventObj);
+   }
+
    handleChange = (e) => {
       this.setState({[e.target.name]: e.target.value});
    }
@@ -105,7 +111,7 @@ class EditEvent extends Component {
 
       return(
          <div className="nice-form-div">
-            <form name="Edit Event" className="nice-form" onSubmit={this.editEvent} >
+            <form name="Edit Event" className="nice-form" onSubmit={this.editCurrentEvent} >
                 <h3>Event Name</h3>
                 <input type="text" name="eventName" onChange={this.handleChange} value={this.state.eventName}/>
                 <h4>Start Date</h4>

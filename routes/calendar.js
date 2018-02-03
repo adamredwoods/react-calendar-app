@@ -205,9 +205,9 @@ router.post('/one', function(req,res,next){
 	});
 });
 
-router.post("/edit/one", function(req, res, next) {
+router.post("/editone", function(req, res, next) {
   console.log("delete");
-  console.log(req.body.event);
+  console.log(req.body);
 //   let eventId = req.body.eventId;
 //   console.log(eventId);
 //   let name = req.body.name;

@@ -205,9 +205,11 @@ class Main extends Component {
       });
     }
 
-    editEvent = (event) => {
-      event.preventDefault();
+    editEvent = (eventObj) => {
       let currentEvent = JSON.parse(localStorage.getItem('currentEvent'));
+      console.log('edit?');
+      console.log(eventObj);
+      let currentEventObj = eventObj;
       // let name = this.state.eventName;
       // let base = this;
       // let priority = this.state.eventPriority;
@@ -218,8 +220,9 @@ class Main extends Component {
       // let eventType = this.state.eventType;
       let currentUser = this.props.user;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-      axios.post("/calendar/edit/one", {
+      axios.post("/calendar/editone", {
         // name: name,
+        eventObj: currentEventObj,
         currentEvent: currentEvent,
         // startDate: startDate,
         // startTime: startTime,
@@ -230,7 +233,7 @@ class Main extends Component {
         // priority: priority,
         calendarId: currentCalendar._id
       }).then(response =>{
-        console.log(response.data);
+        // console.log(response.data);
         this.props.onClickEventAction(0);
       }).catch(err=>{
         console.log('backend error with edit',err);
@@ -298,7 +301,7 @@ class Main extends Component {
           )
        }else if(action==5){
           mainCal = (
-          <EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
+          <EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
           )
         }else{
             mainCal = (
