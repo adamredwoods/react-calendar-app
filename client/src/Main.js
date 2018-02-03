@@ -42,7 +42,8 @@ class Main extends Component {
         eEndTime: '',
         eventType: '3',
         eventPriority: '2',
-        fullCalendar: null
+        fullCalendar: null,
+        eventToEdit: null
       }
       this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
       this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -115,6 +116,7 @@ class Main extends Component {
    onClickEditDayEvent = (eventObj) => {
       this.props.onClickEventAction(5);
       console.log(eventObj);
+      this.setState({eventToEdit: eventObj});
    }
 
    handleCountryCodeChange = (event) => {
@@ -288,7 +290,7 @@ class Main extends Component {
           )
        }else if(action==5){
           mainCal = (
-            <EditEvent />
+            <EditEvent eventObj={this.state.eventObj} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
          )
        }else{
             mainCal = (
