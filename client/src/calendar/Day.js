@@ -43,8 +43,10 @@ class Day extends Component {
       const list = arr.map((eventObj) => (
          <div>
             <Row>
-               <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
-               <Col xs={9}><div className="day-title">{eventObj.name}</div></Col>
+               <div className="day-card" onClick={(e)=> (this.props.onClickEditDayEvent(eventObj))} >
+                  <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
+                  <Col xs={9}><div className="day-title">{eventObj.name}</div></Col>
+               </div>
            </Row>
            <div>
               <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>

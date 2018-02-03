@@ -7,7 +7,8 @@ import {
   AddEvent,
   AddHoliday,
   AddContributor,
-  EditCalendar
+  EditCalendar,
+  EditEvent
 } from "./Edit.js";
 import Holidays from 'date-holidays';
 import axios from 'axios';
@@ -109,6 +110,11 @@ class Main extends Component {
       this.setState({viewDate: newDate}, function(err, result) {
 
       });
+   }
+
+   onClickEditDayEvent = (eventObj) => {
+      this.props.onClickEventAction(5);
+      console.log(eventObj);
    }
 
    handleCountryCodeChange = (event) => {
@@ -280,7 +286,11 @@ class Main extends Component {
           mainCal = (
             <AddContributor onClickEventAction={this.props.onClickEventAction} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} editCal={this.editCal} />
           )
-         }else{
+       }else if(action==5){
+          mainCal = (
+            <EditEvent />
+         )
+       }else{
             mainCal = (
                <div className="main-page">
                   <Row nogutter>
@@ -289,7 +299,7 @@ class Main extends Component {
                      </Col>
 
                      <Col sm={4}>
-                        <Day handleDelete={this.handleDelete} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+                        <Day handleDelete={this.handleDelete} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
                      </Col>
                   </Row>
                   <Hidden xs sm>

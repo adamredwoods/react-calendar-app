@@ -2,6 +2,14 @@
     border: 1px solid red;
 }
 
+.day-card {
+
+}
+
+.day-card:hover {
+   background-color: #eee;
+}
+
 .day-title {
    font-size: 1.5rem;
    text-align:left;
