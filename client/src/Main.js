@@ -233,7 +233,7 @@ class Main extends Component {
         // priority: priority,
         calendarId: currentCalendar._id
       }).then(response =>{
-        // console.log(response.data);
+        console.log(response.data);
         this.props.onClickEventAction(0);
       }).catch(err=>{
         console.log('backend error with edit',err);

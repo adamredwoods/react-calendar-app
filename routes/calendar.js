@@ -208,36 +208,66 @@ router.post('/one', function(req,res,next){
 router.post("/editone", function(req, res, next) {
   console.log("delete");
   console.log(req.body);
-//   let eventId = req.body.eventId;
-//   console.log(eventId);
-//   let name = req.body.name;
-//   let startDate = req.body.startDate;
-//   console.log("is in year-month-day");
-//   let startTime = req.body.startTime;
-//   let endTime = req.body.endTime;
-//   let endDate = req.body.endDate;
-//   let eventType = req.body.eventType;
-//   let priority = req.body.priority;
-//   console.log("user - ", req.body.user.id);
-//   console.log("cal id - ", req.body.calendarId);
-//   Calendar.findOne({ _id: req.body.calendarId }, function(err, calendar) {
-//     if (err) {
-//       console.log(err);
-//     }
-//     if (calendar.people) {
-//       for (let i = 0; i < people.length; i++) {
-//         if (
-//           people[i].userId == req.body.user.id &&
-//           people[i].permission == "edit"
-//         ) {
-//           // Calendar.update({_id: req.body.calendar._id, events: {$elemMatch:{}}})
-//           console.log("edit perms");
-//         }
-//       }
-//     } else {
-//       console.log("no edit perms");
-//     }
-//   });
+  let editEventId = req.body.eventObj._id;
+  let eventName = req.body.eventObj.eventName;
+  let startDate = Number(req.body.eventObj.startDate.date('U'));
+  let startTime = req.body.eventObj.startTime;
+  let endDate = Number(req.body.eventObj.endDate.date('U'));
+  let endTime = req.body.eventObj.endTime;
+  let priority = req.body.eventObj.priority;
+  let eventType = req.body.eventObj.eventType;
+  Calendar.findOne({_id: req.body.calendarId},function(err, calendar){
+      if(err){
+          console.log(err);
+      }
+      if(calendar){
+          if(calendar.userId == req.body.user.id){
+              Calendar.findOneAndUpdate({"_id": req.body.calendarId, "events._id": editEventId
+                        },{
+                            "$set":{
+                                "events.$.name": eventName, 
+                                "events.$.eventTypeId": eventType, 
+                                "events.$.startDate": startDate, 
+                                "events.$.startTime": startTime, 
+                                "events.$.endDate": endDate, 
+                                "events.$.endTime": endTime,
+                                "events.$.priority": priority
+                            }
+                        },function(err,updatedEvent){
+                            if(err){
+                                console.log('err updating event',err);
+                            }
+                            res.json({updatedEvent: updatedEvent});
+                        });
+          }else if(calendar.people){
+              for(let i=0; i<calendar.people.length; i++){
+                  if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == "edit"){
+                      Calendar.findOneAndUpdate({"_id": req.body.calendarId, "events._id": editEventId
+                        },{
+                            "$set":{
+                                "events.$.name": eventName, 
+                                "events.$.eventTypeId": eventType, 
+                                "events.$.startDate": startDate, 
+                                "events.$.startTime": startTime, 
+                                "events.$.endDate": endDate, 
+                                "events.$.endTime": endTime,
+                                "events.$.priority": priority
+                            }
+                        },function(err,updatedEvent){
+                            if(err){
+                                console.log('err updating event',err);
+                            }
+                            res.json({updatedEvent: updatedEvent});
+                        });
+                  }else{
+                      res.status(500).send({error: true, message: 'uh oh! You do not have editing permissions. Talk to the calendar owner! '+error.message});
+                  }
+              }
+          }else{
+              res.status(500).send({error: true, message: 'uh oh! something went wrong on our end. Try again! '+ error.message});
+          }
+      }
+  });
 });
 
 router.post('/event/delete',function(req,res,next){

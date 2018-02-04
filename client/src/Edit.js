@@ -59,10 +59,10 @@ class EditEvent extends Component {
       super(props);
       this.state = {
          eventName: "",
-         eStartDate: "",
-         eStartTime: "",
-         eEndDate: "",
-         eEndTime: "",
+         startDate: "",
+         startTime: "",
+         endDate: "",
+         endTime: "",
          eventType: 0,
          priority: 0
       }
