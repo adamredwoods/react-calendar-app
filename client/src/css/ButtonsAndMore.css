@@ -129,7 +129,7 @@
 
 /* FORMS ---------------------------------------- */
 .nice-form-div {
-	width: 50%;
+	width: 60%;
 	margin: 0 auto;
 	text-align: left;
 }
@@ -195,6 +195,7 @@
 .spacer-30 {
 	width: 30px;
 	height: 30px;
+	display: inline-block;
 }
 
 .text-center {

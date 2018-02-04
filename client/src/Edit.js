@@ -134,7 +134,7 @@ class EditEvent extends Component {
                 <input type="time" name="startTime" onChange={this.handleChange} value={this.state.startTime} />
                 <h4>End Date</h4>
                 <input type="date" name="endDate" onChange={this.handleChange} value={endDate} />
-                <MiniCalendarPicker name="endDate" onClick={this.handleChange}/>
+                <div className="spacer-30"></div><MiniCalendarPicker name="endDate" onClick={this.handleChange}/>
                 <h5>End Time</h5>
                 <input type="time" name="endTime" onChange={this.handleChange} value={this.state.endTime} />
                 <div>
