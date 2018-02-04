@@ -240,14 +240,15 @@ class Main extends Component {
       });
     }
 
-    handleDeleteEvent = (event) => {
-      event.preventDefault()
+    handleDeleteEvent = (eventObj) => {
       let base = this;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-      let deleteEvent = event.target.value;
+      let deleteEvent = eventObj;
+      let currentUser = this.props.user;
       axios.post('/calendar/event/delete',{
-        calendar: currentCalendar,
-        event: deleteEvent
+        calendarId: currentCalendar._id,
+        eventId: deleteEvent,
+        user: currentUser.id
       }).then(response =>{
         console.log(response);
         this.props.onClickEventAction(0);
@@ -312,7 +313,7 @@ class Main extends Component {
                      </Col>
 
                      <Col sm={4}>
-                        <Day handleDelete={this.handleDelete} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+                        <Day deleteEvent={this.handleDeleteEvent} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
                      </Col>
                   </Row>
                   <Hidden xs sm>

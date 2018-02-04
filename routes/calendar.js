@@ -271,8 +271,52 @@ router.post("/editone", function(req, res, next) {
 });
 
 router.post('/event/delete',function(req,res,next){
-    console.log('edit');
+    console.log('delete');
     console.log(req.body);
+    let calId = req.body.calendarId;
+    let eventId = req.body.eventId;
+    Calendar.findOne({_id: calId},function(err, calendar){
+        if(err){
+            console.log(err);
+        }
+        if(calendar){
+            if(calendar.userId == req.body.userId){
+                Calendar.update({"_id": calId
+                },{
+                    "$pull":{
+                        events:{
+                            "_id": eventId
+                        }
+                    }
+                },function(err,deletedEvent){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.json({deletedEvent: deletedEvent});
+                });
+            }
+        }else if(calendar.people){
+            for(let i=0; i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.userId && calendar.people[i].permission == "edit"){
+                    Calendar.update({"_id": calId
+                    },{
+                        "$pull":{
+                            events:{
+                                "_id": eventId
+                            }
+                        }
+                    },function(err,deletedEvent){
+                        if(err){
+                            console.log(err);
+                        }
+                        res.json({deletedEvent: deletedEvent});
+                    });
+                }
+            }
+        }else{
+            res.status(500).send({error: true, message: 'uh oh! You do not have editing permissions. Talk to the calendar owner! '+error.message});
+        }
+    });
 });
 
 module.exports = router;

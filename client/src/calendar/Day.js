@@ -44,7 +44,8 @@ class Day extends Component {
          <div className="day-card" onClick={(e)=> (this.props.onClickEditDayEvent(eventObj))} >
             <Row>
                <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
-               <Col xs={9}><div className="day-title">{eventObj.name}</div></Col>
+               <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
+               <Col xs={3}><button className="delete-btn btn pill" onClick={this.props.deleteEvent(eventObj._id)}>Delete</button></Col>
            </Row>
            <div>
               <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>
