@@ -83,7 +83,7 @@ export const DaysOfWeek = () => {
 
     return (
       <Row>
-         <Col sm={12}>
+         <Col sm={12} className="days-of-week-header">
          { daysOfWeek }
          </Col>
       </Row>

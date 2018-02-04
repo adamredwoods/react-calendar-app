@@ -30,7 +30,8 @@
 }
 
 .space {
-  margin: 15px 0;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .btn-primary {
@@ -67,9 +68,9 @@
 
 .no-flash {
   visibility: hidden;
-  padding: 10px 30px;
+  padding: 0px 0px;
   width: 75%;
-  margin: 10px auto;
+  margin: 0px auto;
 }
 
 .x-button {
@@ -93,4 +94,19 @@
 
 .App-title {
   font-size: 1.5em;
+}
+
+.username-title {
+   display: inline-block;
+   font-size: 2.0rem;
+   text-align: right;
+   margin-right: 2.0rem;
+}
+
+.calendar-title {
+   display: inline-block;
+   font-size: 2.0rem;
+   font-weight: 900;
+   text-align: left;
+   margin-bottom: 1.0rem;
 }
