@@ -11,13 +11,7 @@ import Profile from './Profile.js';
 import Signup from './auth/Signup.js';
 
 
-const Title = (props) => {
-   return (
-      <div>
-         <div className="username-title">{props.userName}</div><div className="calendar-title">{props.calendarTitle}</div>
-      </div>
-   )
-}
+
 
 class App extends Component {
   constructor(props){
@@ -105,7 +99,7 @@ class App extends Component {
             <Header user={this.state.user} calendar={this.state.calendar} onClickEventAction={this.onClickEventAction}/>
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
-              <Title userName={this.state.user.name} calendarTitle={this.state.calendar.name} />
+
               <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} onClickEventAction={this.onClickEventAction} />)} />
               <Route path="/login" component={
                 () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
