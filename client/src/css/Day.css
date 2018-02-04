@@ -1,5 +1,5 @@
 .day-container{
-    border: 1px solid red;
+    
 }
 
 .day-card {
@@ -10,6 +10,7 @@
 
 .day-card:hover {
    background-color: #eee;
+   cursor: pointer;
 }
 
 .day-title {

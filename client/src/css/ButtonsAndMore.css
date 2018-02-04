@@ -147,11 +147,12 @@
 .nice-form input[type=time],
 .nice-form input[type=date],
 .nice-form input[type=text] {
-	padding: 0.4rem 2rem;
+	padding: 0.4rem 1rem;
 	font-size: 1.1rem;
 	border: 1px solid #ddd;
 	box-sizing: border-box;
 	width: 40%;
+	min-width: 14rem;
 }
 .nice-form input[type=text]:focus {
     border: 3px solid #555;
@@ -162,10 +163,12 @@
 	border: 1px solid #666;
 	border-radius: 0px;
 	background-color: #fff;
-	padding: 1.0rem 2rem;
+	padding: 0.3rem 1rem;
 	font-size: 1.1rem;
 	margin: 5px 10px 0 0;
-	width: 400px;
+	width: 20rem;
+	-webkit-appearance: none;  /*Removes default chrome and safari style*/
+	-moz-appearance: none; /* Removes Default Firefox style*/
 }
 
 /* MARGINS --------------------------------------- */
@@ -177,10 +180,23 @@
 	margin: 30px;
 }
 
+.mergin-right-30 {
+	margin-right: 30px;
+}
+
 .margin-top-30 {
 	margin-top: 30px;
 }
 
 .margin-top-50 {
 	margin-top: 50px;
+}
+
+.spacer-10 {
+	width:10px;
+	height: 10px;
+}
+
+.text-center {
+	text-align: center;
 }

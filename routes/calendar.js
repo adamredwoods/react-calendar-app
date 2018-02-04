@@ -225,11 +225,11 @@ router.post("/editone", function(req, res, next) {
               Calendar.findOneAndUpdate({"_id": req.body.calendarId, "events._id": editEventId
                         },{
                             "$set":{
-                                "events.$.name": eventName, 
-                                "events.$.eventTypeId": eventType, 
-                                "events.$.startDate": startDate, 
-                                "events.$.startTime": startTime, 
-                                "events.$.endDate": endDate, 
+                                "events.$.name": eventName,
+                                "events.$.eventTypeId": eventType,
+                                "events.$.startDate": startDate,
+                                "events.$.startTime": startTime,
+                                "events.$.endDate": endDate,
                                 "events.$.endTime": endTime,
                                 "events.$.priority": priority
                             }
@@ -245,11 +245,11 @@ router.post("/editone", function(req, res, next) {
                       Calendar.findOneAndUpdate({"_id": req.body.calendarId, "events._id": editEventId
                         },{
                             "$set":{
-                                "events.$.name": eventName, 
-                                "events.$.eventTypeId": eventType, 
-                                "events.$.startDate": startDate, 
-                                "events.$.startTime": startTime, 
-                                "events.$.endDate": endDate, 
+                                "events.$.name": eventName,
+                                "events.$.eventTypeId": eventType,
+                                "events.$.startDate": startDate,
+                                "events.$.startTime": startTime,
+                                "events.$.endDate": endDate,
                                 "events.$.endTime": endTime,
                                 "events.$.priority": priority
                             }
@@ -281,8 +281,8 @@ router.post('/event/delete',function(req,res,next){
         }
         if(calendar){
             if(calendar.userId == req.body.userId){
-                Calendar.update({"_id": calId
-                },{
+                Calendar.update({"_id": calId},
+					 	{
                     "$pull":{
                         events:{
                             "_id": eventId
@@ -294,28 +294,31 @@ router.post('/event/delete',function(req,res,next){
                     }
                     res.json({deletedEvent: deletedEvent});
                 });
-            }
-        }else if(calendar.people){
-            for(let i=0; i<calendar.people.length; i++){
-                if(calendar.people[i].userId == req.body.userId && calendar.people[i].permission == "edit"){
-                    Calendar.update({"_id": calId
-                    },{
-                        "$pull":{
-                            events:{
-                                "_id": eventId
-                            }
-                        }
-                    },function(err,deletedEvent){
-                        if(err){
-                            console.log(err);
-                        }
-                        res.json({deletedEvent: deletedEvent});
-                    });
-                }
-            }
-        }else{
-            res.status(500).send({error: true, message: 'uh oh! You do not have editing permissions. Talk to the calendar owner! '+error.message});
-        }
+            } else if(calendar.people) {
+					let done=false;
+	            for(let i=0; i<calendar.people.length; i++){
+	                if(calendar.people[i].userId == req.body.userId && calendar.people[i].permission == "edit" && !done){
+							 console.log(124);
+							 done=true;
+	                    Calendar.update({"_id": calId
+	                    },{
+	                        "$pull":{
+	                            events:{
+	                                "_id": eventId
+	                            }
+	                        }
+	                    },function(err,deletedEvent){
+	                        if(err){
+	                            console.log(err);
+	                        }
+	                        res.json({deletedEvent: deletedEvent});
+	                    });
+	                }
+	            }
+	        }else{
+	            res.status(500).send({error: true, message: 'uh oh! You do not have editing permissions. Talk to the calendar owner! '+error.message});
+	        }
+		  }
     });
 });
 

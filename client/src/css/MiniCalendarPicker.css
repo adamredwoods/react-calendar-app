@@ -1,0 +1,55 @@
+.mini-calendar-picker {
+   display: inline-block;
+   padding: 20px;
+   width: 200px;
+   height: 200px;
+   font-size: 0.7rem;
+   text-align:center;
+   position: relative;
+   background-color: #efefef;
+   /*border: 1px solid #666;*/
+   -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;
+}
+
+.day-single {
+   width: 14.28%;
+   line-height: 30px;
+   text-align:center;
+}
+
+.mini-selected {
+   background-color: #bbb;
+}
+
+.day-single:hover {
+   background-color: #7080ee;
+   color: #eee;
+   cursor: pointer;
+}
+
+.button-left {
+   position: absolute;
+   left: 5%;
+   font-weight: 900;
+   font-size: 1.2rem;
+   cursor: pointer;
+   margin-top:-3px;
+}
+
+
+.button-right {
+   position: absolute;
+   right: 5%;
+   font-weight: 900;
+   font-size: 1.2rem;
+   cursor: pointer;
+   margin-top:-3px;
+}
+
+.header {
+   width: 100%;
+   font-size: 1.4em;
+}

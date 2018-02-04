@@ -36,21 +36,33 @@ class Day extends Component {
       return arr;
    }
 
+   onClickDelete = (eventObj,e) => {
+      e.stopPropagation();
+      this.props.deleteEvent(eventObj);
+   }
+
+   onClickAdd = (eventObj, e) => {
+      e.stopPropagation();
+      this.props.addEvent(eventObj);
+   }
+
     render(){
       //parse through props.viewDate to match what is in the props.calendar
       var arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
 
       const list = arr.map((eventObj) => (
          <div className="day-card" onClick={(e)=> (this.props.onClickEditDayEvent(eventObj))} >
+
             <Row>
                <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
                <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
-               <Col xs={3}><button className="delete-btn btn pill" onClick={this.props.deleteEvent(eventObj._id)}>Delete</button></Col>
+               <Col xs={3}><button className="delete-btn btn pill" onClick={this.onClickDelete.bind(this,eventObj)}>Delete</button></Col>
            </Row>
            <div>
               <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>
 
            </div>
+           <hr />
         </div>
      ));
 
@@ -58,6 +70,11 @@ class Day extends Component {
       //console.log(arr);
         return(
             <div className="day-container">
+               <Row>
+                  <span style={{margin: "0 auto"}}>
+                  <button className="btn pill blue" onClick={this.onClickAdd.bind(this,{date: this.props.viewDate})}>Add Event</button>
+                  </span>
+               </Row>
                 {list}
             </div>
         );

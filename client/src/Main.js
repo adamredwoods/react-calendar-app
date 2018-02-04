@@ -8,7 +8,8 @@ import {
   AddHoliday,
   AddContributor,
   EditCalendar,
-  EditEvent
+  EditEvent,
+  DeleteEvent
 } from "./Edit.js";
 import Holidays from 'date-holidays';
 import axios from 'axios';
@@ -205,6 +206,38 @@ class Main extends Component {
       });
     }
 
+    //
+    //-- this is the new way to add events, call this from inside the editing component and send an object
+    addEvent2 = (eventObject) => {
+
+      let name = eventObject.eventName;
+      let base = this;
+      let priority = eventObject.eventPriority;
+      let startDate = eventObject.startDate;
+      let startTime = eventObject.startTime;
+      let endDate = eventObject.endDate;
+      let endTime = eventObject.endTime;
+      let eventType = eventObject.eventTypeId;
+      let currentUser = this.props.user;
+      let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+      axios.post('/calendar/one',{
+        name: name,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        eventType: eventType,
+        user: currentUser,
+        priority: priority,
+        calendar: currentCalendar
+      }).then(response => {
+        console.log(response.data);
+        this.props.onClickEventAction(0);
+      }).catch(err => {
+        console.log('backend err w add event', err);
+      });
+    }
+
     editEvent = (eventObj) => {
       let currentEvent = JSON.parse(localStorage.getItem('currentEvent'));
       console.log('edit?');
@@ -243,15 +276,16 @@ class Main extends Component {
     handleDeleteEvent = (eventObj) => {
       let base = this;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-      let deleteEvent = eventObj;
+      let eventId = eventObj._id;
       let currentUser = this.props.user;
       axios.post('/calendar/event/delete',{
         calendarId: currentCalendar._id,
-        eventId: deleteEvent,
-        user: currentUser.id
+        eventId: eventId,
+        userId: currentUser.id
       }).then(response =>{
         console.log(response);
-        this.props.onClickEventAction(0);
+      //   this.props.onClickEventAction(0);
+         this.clickChangeDay(this.state.viewDate); //--refresh view
       }).catch(err=>{
         console.log('err deleting - ',err);
       });
@@ -286,7 +320,7 @@ class Main extends Component {
       if(this.props.user){
          if(action==2) {
             mainCal = (
-               <AddEvent handlePriorityChange={(event)=>this.handlePriorityChange(event)} priority={this.state.eventPriority} handleEventNameChange={(event) => this.handleEventNameChange(event)} viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} handleChange={this.handleAddEventChange} name={this.state.eventName} startDate={this.state.eStartDate} startTime={this.state.eStartTime} endDate={this.state.eEndDate} endTime={this.state.eEndTime} eventType={this.state.eventType} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+               <AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent2} initialValues={this.props.eventObject} />
             )
          } else if(action==4){
           mainCal = (
@@ -304,6 +338,10 @@ class Main extends Component {
           mainCal = (
           <EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
           )
+       }else if(action==6){
+          mainCal = (
+          <DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
+          )
         }else{
             mainCal = (
                <div className="main-page">
@@ -313,7 +351,7 @@ class Main extends Component {
                      </Col>
 
                      <Col sm={4}>
-                        <Day deleteEvent={this.handleDeleteEvent} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} editEvent={this.addEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+                        <Day deleteEvent={(o)=>this.props.onClickEventAction(6,o)} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} addEvent={(o)=>this.props.onClickEventAction(2,o)} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
                      </Col>
                   </Row>
                   <Hidden xs sm>

@@ -17,6 +17,8 @@ class Menu extends Component {
     }
 
     onClickEvent = (e) => {
+
+      this.setState({menuToggle: 1-this.state.menuToggle});
       this.props.onClickEventAction(e.target.id);
    }
 
