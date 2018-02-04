@@ -39,19 +39,17 @@ class MonthHeader extends Component {
      if (!date) date="";
 
     return (
-      <Row>
-
-
-            <Col sm={4} style={{textAlign:"right"}}><span className="btn-circle" id="1" onClick={this.onClickChangeMonth}>&lt;</span></Col>
-            <Col sm={4}>
+      <div className="header-container">
+         <Row>
+            <Col xs={4} style={{textAlign:"right"}}><span className="btn-circle" id="1" onClick={this.onClickChangeMonth}>&lt;</span></Col>
+            <Col xs={4}>
 
                <span className="month-header">{date.date("MMMM")} {date.date("YYYY")} </span>
 
             </Col>
-            <Col sm={4} style={{textAlign:"left"}}><span className="btn-circle" id="2" onClick={this.onClickChangeMonth}>&gt;</span></Col>
-
-
-      </Row>
+            <Col xs={4} style={{textAlign:"left"}}><span className="btn-circle" id="2" onClick={this.onClickChangeMonth}>&gt;</span></Col>
+         </Row>
+      </div>
     );
   }
 }

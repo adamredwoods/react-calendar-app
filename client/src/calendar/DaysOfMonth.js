@@ -21,13 +21,23 @@ class SingleDay extends Component {
 
       const circleSvg = <span className="circle-svg"><svg className="circle-svg" xmlns="http://www.w3.org/2000/svg"><circle cx='5' cy='5' r='5'></circle></svg></span>;
 
+      const circle2 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='40%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
+      const circle3 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='35%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet' stroke="#a0b0c0" strokeWidth="2px" fill="none"></circle></g></svg>
+
       let addClass = "days-card";
       let events = [];
       let svg = 0;
+      let currentDay = "", selectedDay="", hasEvents="";
 
-      if (this.props.today) addClass=addClass+" day-current";
-      if (this.props.selected) addClass=addClass+" day-selected";
+      //if (this.props.today) addClass=addClass+" day-current";
+      if (this.props.today) currentDay = <div className="days-background">{circle2}</div>;
+      // if (this.props.selected) addClass=addClass+" day-selected";
+      if (this.props.selected) {
+         selectedDay = <div className="days-background">{circle2}</div>;
+         addClass=addClass+" day-selected";
+      }
       if (this.props.events && this.props.events.length>0) {
+         hasEvents = <div className="days-background3">{circle3}</div>;
          for (let i=0; i<this.props.events.length; i++) {
             //console.log(this.props.events[i].startDate.date("YYYY-MM"),"   ",this.props.yearMonth);
             if(this.props.events[i].startDate.date("YYYY-MM")===this.props.yearMonth) {
@@ -42,6 +52,9 @@ class SingleDay extends Component {
          <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
             <div className="days-num">{this.props.dayNum}</div>
             <div className="days-event">{events}</div>
+            {hasEvents}
+            {currentDay}
+            {selectedDay}
          </div>
       )
    }

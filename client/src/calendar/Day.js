@@ -71,7 +71,7 @@ class Day extends Component {
         return(
             <div className="day-container">
                <Row>
-                  <span style={{margin: "0 auto"}}>
+                  <span style={{margin: "0 auto", marginBottom: "20px"}}>
                   <button className="btn pill blue" onClick={this.onClickAdd.bind(this,{date: this.props.viewDate})}>Add Event</button>
                   </span>
                </Row>
