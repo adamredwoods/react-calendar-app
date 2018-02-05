@@ -1,37 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
+import { Row, Col } from 'react-grid-system';
 
-const allCals = [];
 
 class ProfileCalendar extends Component {
-  constructor(props){
-    super(props);
-    this.state={
-      calObj: {}
-    }
-  }
-
-  componentWillMount = () =>{
-    this.setState({calObj: this.props.calObj});
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.calObj !== this.props.calObj){
-      this.setState({calObj: nextProps.calObj});
-    }
-  }
-
-  shouldComponentUpdate(nextProps,nextState){
-    return this.props.calObj !== nextProps.calObj || nextState.calObj !== this.state.calObj;
-  }
-
   render(){
     return(
-      <li>
         <div className="calendar-div" onClick={(e) => (this.props.onClickShowCal(this.props.calObj))}>
-          {this.state.calObj.name}
+          {this.props.calObj.name}
         </div>
-      </li>
     );
   }
 }
@@ -40,7 +18,8 @@ class Profile extends Component {
   constructor(props){
     super(props);
     this.state={
-      calendars: []
+      calendar: {},
+      clicked: true
     }
   }
   componentDidMount = () => {
@@ -55,36 +34,42 @@ class Profile extends Component {
             calendarId: calId
           }).then(response => {
             console.log(response.data);
-            allCals.push(response.data);
-            console.log(allCals);
+            this.setState({calendar: response.data});
           }).catch(err=>{
             console.log(err);
           });
       }).catch(err => {
         console.log(err);
       });
-      this.setState({calendars: allCals});
+      
+    }
+    handleCalClick = (e) => {
+      this.setState({clicked: false});
     }
 
   render(){
-    let cals = this.state.calendars
-    let allCalendars = cals.map((calObj)=>{
-      return <ProfileCalendar onClick={this.props.onClickShowCal} calObj={calObj} />
-    });
-    if(this.props.user && this.props.user.name){
-      return (
-        <div>
-          <h2>HELLO AGAIN {this.props.user.name}!</h2>
-          <h4>Your email is {this.props.user.email}</h4>
-        </div>
-      );
-    }
+    if(this.state.clicked){
+      if(this.props.user && this.props.user.name){
+        return (
+          <div>
+            <h2>{this.props.user.name}</h2>
+            <h4>Email: {this.props.user.email}</h4>
+            <h4>Calendars: </h4>
+            <div className="calendar-div" onClick={this.handleCalClick}>
+              <h3>{this.state.calendar.name}</h3>
+            </div>
+          </div>
+        );
+      }
     else {
       return (
         <p>This is a profile page. You need to be logged in to view it.</p>
       );
     }
+  }else{
+    <Redirect to="/" />
   }
+}
 }
 
 export default Profile;
