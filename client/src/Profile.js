@@ -63,7 +63,7 @@ class Profile extends Component {
             <Col xs={12} s={12} m={6} l={6}>
             <div className="profile-right">
             <h4>Calendars: </h4>
-            <div className="calendar-div" onClick={this.handleCalClick}>
+            <div className="calendar-div">
               <h3>{this.state.calendar.name}</h3>
             </div>
             </div>

@@ -48,10 +48,21 @@ METHOD | URL | Purpose
 POST | /auth/signup | Adds new user to user database
 POST | /auth/login | Authenticates login details
 POST | /auth/me/from/token | Checks if token is present on browser refresh
-POST | /calendar | Adds holidays to the user's chosen calendar
+POST | /calendar/all | Finds all calendars associated with a user
+POST | /calendar/oneCal | Finds a single calendar associated with a user
+POST | /calendar/addHoliday | Adds holidays to the user's chosen calendar
+POST | /calendar/add | Creates a calendar
+POST | /calendar/edit | Adds a contributor too the calendar
+POST | /calendar/editName | Edits the name of the calendar
+POST | /calendar/events | Shows all events for a month
+POST | /calendar/one | Add an event to the calendar
+POST | /calendar/editone | Edit a single event
+POST | /calendar/event/delete | Delete a single event
 
 ## Next Steps
-* TBD
+* Week view
+* Change icons for different events
+* More advanced styling
 
 ## Getting Started
 * Fork and clone this repository
