@@ -9,7 +9,7 @@ var router = express.Router();
 var mongoose = require("mongoose");
 var User = require("../models/user");
 var Calendar = require('../models/calendar').Calendar;
-// var CalEvent = require('../models/calendar').CalEvent;
+var CalEvent = require('../models/calendar').CalEvent;
 var Mongoose = require("mongoose");
 require('date-format-lite');
 
