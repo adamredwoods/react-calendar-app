@@ -1,6 +1,23 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Profile extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+
+    }
+  }
+  componentWillMount = () => {
+      let user=this.props.user;
+      axios.post('/calendar/all',{
+        user: user
+      }).then(response => {
+        console.log(response);
+      }).catch(err => {
+        console.log(err);
+      })
+    }
   render(){
     if(this.props.user && this.props.user.name){
       return (<div>

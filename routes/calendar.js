@@ -13,6 +13,89 @@ var Calendar = require('../models/calendar').Calendar;
 var Mongoose = require("mongoose");
 require('date-format-lite');
 
+router.post('/all', function(req,res,next){
+    console.log(req.body);
+    User.aggregate([
+        {$match: {_id: Mongoose.Types.ObjectId(req.body.user.id)}},
+        {$unwind: "$calendars"},
+	  ], function(err, calendars) {
+			  if(err){
+		         console.log(err);
+		     }
+		     if (calendars) {
+                // console.log(calendars);
+                let allCalendars = [];
+                for(let i=0;i<calendars.length;i++){
+                    let allPeople = [];
+                    Calendar.findOne({_id: calendars[i].calendars.calendarId},function(err,calendar){
+                        if(err){
+                            console.log(err)
+                        }
+                        if(calendar.people){
+                            for(let i=0; i<calendar.people.length; i++){
+                                let email;
+                                User.findOne({_id: calendar.people[i].userId},function(err,user){
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    email = user.email;
+                                    let person = {email: email, permission: calendar.people[i].permission};
+                                    allPeople.push(person);
+                                    console.log(allPeople);
+                                });
+                            }
+                            console.log(allPeople);
+                        }
+                    });
+                    // console.log(allPeople);
+                    // allCalendars.push({
+                    //     _id: calendars[i].calendars.calendarId
+                    // })
+                }
+            //    res.json({calendars: calendars});
+		     }
+		  });
+});
+
+router.post('/add', function(req,res,next){
+    var userCalendar = {};
+    Calendar.create({
+        name: req.body.name,
+        userId: req.body.user.id,
+        eventTypes: [{eventTypeId: 0, name: 'Holiday'},{eventTypeId: 1, name: 'Meeting'},{eventTypeId: 2,name: 'Work'},{eventTypeId:3, name:'Appointment'},{eventTypeId: 4, name: 'Birthday'}],
+        people: [{
+            userId: req.body.user.id,
+            permission: 'edit'
+        }]
+    }, function(err, calendar){
+        if (err){
+            console.log('Cal DB create error: ', err);
+        }
+        userCalendar = calendar;
+        console.log("makeNewCalendar:",calendar);
+        User.findOne({_id: req.body.user.id},function(err,user){
+            if(user.calendars) {
+                User.update({_id: req.body.user.id},{$push: {
+                    calendars: {calendarId: userCalendar._id}
+                }}, function(err,userCalendar){
+                    if(err){
+                        console.log(err)
+                    }
+                }); 
+            } else {
+                console.log("did this cal add...from set");
+                User.update({_id: req.body.user.id},{$addToSet: {
+                    calendars: {calendarId: userCalendar._id}
+                }}, function(err,userCalendar){
+                    if(err){
+                        console.log(err)
+                    }
+                });
+            }
+        });
+    });
+});
+
 router.post('/addHoliday', function(req, res, next){
 	User.findOne({_id: req.body.user.id}, function(err, user) {
 		if(err){

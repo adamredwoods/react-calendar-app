@@ -34,6 +34,7 @@ class Menu extends Component {
                 <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="2">Add Event</div></a>
                 <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="3">Add Contributor</div></a>
                 <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="4">Add Holidays</div></a>
+                <a className="menu-topitem" href="#" onClick={this.onClickEvent}><div className="menu-item" id="7">Add New Calendar</div></a>
                 <div className="menu-spacer"></div>
             </div>
         );

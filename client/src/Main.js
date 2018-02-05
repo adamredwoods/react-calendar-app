@@ -9,7 +9,8 @@ import {
   AddContributor,
   EditCalendar,
   EditEvent,
-  DeleteEvent
+  DeleteEvent,
+  AddCalendar
 } from "./Edit.js";
 import Holidays from 'date-holidays';
 import axios from 'axios';
@@ -309,6 +310,21 @@ class Main extends Component {
       });
     }
 
+    addCalendar = (event) => {
+      event.preventDefault();
+      let base = this;
+      let currentUser = this.props.user;
+      let name = this.state.calName;
+      axios.post('/calendar/add',{
+        user: currentUser,
+        name: name
+      }).then(response => {
+        console.log(response.data);
+      }).catch(err=> {
+        console.log('err adding calendar - '+err);
+      });
+    }
+
     addContributors = (event) => {
         event.preventDefault();
         let base = this;
@@ -357,6 +373,10 @@ class Main extends Component {
        }else if(action==6){
           mainCal = (
           <DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
+          )
+        }else if(action==7){
+          mainCal = (
+            <AddCalendar onClickEventAction={this.props.onClickEventAction} addCal={this.addCalendar} handleName={event => this.handleNameChange(event)} />
           )
         }else{
             mainCal = (
