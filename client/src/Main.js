@@ -9,7 +9,8 @@ import {
   AddContributor,
   EditCalendar,
   EditEvent,
-  DeleteEvent
+  DeleteEvent,
+  AddCalendar
 } from "./Edit.js";
 import Holidays from 'date-holidays';
 import axios from 'axios';
@@ -158,7 +159,7 @@ class Main extends Component {
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         let currentYear = this.state.currentYear;
         let holidays = this.state.currentYearHolidays;
-		axios.post('/calendar',{
+		axios.post('/calendar/addHoliday',{
             holidays: holidays,
             year: currentYear,
             user: currentUser,
@@ -291,20 +292,51 @@ class Main extends Component {
       });
     }
 
-    editCal = (event) => {
+    editCalName = (event) => {
+      event.preventDefault();
+      let base = this;
+      let currentUser = this.props.user;
+      let name = this.state.calName;
+      let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
+      axios.post('/calendar/editName',{
+        user: currentUser,
+        calendar: currentCalendar._id,
+        name: name
+      }).then(response => {
+        console.log(response.data);
+        this.props.onClickEventAction(0);
+      }).catch(err => {
+        console.log('err editing calendar - '+err);
+      });
+    }
+
+    addCalendar = (event) => {
+      event.preventDefault();
+      let base = this;
+      let currentUser = this.props.user;
+      let name = this.state.calName;
+      axios.post('/calendar/add',{
+        user: currentUser,
+        name: name
+      }).then(response => {
+        console.log(response.data);
+      }).catch(err=> {
+        console.log('err adding calendar - '+err);
+      });
+    }
+
+    addContributors = (event) => {
         event.preventDefault();
         let base = this;
         let email = this.state.email;
         let currentUser = this.props.user;
         let permission = this.state.permission;
-        let name = this.state.calName;
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         axios.post('/calendar/edit',{
             user: currentUser,
-            calendar: currentCalendar,
+            calendarId: currentCalendar._id,
             email: email,
-            permission: permission,
-            name: name
+            permission: permission
         }).then(response => {
             console.log(response.data);
             this.props.onClickEventAction(0);
@@ -328,11 +360,11 @@ class Main extends Component {
           )
          }else if(action==1){
            mainCal = (
-             <EditCalendar onClickEventAction={this.props.onClickEventAction} editCal={this.editCal} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
+             <EditCalendar onClickEventAction={this.props.onClickEventAction} editCal={this.editCalName} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
            )
          }else if(action==3){
           mainCal = (
-            <AddContributor onClickEventAction={this.props.onClickEventAction} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} editCal={this.editCal} />
+            <AddContributor onClickEventAction={this.props.onClickEventAction} editCal={this.addContributors} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} />
           )
        }else if(action==5){
           mainCal = (
@@ -341,6 +373,10 @@ class Main extends Component {
        }else if(action==6){
           mainCal = (
           <DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
+          )
+        }else if(action==7){
+          mainCal = (
+            <AddCalendar onClickEventAction={this.props.onClickEventAction} addCal={this.addCalendar} handleName={event => this.handleNameChange(event)} />
           )
         }else{
             mainCal = (

@@ -241,7 +241,7 @@ class AddContributor extends Component {
             <div className="form edit-form nice-form-div">
                 <form name="Edit Contributors" className="nice-form" onSubmit={this.props.editCal}>
                     <div className="form-field-container">
-                        <label name="Add Contributor by Email" />
+                        <h3>Add Contributor by Email</h3>
                         <input className="form-field" type="text" onChange={this.props.handleChange} value={this.props.email} />
                     </div>
                     <div className="form-field-container">
@@ -251,6 +251,26 @@ class AddContributor extends Component {
                         </select>
                     </div>
                     <input type="submit" value="Edit Contributors" />
+                </form>
+                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
+            </div>
+        );
+    }
+}
+
+class AddCalendar extends Component {
+    onClickCancel = (e) => {
+        this.props.onClickEventAction(0);
+    }
+    render(){
+        return(
+            <div className="nice-form-div">
+                <form name="Create A Calendar" className="nice-form" onSubmit={this.props.addCal}>
+                    <div className="form-field-container">
+                        <h3>Calendar Name</h3>
+                        <input className="form-field" onChange={this.props.handleName} type="text" />
+                    </div>
+                    <input type="submit" value="Add Calendar" />
                 </form>
                 <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
             </div>
@@ -269,7 +289,7 @@ class EditCalendar extends Component {
             <div className="form edit-form nice-form-div">
                 <form name="Edit Calendar" className="nice-form" onSubmit={this.props.editCal}>
                     <div className="form-field-container">
-                        <label name="Calendar Name" />
+                        <h3>Calendar Name</h3>
                         <input className="form-field" onChange={this.props.handleName} type="text" value={this.props.name} />
                     </div>
                     <input type="submit" value="Edit Calendar" />
@@ -330,4 +350,4 @@ class DeleteEvent extends Component {
    }
 }
 
-export {AddEvent,AddHoliday,AddContributor,EditCalendar,EditEvent, DeleteEvent};
+export {AddEvent,AddHoliday,AddContributor,EditCalendar,EditEvent,DeleteEvent,AddCalendar};

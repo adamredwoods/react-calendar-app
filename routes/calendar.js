@@ -9,11 +9,95 @@ var router = express.Router();
 var mongoose = require("mongoose");
 var User = require("../models/user");
 var Calendar = require('../models/calendar').Calendar;
-var CalEvent = require('../models/calendar').CalEvent;
+// var CalEvent = require('../models/calendar').CalEvent;
 var Mongoose = require("mongoose");
 require('date-format-lite');
 
-router.post('/', function(req, res, next){
+router.post('/all', function(req,res,next){
+    console.log(req.body);
+    User.aggregate([
+        {$match: {_id: Mongoose.Types.ObjectId(req.body.user.id)}},
+        {$unwind: "$calendars"},
+	  ], function(err, calendars) {
+			  if(err){
+		         console.log(err);
+		     }
+		     if (calendars) {
+                console.log(calendars);
+                // for(let i=0;i<calendars.length;i++){
+                //     let allPeople = [];
+                    Calendar.find({_id: {$in: [calendars.calendarId]}},{events: 0},function(err,calendars){
+                        if(err){
+                            console.log(err)
+                        }
+                        // if(calendar.people){
+                        //     for(let i=0; i<calendar.people.length; i++){
+                        //         let email;
+                        //         User.findOne({_id: calendar.people[i].userId},function(err,user){
+                        //             if(err){
+                        //                 console.log(err);
+                        //             }
+                        //             email = user.email;
+                        //             let person = {email: email, permission: calendar.people[i].permission};
+                        //             allPeople.push(person);
+                        //             console.log(allPeople);
+                        //         });
+                        //     }
+                        //     console.log(allPeople);
+                        // }
+                        // allCalendars.push(calendar.name);
+                        console.log(calendars);
+                    });
+                    // console.log(allPeople);
+                    // allCalendars.push({
+                    //     _id: calendars[i].calendars.calendarId
+                    // })
+                // }
+            //    res.json({calendars: calendars});
+		     }
+		  });
+});
+
+router.post('/add', function(req,res,next){
+    var userCalendar = {};
+    Calendar.create({
+        name: req.body.name,
+        userId: req.body.user.id,
+        eventTypes: [{eventTypeId: 0, name: 'Holiday'},{eventTypeId: 1, name: 'Meeting'},{eventTypeId: 2,name: 'Work'},{eventTypeId:3, name:'Appointment'},{eventTypeId: 4, name: 'Birthday'}],
+        people: [{
+            userId: req.body.user.id,
+            permission: 'edit'
+        }]
+    }, function(err, calendar){
+        if (err){
+            console.log('Cal DB create error: ', err);
+        }
+        userCalendar = calendar;
+        console.log("makeNewCalendar:",calendar);
+        User.findOne({_id: req.body.user.id},function(err,user){
+            if(user.calendars) {
+                User.update({_id: req.body.user.id},{$push: {
+                    calendars: {calendarId: userCalendar._id}
+                }}, function(err,userCalendar){
+                    if(err){
+                        console.log(err)
+                    }
+                }); 
+            } else {
+                console.log("did this cal add...from set");
+                User.update({_id: req.body.user.id},{$addToSet: {
+                    calendars: {calendarId: userCalendar._id}
+                }}, function(err,userCalendar){
+                    if(err){
+                        console.log(err)
+                    }
+                });
+            }
+        });
+    });
+});
+
+router.post('/addHoliday', function(req, res, next){
 	User.findOne({_id: req.body.user.id}, function(err, user) {
 		if(err){
 	     	console.log(err);
@@ -92,30 +176,100 @@ router.post('/', function(req, res, next){
 });
 
 router.post('/edit', function(req,res,next){
-    Calendar.findOne({_id: req.body.calendar._id, people: {$elemMatch: {userId: req.body.user.id}}}, function(err, calendar){
+    Calendar.findOne({_id: req.body.calendarId}, function(err, calendar){
         if(err){
             console.log(err);
         }
-        if(calendar.people[0].permission === 'edit'){
+        if(calendar.userId == req.body.user.id){
             var newContributor = {};
             User.findOne({email: req.body.email}, function(err,contributor){
-                if(err){
-                    res.status(500).send({error: true, message: 'user does not have an account yet! '+err.message});
-                }
                 newContributor = contributor;
                 if(newContributor._id){
-                    Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}, name: req.body.name},function(err,newContributor){
+                    if(calendar.people){
+                        Calendar.update({_id: calendar._id},{
+                            $push:
+                                {people:{userId:newContributor._id, permission:req.body.permission}}
+                        },function(err,newPerson){
+                            if(err){
+                                console.log(err)
+                            }
+                            console.log(newPerson);
+                        });
+                    }else{
+                        Calendar.update({_id: calendar._id},{
+                            $addToSet:
+                                {people:{userId:newContributor._id, permission:req.body.permission}}
+                        },function(err,newPerson){
+                            if(err){
+                                console.log(err)
+                            }
+                            console.log(newPerson);
+                        });
+                    }
+                    User.update({email: req.body.email},{$push:{calendars:{calendarId: req.body.calendarId}}},function(err,updatedUser){
                         if(err){
                             console.log(err);
                         }
+                        console.log(updatedUser);
                     });
-                    res.json({newContributor: newContributor});
-                }else{
-                    res.status(500).send({error: true, message: err.message});
                 }
             });
+        }
+        if(calendar.people){
+            for(let i=0; i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
+                    var newContributor = {};
+                    User.findOne({email: req.body.email}, function(err,contributor){
+                        if(err){
+                            res.status(500).send({error: true, message: 'user does not have an account yet! '+err.message});
+                        }
+                        newContributor = contributor;
+                        if(newContributor._id){
+                            Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}},function(err,newContributor){
+                                if(err){
+                                    console.log(err);
+                                }
+                            });
+                            res.json({newContributor: newContributor});
+                        }else{
+                            res.status(500).send({error: true, message: err.message});
+                        }
+                    });
+                }else{
+                    res.status(500).send({error: true, message: error.message});
+                }
+            }
         }else{
             res.status(500).send({error: true, message: 'user does not have permission to edit! '+err.message});
+        }
+    });
+});
+
+router.post('/editName', function(req,res,next){
+    Calendar.findOne({_id: req.body.calendar},function(err,calendar){
+        if(err){
+            console.log(err);
+        }
+        if(calendar.userId == req.body.user.id){
+            Calendar.update({_id: req.body.calendar},{$set: {name: req.body.name}},function(err,updatedCalendar){
+                if(err){
+                    console.log(err);
+                }
+                res.json({updatedCalendar: updatedCalendar});
+            })
+        }else if(calendar.people){
+            for(let i=0; i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
+                    Calendar.update({_id: req.body.calendar},{$set:{name: req.body.name}},function(err,updatedCalendar){
+                        if(err){
+                            console.log(err);
+                        }
+                        res.json({updatedCalendar: updatedCalendar});
+                    });
+                }
+            }
+        }else{
+            res.status(500).send({error: true, message: 'you do not have edit permissions! '+error.message});
         }
     });
 });
@@ -142,21 +296,18 @@ router.post('/events', function(req,res,next){
 router.post('/one', function(req,res,next){
 	console.log("/one");
     console.log(req.body);
-    User.findOne({_id: req.body.user.id},function(err,user){
+    Calendar.findOne({_id: req.body.calendar._id},function(err,calendar){
         if(err){
             console.log(err);
         }
-        Calendar.findOne({_id: req.body.calendar._id, userId: req.body.user.id},function(err,calendar){
-            if(err){
-                console.log(err);
-            }
-            let name = req.body.name;
-            let startDate = Number(req.body.startDate.date('U'));
-            let startTime = req.body.startTime;
-            let endDate = Number(req.body.endDate.date('U'));
-            let endTime = req.body.endTime;
-            let eventType = req.body.eventType;
-            let priority = req.body.priority;
+        let name = req.body.name;
+        let startDate = Number(req.body.startDate.date('U'));
+        let startTime = req.body.startTime;
+        let endDate = Number(req.body.endDate.date('U'));
+        let endTime = req.body.endTime;
+        let eventType = req.body.eventType;
+        let priority = req.body.priority;
+        if(calendar.userId == req.body.user.id){
             if(calendar.events){
                 Calendar.update({ _id: calendar._id },
                     { $push: {
@@ -201,11 +352,62 @@ router.post('/one', function(req,res,next){
                     }
                 );
             }
-        });
+        }else if(calendar.people){
+            for(let i=0;i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
+                    if(calendar.events){
+                        Calendar.update({ _id: calendar._id },
+                            { $push: {
+                                events: {
+                                    name: name,
+                                    startDate: startDate,
+                                    startTime: startTime,
+                                    endDate: endDate,
+                                    endTime: endTime,
+                                    priority: priority,
+                                    icon: name,
+                                    eventTypeId: eventType
+                                }
+                            }
+                            }, function(err, newEvent){
+                                if(err){
+                                    console.log(err);
+                                }
+                                res.json({event: newEvent});
+                            }
+                        );
+                    }else{
+                        Calendar.update({ _id: calendar_id },
+                            { $addToSet: {
+                                events: {
+                                    name: name,
+                                    startDate: startDate,
+                                    startTime: startTime,
+                                    endDate: endDate,
+                                    endTime: endTime,
+                                    priority: priority,
+                                    icon: holiName,
+                                    eventTypeId: eventType
+                                }
+                            }
+                            }, function(err, newEvent){
+                                if(err){
+                                    console.log(err);
+                                    console.log('we don know');
+                                }
+                                res.json({event: newEvent});
+                            }
+                        );
+                    }
+                }
+            }
+        }else{
+            res.status(500).send({error: true, message: 'you do not have edit permissions, please talk to the calendar owner - '+error.message});
+        }
 	});
 });
 
-router.post("/editone", function(req, res, next) {
+router.post('/editone', function(req, res, next) {
   console.log("delete");
   console.log(req.body);
   let editEventId = req.body.eventObj._id;

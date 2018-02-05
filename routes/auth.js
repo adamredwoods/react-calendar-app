@@ -78,7 +78,6 @@ function getUserCalendar(user, callback) {
          }
       });
    } else {
-
       Calendar.findOne({_id: user.calendars[0].calendarId}, function(err, calendar){
          if(err){
             console.log('DB error - calendar not found: ', err);
