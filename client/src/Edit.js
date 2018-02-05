@@ -95,22 +95,27 @@ class EditEvent extends Component {
          endDate: cc.endDate,
          endTime: cc.endTime,
          eventTypeId: cc.eventTypeId,
-         priority: cc.priority
+         priority: cc.priority,
+         error: null
       });
    }
 
    editCurrentEvent(e) {
        e.preventDefault();
-       let eventObj = this.state;
-       this.props.editEvent(eventObj);
+       if(this.state.startDate.date('U') > this.state.endDate.date('U')){
+            this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
+       }else{
+            let eventObj = this.state;
+            this.props.editEvent(eventObj);
+       }
    }
 
    handleChange = (e) => {
-      this.setState({[e.target.name]: e.target.value});
+      this.setState({[e.target.name]: e.target.value, error: null});
    }
 
    handleTypeChange = (event) => {
-     this.setState({eventType: event.target.value})
+     this.setState({eventTypeId: event.target.value});
    }
 
    render() {
@@ -134,7 +139,7 @@ class EditEvent extends Component {
                 <input type="time" name="startTime" onChange={this.handleChange} value={this.state.startTime} />
                 <h4>End Date</h4>
                 <input type="date" name="endDate" onChange={this.handleChange} value={endDate} />
-                <MiniCalendarPicker name="endDate" onClick={this.handleChange}/>
+                <div className="spacer-30"></div><MiniCalendarPicker name="endDate" onClick={this.handleChange}/>
                 <h5>End Time</h5>
                 <input type="time" name="endTime" onChange={this.handleChange} value={this.state.endTime} />
                 <div>
@@ -191,14 +196,19 @@ class AddEvent extends EditEvent {
          endDate: ed,
          endTime: "",
          eventTypeId: 1,
-         priority: 0
+         priority: 0,
+         error: null
       });
    }
 
    editCurrentEvent(e) {
-       e.preventDefault();
-       let eventObj = this.state;
-       this.props.addEvent(eventObj);
+        e.preventDefault();
+       if(this.state.startDate.date('U') > this.state.endDate.date('U')){
+            this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
+       }else{
+            let eventObj = this.state;
+            this.props.addEvent(eventObj);
+       }   
    }
 }
 

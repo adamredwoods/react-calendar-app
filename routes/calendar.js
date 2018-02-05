@@ -21,15 +21,15 @@ router.post('/all', function(req,res,next){
 	  ], function(err, calendars) {
 			  if(err){
 		         console.log(err);
-		     }
-		     if (calendars) {
-                console.log(calendars);
+             }
+		    //  if (calendars) {
+            //     console.log(calendars);
                 // for(let i=0;i<calendars.length;i++){
                 //     let allPeople = [];
-                    Calendar.find({_id: {$in: [calendars.calendarId]}},{events: 0},function(err,calendars){
-                        if(err){
-                            console.log(err)
-                        }
+                    // Calendar.find({_id: {$in: [calendars.calendarId]}},{events: 0},function(err,calendars){
+                    //     if(err){
+                    //         console.log(err)
+                    //     }
                         // if(calendar.people){
                         //     for(let i=0; i<calendar.people.length; i++){
                         //         let email;
@@ -46,16 +46,28 @@ router.post('/all', function(req,res,next){
                         //     console.log(allPeople);
                         // }
                         // allCalendars.push(calendar.name);
-                        console.log(calendars);
-                    });
+                    //     console.log(calendars);
+                    // });
                     // console.log(allPeople);
                     // allCalendars.push({
                     //     _id: calendars[i].calendars.calendarId
                     // })
                 // }
-            //    res.json({calendars: calendars});
-		     }
+               res.json({calendars: calendars});
+		//      }
 		  });
+});
+
+router.post('/oneCal',function(req,res,next){
+    console.log(req.body);
+    Calendar.findOne({_id: req.body.calendarId},function(err,calendar){
+        if(err){
+            console.log(err)
+        }
+        let cal = calendar.name;
+        let calId = calendar._id;
+        res.json({name: cal, _id: calId});
+    });
 });
 
 router.post('/add', function(req,res,next){
