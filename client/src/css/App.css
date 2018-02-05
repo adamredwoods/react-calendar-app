@@ -112,14 +112,3 @@
    text-align: left;
    color: #fff;
 }
-
-.profile-left{
-  text-align: right;
-  padding: 30px;
-  margin-right: 10px;
-}
-.profile-right{
-  text-align: left;
-  padding: 30px;
-  margin-left: 10px;
-}
