@@ -163,8 +163,31 @@ router.post('/edit', function(req,res,next){
 
 router.post('/editName', function(req,res,next){
     Calendar.findOne({_id: req.body.calendar},function(err,calendar){
-        
-    })
+        if(err){
+            console.log(err);
+        }
+        if(calendar.userId == req.body.user.id){
+            Calendar.update({_id: req.body.calendar},{name: req.body.name},function(err,updatedCalendar){
+                if(err){
+                    console.log(err);
+                }
+                res.json({updatedCalendar: updatedCalendar});
+            })
+        }else if(calendar.people){
+            for(let i=0; i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
+                    Calendar.update({_id: req.body.calendar},{name: req.body.name},function(err,updatedCalendar){
+                        if(err){
+                            console.log(err);
+                        }
+                        res.json({updatedCalendar: updatedCalendar});
+                    });
+                }
+            }
+        }else{
+            res.status(500).send({error: true, message: 'you do not have edit permissions! '+error.message});
+        }
+    });
 });
 
 router.post('/events', function(req,res,next){
