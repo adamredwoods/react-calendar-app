@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import { Row, Col } from 'react-grid-system';
+import './css/App.css';
 
 
 class ProfileCalendar extends Component {
@@ -52,12 +53,22 @@ class Profile extends Component {
       if(this.props.user && this.props.user.name){
         return (
           <div>
+            <Row>
+              <Col xs={12} s={12} m={6} l={6}>
+              <div className="profile-left">
             <h2>{this.props.user.name}</h2>
             <h4>Email: {this.props.user.email}</h4>
+            </div>
+            </Col>
+            <Col xs={12} s={12} m={6} l={6}>
+            <div className="profile-right">
             <h4>Calendars: </h4>
             <div className="calendar-div" onClick={this.handleCalClick}>
               <h3>{this.state.calendar.name}</h3>
             </div>
+            </div>
+            </Col>
+            </Row>
           </div>
         );
       }
