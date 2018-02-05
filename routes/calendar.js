@@ -212,21 +212,18 @@ router.post('/events', function(req,res,next){
 router.post('/one', function(req,res,next){
 	console.log("/one");
     console.log(req.body);
-    User.findOne({_id: req.body.user.id},function(err,user){
+    Calendar.findOne({_id: req.body.calendar._id},function(err,calendar){
         if(err){
             console.log(err);
         }
-        Calendar.findOne({_id: req.body.calendar._id, userId: req.body.user.id},function(err,calendar){
-            if(err){
-                console.log(err);
-            }
-            let name = req.body.name;
-            let startDate = Number(req.body.startDate.date('U'));
-            let startTime = req.body.startTime;
-            let endDate = Number(req.body.endDate.date('U'));
-            let endTime = req.body.endTime;
-            let eventType = req.body.eventType;
-            let priority = req.body.priority;
+        let name = req.body.name;
+        let startDate = Number(req.body.startDate.date('U'));
+        let startTime = req.body.startTime;
+        let endDate = Number(req.body.endDate.date('U'));
+        let endTime = req.body.endTime;
+        let eventType = req.body.eventType;
+        let priority = req.body.priority;
+        if(calendar.userId == req.body.user.id){
             if(calendar.events){
                 Calendar.update({ _id: calendar._id },
                     { $push: {
@@ -271,7 +268,58 @@ router.post('/one', function(req,res,next){
                     }
                 );
             }
-        });
+        }else if(calendar.people){
+            for(let i=0;i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
+                    if(calendar.events){
+                        Calendar.update({ _id: calendar._id },
+                            { $push: {
+                                events: {
+                                    name: name,
+                                    startDate: startDate,
+                                    startTime: startTime,
+                                    endDate: endDate,
+                                    endTime: endTime,
+                                    priority: priority,
+                                    icon: name,
+                                    eventTypeId: eventType
+                                }
+                            }
+                            }, function(err, newEvent){
+                                if(err){
+                                    console.log(err);
+                                }
+                                res.json({event: newEvent});
+                            }
+                        );
+                    }else{
+                        Calendar.update({ _id: calendar_id },
+                            { $addToSet: {
+                                events: {
+                                    name: name,
+                                    startDate: startDate,
+                                    startTime: startTime,
+                                    endDate: endDate,
+                                    endTime: endTime,
+                                    priority: priority,
+                                    icon: holiName,
+                                    eventTypeId: eventType
+                                }
+                            }
+                            }, function(err, newEvent){
+                                if(err){
+                                    console.log(err);
+                                    console.log('we don know');
+                                }
+                                res.json({event: newEvent});
+                            }
+                        );
+                    }
+                }
+            }
+        }else{
+            res.status(500).send({error: true, message: 'you do not have edit permissions, please talk to the calendar owner - '+error.message});
+        }
 	});
 });
 
