@@ -222,7 +222,7 @@ class AddEvent extends EditEvent {
        }else{
             let eventObj = this.state;
             this.props.addEvent(eventObj);
-       }   
+       }
    }
 }
 

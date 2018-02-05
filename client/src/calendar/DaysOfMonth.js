@@ -9,7 +9,7 @@ const daysInMonth = [
 
 
 
-//TODO: mondayIsFIrst is user defined
+//TODO: mondayIsFirst is user defined
 var mondayIsFirst = true;
 
 var starSvg, circleSvg;
@@ -23,11 +23,16 @@ class SingleDay extends Component {
 
       const circle2 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='40%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
       const circle3 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='35%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet' stroke="#a0b0c0" strokeWidth="2px" fill="none"></circle></g></svg>
+      const bar = <svg style={{width:'100%',height:'100%'}} xmlns="http://www.w3.org/2000/svg"><g><rect x='0' y='10%' width='100%' height='5%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></rect></g></svg>
+
+      //display the bar: if enddate!==startdate don't display dot
+      //check ends, startdate and end date for surrent display day for end bars.
+      //if this day, month, year is in range of event date, display full bar
 
       let addClass = "days-card";
       let events = [];
-      let svg = 0;
-      let currentDay = "", selectedDay="", hasEvents="";
+      let svg = "";
+      let currentDay = "", selectedDay="", hasEvents="", hasBar=[];
 
       //if (this.props.today) addClass=addClass+" day-current";
       if (this.props.today) currentDay = <div className="days-background">{circle2}</div>;
@@ -36,25 +41,41 @@ class SingleDay extends Component {
          selectedDay = <div className="days-background">{circle2}</div>;
          addClass=addClass+" day-selected";
       }
+
       if (this.props.events && this.props.events.length>0) {
-         hasEvents = <div className="days-background3">{circle3}</div>;
+
          for (let i=0; i<this.props.events.length; i++) {
             //console.log(this.props.events[i].startDate.date("YYYY-MM"),"   ",this.props.yearMonth);
-            if(this.props.events[i].startDate.date("YYYY-MM")===this.props.yearMonth) {
+            if (this.props.events[i].spanning) {
+               //-- spanning is an internal variable to set the bar
+               hasBar.push( <div className="bar-svg">{bar}</div> );
+               //-- add circle for first day in spanning event
+               if (this.props.events[i].spanningStart===this.props.dayNum) {
+                  hasEvents = <div className="days-background3">{circle3}</div>;
+               }
+            } else if(this.props.events[i].eventTypeId===0) {
+               svg = <img src="icon-star.svg" width="10" height="10"/>;
+            } else {
+               //-- only certain events get the actual circle
+               hasEvents = <div className="days-background3">{circle3}</div>;
                svg = circleSvg;
-               if(this.props.events[i].eventTypeId===0) svg = <img src="icon-star.svg" width="10" height="10"/>;
-               events.push(svg);
             }
+
+            events.push(svg);
          }
       }
 
       return (
-         <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
-            <div className="days-num">{this.props.dayNum}</div>
-            <div className="days-event">{events}</div>
-            {hasEvents}
-            {currentDay}
-            {selectedDay}
+         <div>
+            {hasBar}
+            <div className={addClass} id={this.props.dayNum} onClick={()=>this.props.onClickDay(this.props.dayNum)}>
+               <div className="days-num">{this.props.dayNum}</div>
+               <div className="days-event">{events}</div>
+               {hasEvents}
+               {currentDay}
+               {selectedDay}
+            </div>
+
          </div>
       )
    }
@@ -110,16 +131,50 @@ class DaysOfMonth extends Component {
       return i%7;
    }
 
-   sortEventsToArray(calendar) {
+   //-- all events in our range (month), push each one to a day in an array
+   //-- TODO: make sure when events are entered into database, using spanning events to cover months from startdate to enddate
+   sortEventsToArray(date, calendar, leapyear) {
       var arr = [];
+      for (let i=0; i<32; i++) arr[i]=[];
+
+      var daystart, dayend;
       //console.log(calendar);
       if(!calendar) return arr;
 
+      let currentM = date.date('MM');
+
       for(let i=0; i<calendar.length; i++) {
-        let day = 0
-        if(calendar[i].events.startDate) day = parseInt(calendar[i].events.startDate.date('DD'));
-        if(!arr[day])arr[day]=[];
-        arr[day].push(calendar[i].events);
+        daystart = 0;
+        if(calendar[i].events.startDate) {
+           daystart = parseInt(calendar[i].events.startDate.date('DD'));
+           //-- add in spanning dates
+           dayend = parseInt(calendar[i].events.endDate.date('DD'));
+           //--catch 0 enddate
+           if (calendar[i].events.endDate===0) dayend=daystart;
+            //--dont span holidays
+            if (calendar[i].events.eventTypeId===0) {
+               dayend = daystart;
+            }
+            //-- default spanning event is false, create new variable for our internal use
+           calendar[i].events.spanning = false;
+
+           if (daystart !== dayend) calendar[i].events.spanning = true;
+           //-- spans past current month, set end day to last day
+           if (calendar[i].events.startDate.date('MM') !== calendar[i].events.endDate.date('MM') && calendar[i].events.endDate!==0) {
+             dayend = 31;
+             calendar[i].events.spanning = true; //-- catch the case where days are same, but month is diff
+
+          }
+          //--let's make sure we know the first day of a spanning, in case we want to show special graphical cases
+          if(calendar[i].events.spanning && (calendar[i].events.startDate.date('MM') === date.date('MM'))) calendar[i].events.spanningStart = daystart;
+
+
+          //if(!arr[day])arr[day]=[];
+          for (let j=daystart; j<=dayend; j++) {
+             //-- push SAME event into our month bucket
+             arr[j].push(calendar[i].events);
+          }
+        }
       }
 
       return arr;
@@ -132,15 +187,15 @@ class DaysOfMonth extends Component {
       }
 
       let eventsArray = [];
+      let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
 
       //if (Array.isArray(this.props.calendar) && this.props.calendar.length>0) {
-         eventsArray = this.sortEventsToArray(this.props.calendar);
+         eventsArray = this.sortEventsToArray(date, this.props.calendar, leapyear);
       //}
 
       //leap year
       let year = parseInt(date.date("YYYY"));
       let selectedDay = parseInt(date.date("DD"));
-      let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
       let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
       let today = 0;
