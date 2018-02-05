@@ -79,6 +79,10 @@ class App extends Component {
     });
   }
 
+  onClickShowCal = (calObj) => {
+    console.log(calObj);
+  }
+
   cancelFlash = () => {
     this.setState({
       flash: '',
@@ -106,7 +110,7 @@ class App extends Component {
               <Route path="/signup" component={
                 () => (<Signup calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
               <Route path="/profile" component={
-                () => (<Profile user={this.state.user} setFlash={this.setFlash} />)} />
+                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} onClickEventAction={this.onClickEventAction}/>)} />
             </div>
           </div>
         </Router>

@@ -49,22 +49,28 @@ class Day extends Component {
     render(){
       //parse through props.viewDate to match what is in the props.calendar
       var arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
-
-      const list = arr.map((eventObj) => (
+        
+      const list = arr.map((eventObj) => {
+          let spanInfo;
+          if(eventObj.startDate !== eventObj.endDate){
+              spanInfo = eventObj.startDate.date("YYYY-MM-DD")+"-"+eventObj.endDate.date("YYYY-MM-DD");
+          }else{
+              spanInfo = eventObj.startDate.date("YYYY-MM-DD");
+          }
+          return(
          <div className="day-card" onClick={(e)=> (this.props.onClickEditDayEvent(eventObj))} >
-
             <Row>
                <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
                <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
                <Col xs={3}><button className="delete-btn btn pill" onClick={this.onClickDelete.bind(this,eventObj)}>Delete</button></Col>
            </Row>
            <div>
-              <span>{eventObj.startDate.date("YYYY-MM-DD")}</span>
-
+                   <span>{spanInfo}</span>
            </div>
            <hr />
         </div>
-     ));
+      );
+    });
 
 
       //console.log(arr);
