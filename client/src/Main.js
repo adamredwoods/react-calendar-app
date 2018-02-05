@@ -158,7 +158,7 @@ class Main extends Component {
         let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         let currentYear = this.state.currentYear;
         let holidays = this.state.currentYearHolidays;
-		axios.post('/calendar',{
+		axios.post('/calendar/addHoliday',{
             holidays: holidays,
             year: currentYear,
             user: currentUser,

@@ -9,11 +9,11 @@ var router = express.Router();
 var mongoose = require("mongoose");
 var User = require("../models/user");
 var Calendar = require('../models/calendar').Calendar;
-var CalEvent = require('../models/calendar').CalEvent;
+// var CalEvent = require('../models/calendar').CalEvent;
 var Mongoose = require("mongoose");
 require('date-format-lite');
 
-router.post('/', function(req, res, next){
+router.post('/addHoliday', function(req, res, next){
 	User.findOne({_id: req.body.user.id}, function(err, user) {
 		if(err){
 	     	console.log(err);
@@ -167,7 +167,7 @@ router.post('/editName', function(req,res,next){
             console.log(err);
         }
         if(calendar.userId == req.body.user.id){
-            Calendar.update({_id: req.body.calendar},{name: req.body.name},function(err,updatedCalendar){
+            Calendar.update({_id: req.body.calendar},{$set: {name: req.body.name}},function(err,updatedCalendar){
                 if(err){
                     console.log(err);
                 }
@@ -176,7 +176,7 @@ router.post('/editName', function(req,res,next){
         }else if(calendar.people){
             for(let i=0; i<calendar.people.length; i++){
                 if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
-                    Calendar.update({_id: req.body.calendar},{name: req.body.name},function(err,updatedCalendar){
+                    Calendar.update({_id: req.body.calendar},{$set:{name: req.body.name}},function(err,updatedCalendar){
                         if(err){
                             console.log(err);
                         }
@@ -323,7 +323,7 @@ router.post('/one', function(req,res,next){
 	});
 });
 
-router.post("/editone", function(req, res, next) {
+router.post('/editone', function(req, res, next) {
   console.log("delete");
   console.log(req.body);
   let editEventId = req.body.eventObj._id;
