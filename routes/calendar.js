@@ -23,35 +23,36 @@ router.post('/all', function(req,res,next){
 		         console.log(err);
 		     }
 		     if (calendars) {
-                // console.log(calendars);
-                let allCalendars = [];
-                for(let i=0;i<calendars.length;i++){
-                    let allPeople = [];
-                    Calendar.findOne({_id: calendars[i].calendars.calendarId},function(err,calendar){
+                console.log(calendars);
+                // for(let i=0;i<calendars.length;i++){
+                //     let allPeople = [];
+                    Calendar.find({_id: {$in: [calendars.calendarId]}},{events: 0},function(err,calendars){
                         if(err){
                             console.log(err)
                         }
-                        if(calendar.people){
-                            for(let i=0; i<calendar.people.length; i++){
-                                let email;
-                                User.findOne({_id: calendar.people[i].userId},function(err,user){
-                                    if(err){
-                                        console.log(err);
-                                    }
-                                    email = user.email;
-                                    let person = {email: email, permission: calendar.people[i].permission};
-                                    allPeople.push(person);
-                                    console.log(allPeople);
-                                });
-                            }
-                            console.log(allPeople);
-                        }
+                        // if(calendar.people){
+                        //     for(let i=0; i<calendar.people.length; i++){
+                        //         let email;
+                        //         User.findOne({_id: calendar.people[i].userId},function(err,user){
+                        //             if(err){
+                        //                 console.log(err);
+                        //             }
+                        //             email = user.email;
+                        //             let person = {email: email, permission: calendar.people[i].permission};
+                        //             allPeople.push(person);
+                        //             console.log(allPeople);
+                        //         });
+                        //     }
+                        //     console.log(allPeople);
+                        // }
+                        // allCalendars.push(calendar.name);
+                        console.log(calendars);
                     });
                     // console.log(allPeople);
                     // allCalendars.push({
                     //     _id: calendars[i].calendars.calendarId
                     // })
-                }
+                // }
             //    res.json({calendars: calendars});
 		     }
 		  });
