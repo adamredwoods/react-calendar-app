@@ -92,32 +92,79 @@ router.post('/', function(req, res, next){
 });
 
 router.post('/edit', function(req,res,next){
-    Calendar.findOne({_id: req.body.calendar._id, people: {$elemMatch: {userId: req.body.user.id}}}, function(err, calendar){
+    Calendar.findOne({_id: req.body.calendarId}, function(err, calendar){
         if(err){
             console.log(err);
         }
-        if(calendar.people[0].permission === 'edit'){
+        if(calendar.userId == req.body.user.id){
             var newContributor = {};
             User.findOne({email: req.body.email}, function(err,contributor){
-                if(err){
-                    res.status(500).send({error: true, message: 'user does not have an account yet! '+err.message});
-                }
                 newContributor = contributor;
                 if(newContributor._id){
-                    Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}, name: req.body.name},function(err,newContributor){
+                    if(calendar.people){
+                        Calendar.update({_id: calendar._id},{
+                            $push:
+                                {people:{userId:newContributor._id, permission:req.body.permission}}
+                        },function(err,newPerson){
+                            if(err){
+                                console.log(err)
+                            }
+                            console.log(newPerson);
+                        });
+                    }else{
+                        Calendar.update({_id: calendar._id},{
+                            $addToSet:
+                                {people:{userId:newContributor._id, permission:req.body.permission}}
+                        },function(err,newPerson){
+                            if(err){
+                                console.log(err)
+                            }
+                            console.log(newPerson);
+                        });
+                    }
+                    User.update({email: req.body.email},{$push:{calendars:{calendarId: req.body.calendarId}}},function(err,updatedUser){
                         if(err){
                             console.log(err);
                         }
+                        console.log(updatedUser);
                     });
-                    res.json({newContributor: newContributor});
-                }else{
-                    res.status(500).send({error: true, message: err.message});
                 }
             });
+        }
+        if(calendar.people){
+            for(let i=0; i<calendar.people.length; i++){
+                if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == 'edit'){
+                    var newContributor = {};
+                    User.findOne({email: req.body.email}, function(err,contributor){
+                        if(err){
+                            res.status(500).send({error: true, message: 'user does not have an account yet! '+err.message});
+                        }
+                        newContributor = contributor;
+                        if(newContributor._id){
+                            Calendar.update({_id: calendar._id},{$push:{people:{userId:newContributor._id, permission:req.body.permission}}},function(err,newContributor){
+                                if(err){
+                                    console.log(err);
+                                }
+                            });
+                            res.json({newContributor: newContributor});
+                        }else{
+                            res.status(500).send({error: true, message: err.message});
+                        }
+                    });
+                }else{
+                    res.status(500).send({error: true, message: error.message});
+                }
+            }
         }else{
             res.status(500).send({error: true, message: 'user does not have permission to edit! '+err.message});
         }
     });
+});
+
+router.post('/editName', function(req,res,next){
+    Calendar.findOne({_id: req.body.calendar},function(err,calendar){
+        
+    })
 });
 
 router.post('/events', function(req,res,next){
