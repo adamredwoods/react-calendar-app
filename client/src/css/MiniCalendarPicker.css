@@ -7,6 +7,7 @@
    text-align:center;
    position: relative;
    background-color: #efefef;
+   border-radius: 4%;
    /*border: 1px solid #666;*/
    -webkit-user-select: none;  /* Chrome all / Safari all */
   -moz-user-select: none;     /* Firefox all */
