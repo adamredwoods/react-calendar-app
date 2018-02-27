@@ -5,7 +5,7 @@ class Week extends Component {
     render(){
         return(
             <div className="week-container">
-                <h1>Week here</h1>
+                
             </div>
         );
     }
