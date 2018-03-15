@@ -17,9 +17,9 @@ class AddEvent extends EditEvent {
    componentDidMount() {
 
       let sd, ed;
-      if(this.props.initialValues) {
-         console.log(this.props.initialValues);
-         sd = ed = this.props.initialValues.date;
+      if(this.props.viewDate) {
+         //console.log(this.props.initialValues);
+         sd = ed = this.props.viewDate;
 
       } else {
          sd = ed = new Date();
@@ -38,15 +38,6 @@ class AddEvent extends EditEvent {
       });
    }
 
-   editCurrentEvent(e) {
-        e.preventDefault();
-       if(this.state.startDate.date('U') > this.state.endDate.date('U')){
-            this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
-       }else{
-            let eventObj = this.state;
-            this.props.addEvent(eventObj);
-       }
-   }
 }
 
 export default AddEvent;

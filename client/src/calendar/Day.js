@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router';
 import { Row, Col } from 'react-grid-system';
 import '../css/Day.css';
 
@@ -43,34 +44,42 @@ class Day extends Component {
 
    onClickAdd = (eventObj, e) => {
       e.stopPropagation();
-      this.props.addEvent(eventObj);
+      //this.props.addEvent(eventObj);
+
    }
+
+	onClickEdit(e, eventObj, history) {
+		this.props.onClickEditDayEvent(eventObj);
+		history.push("/event/edit");
+	}
 
     render(){
       //parse through props.viewDate to match what is in the props.calendar
       var arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
-        
-      const list = arr.map((eventObj) => {
-          let spanInfo;
-          if(eventObj.startDate !== eventObj.endDate){
-              spanInfo = eventObj.startDate.date("YYYY-MM-DD")+"-"+eventObj.endDate.date("YYYY-MM-DD");
-          }else{
-              spanInfo = eventObj.startDate.date("YYYY-MM-DD");
-          }
-          return(
-         <div className="day-card" onClick={(e)=> (this.props.onClickEditDayEvent(eventObj))} >
-            <Row>
-               <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
-               <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
-               <Col xs={3}><button className="delete-btn btn pill" onClick={this.onClickDelete.bind(this,eventObj)}>Delete</button></Col>
-           </Row>
-           <div>
-                   <span>{spanInfo}</span>
-           </div>
-           <hr />
-        </div>
-      );
-    });
+
+		const list = arr.map((eventObj) => {
+		    let spanInfo;
+		    if(eventObj.startDate !== eventObj.endDate){
+		        spanInfo = eventObj.startDate.date("YYYY-MM-DD")+"-"+eventObj.endDate.date("YYYY-MM-DD");
+		    }else{
+		        spanInfo = eventObj.startDate.date("YYYY-MM-DD");
+		    }
+		    return(
+				 <Route render={ ({history}) => (
+					<div className="day-card" onClick={(e)=> (this.onClickEdit(e, eventObj, history))} >
+					   <Row>
+					      <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
+					      <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
+					      <Col xs={3}><button className="delete-btn btn pill" onClick={this.onClickDelete.bind(this,eventObj)}>Delete</button></Col>
+					  </Row>
+					  <div>
+					          <span>{spanInfo}</span>
+					  </div>
+					  <hr />
+					</div>
+				)} />
+		   );
+		});
 
 
       //console.log(arr);
@@ -78,7 +87,11 @@ class Day extends Component {
             <div className="day-container">
                <Row>
                   <span style={{margin: "0 auto", marginBottom: "20px"}}>
-                  <button className="btn pill blue" onClick={this.onClickAdd.bind(this,{date: this.props.viewDate})}>Add Event</button>
+						<Route render={
+							({history})=>(
+								<button className="btn pill blue" onClick={()=>{history.push('/event/add')}} >Add Event</button>
+							)
+						} />
                   </span>
                </Row>
                 {list}

@@ -89,6 +89,7 @@ class Main extends Component {
    handleEventNameChange = (event) => {
      this.setState({eventName: event.target.value});
    }
+
    handleAddEventChange = (event) => {
     //  let stateChange =  event.target.name;
      console.log(event.target.name);
@@ -96,6 +97,7 @@ class Main extends Component {
      var et=event.target.value;
     this.setState({ [en]: et});
    }
+
    handleEditEventChange = (event) => {
      var en = event.target.name;
      var et = event.target.value;
@@ -119,7 +121,7 @@ class Main extends Component {
    }
 
    onClickEditDayEvent = (eventObj) => {
-      console.log(eventObj);
+      //console.log(eventObj);
       localStorage.setItem('currentEvent', JSON.stringify(eventObj))
       this.setState({eventToEdit: eventObj}, () => {
         //console.log(this.state.eventToEdit);
@@ -177,39 +179,10 @@ class Main extends Component {
         });
     }
 
-    addEvent = (event) => {
-      event.preventDefault();
-      let name = this.state.eventName;
-      let base = this;
-      let priority = this.state.eventPriority;
-      let startDate = this.state.eStartDate;
-      let startTime = this.state.eStartTime;
-      let endDate = this.state.eEndDate;
-      let endTime = this.state.eEndTime;
-      let eventType = this.state.eventType;
-      let currentUser = this.props.user;
-      let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-      axios.post('/calendar/one',{
-        name: name,
-        startDate: startDate,
-        startTime: startTime,
-        endDate: endDate,
-        endTime: endTime,
-        eventType: eventType,
-        user: currentUser,
-        priority: priority,
-        calendar: currentCalendar
-      }).then(response => {
-        console.log(response.data);
-        this.props.onClickEventAction(0);
-      }).catch(err => {
-        console.log('backend err w add event', err);
-      });
-    }
 
     //
     //-- this is the new way to add events, call this from inside the editing component and send an object
-    addEvent2 = (eventObject) => {
+    addEvent = (eventObject) => {
 
       let name = eventObject.eventName;
       let base = this;
@@ -352,14 +325,12 @@ class Main extends Component {
 					 <Col sm={8}>
 						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendar}/>
 					 </Col>
-
 					 <Col sm={4}>
-						 <Day deleteEvent={(o)=>this.props.onClickEventAction(6,o)} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} addEvent={(o)=>this.props.onClickEventAction(2,o)} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+						 <Day deleteEvent={(o)=>this.props.onClickEventAction(6,o)} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
 					 </Col>
 				 </Row>
 				 <Hidden xs sm>
 					 <Row>
-
 						 <Col sm={12}>
 							 <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
 						 </Col>
@@ -381,7 +352,7 @@ class Main extends Component {
       return (
         <div className="main-home">
 				<Route path="/event/add" render = {
-					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent2} initialValues={this.props.eventObject} />
+					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} initialValues={this.props.eventObject} />
 				)} />
 				<Route path="/event/edit" render={
 					 () => (<EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
