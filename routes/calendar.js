@@ -94,7 +94,7 @@ router.post('/add', function(req,res,next){
                     if(err){
                         console.log(err)
                     }
-                }); 
+                });
             } else {
                 console.log("did this cal add...from set");
                 User.update({_id: req.body.user.id},{$addToSet: {
@@ -287,22 +287,25 @@ router.post('/editName', function(req,res,next){
 });
 
 router.post('/events', function(req,res,next){
-    console.log(req.body.calendar._id);
+
     var start = Number(req.body.startDate.date('U'));
     var end = Number(req.body.endDate.date('U'));
-    Calendar.aggregate([
-        {$match: {_id: Mongoose.Types.ObjectId(req.body.calendar._id)}},
-        {$unwind: "$events"},
-		  {"$match":{"events.startDate":{$gte: start, $lte: end}}}
-	  ], function(err, events) {
-			  if(err){
-		         console.log(err);
-		     }
-		     if (events) {
-		       console.log(events);
-				 res.json({events: events});
-		     }
-		  });
+
+	 if (req.body.calendar && req.body.calendar._id) {
+	    Calendar.aggregate([
+	        {$match: {_id: Mongoose.Types.ObjectId(req.body.calendar._id)}},
+	        {$unwind: "$events"},
+			  {"$match":{"events.startDate":{$gte: start, $lte: end}}}
+		  ], function(err, events) {
+				  if(err){
+			         console.log(err);
+			     }
+			     if (events) {
+			       console.log(events);
+					 res.json({events: events});
+			     }
+			  });
+	}
 });
 
 router.post('/one', function(req,res,next){

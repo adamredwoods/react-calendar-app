@@ -21,9 +21,9 @@ class SingleDay extends Component {
 
       const circleSvg = <span className="circle-svg"><svg className="circle-svg" xmlns="http://www.w3.org/2000/svg"><circle cx='5' cy='5' r='5'></circle></svg></span>;
 
-      const circle2 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='40%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
-      const circle3 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='35%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet' stroke="#a0b0c0" strokeWidth="2px" fill="none"></circle></g></svg>
-      const bar = <svg style={{width:'100%',height:'100%'}} xmlns="http://www.w3.org/2000/svg"><g><rect x='0' y='10%' width='100%' height='5%' viewbox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></rect></g></svg>
+      const circle2 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='40%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
+      const circle3 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='35%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet' stroke="#a0b0c0" strokeWidth="2px" fill="none"></circle></g></svg>
+      const bar = <svg style={{width:'100%',height:'100%'}} xmlns="http://www.w3.org/2000/svg"><g><rect x='0' y='10%' width='100%' height='5%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></rect></g></svg>
 
       //display the bar: if enddate!==startdate don't display dot
       //check ends, startdate and end date for surrent display day for end bars.

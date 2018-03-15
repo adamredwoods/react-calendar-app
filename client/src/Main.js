@@ -3,17 +3,17 @@ import './css/Main.css';
 import Month from './calendar/Month.js';
 import Week from './calendar/Week.js';
 import Day from './calendar/Day.js';
-import {
-  AddEvent,
-  AddHoliday,
-  AddContributor,
-  EditCalendar,
-  EditEvent,
-  DeleteEvent,
-  AddCalendar
-} from "./Edit.js";
+import AddEvent from './event/AddEvent.js';
+import AddHoliday from './event/AddHoliday.js';
+import AddContributor from './calendar/AddContributor.js';
+import EditCalendar from './calendar/EditCalendar.js';
+import EditEvent from './event/EditEvent.js';
+import DeleteEvent from './event/DeleteEvent.js';
+import AddCalendar from './calendar/AddCalendar.js';
 import Holidays from 'date-holidays';
 import axios from 'axios';
+import {Router, Route, Switch} from 'react-router';
+import {Link, BrowserRouter} from 'react-router-dom';
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';
 import "date-format-lite";
 const hd = new Holidays();
@@ -345,68 +345,63 @@ class Main extends Component {
         });
     }
 
-  render(){
-      let mainCal = <div />
-      let action = this.props.eventAction; //--could be a string or number
+	 renderMainCal = ()=> {
+		 return (
+			 <div className="main-page">
+				 <Row nogutter>
+					 <Col sm={8}>
+						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendar}/>
+					 </Col>
 
-      if(this.props.user){
-         if(action==2) {
-            mainCal = (
-               <AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent2} initialValues={this.props.eventObject} />
-            )
-         } else if(action==4){
-          mainCal = (
-            <AddHoliday onClickEventAction={this.props.onClickEventAction} countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
-          )
-         }else if(action==1){
-           mainCal = (
-             <EditCalendar onClickEventAction={this.props.onClickEventAction} editCal={this.editCalName} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
-           )
-         }else if(action==3){
-          mainCal = (
-            <AddContributor onClickEventAction={this.props.onClickEventAction} editCal={this.addContributors} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} />
-          )
-       }else if(action==5){
-          mainCal = (
-          <EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
-          )
-       }else if(action==6){
-          mainCal = (
-          <DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
-          )
-        }else if(action==7){
-          mainCal = (
-            <AddCalendar onClickEventAction={this.props.onClickEventAction} addCal={this.addCalendar} handleName={event => this.handleNameChange(event)} />
-          )
-        }else{
-            mainCal = (
-               <div className="main-page">
-                  <Row nogutter>
-                     <Col sm={8}>
-                        <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendar}/>
-                     </Col>
+					 <Col sm={4}>
+						 <Day deleteEvent={(o)=>this.props.onClickEventAction(6,o)} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} addEvent={(o)=>this.props.onClickEventAction(2,o)} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+					 </Col>
+				 </Row>
+				 <Hidden xs sm>
+					 <Row>
 
-                     <Col sm={4}>
-                        <Day deleteEvent={(o)=>this.props.onClickEventAction(6,o)} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} addEvent={(o)=>this.props.onClickEventAction(2,o)} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
-                     </Col>
-                  </Row>
-                  <Hidden xs sm>
-                     <Row>
+						 <Col sm={12}>
+							 <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
+						 </Col>
+					 </Row>
+				 </Hidden>
+			 </div>
+		 );
+	 }
 
-                        <Col sm={12}>
-                           <Week viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay}/>
-                        </Col>
-                     </Row>
-                  </Hidden>
-               </div>
-            );
-         }
-      } else {
-         mainCal = <div className="main-no-user"><h1>Please login or signup.</h1></div>
+
+  render() {
+
+      if(!this.props.user){
+ 			return (
+				<div className="main-no-user"><h1>Please login or signup.</h1></div>
+			);
       }
+
       return (
         <div className="main-home">
-          {mainCal}
+				<Route path="/event/add" render = {
+					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent2} initialValues={this.props.eventObject} />
+				)} />
+				<Route path="/event/edit" render={
+					 () => (<EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
+				)} />
+				<Route path="/event/delete" render={
+					() => (<DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
+				)} />
+				<Route path="/calendar/holidays" render = {
+					() => (<AddHoliday onClickEventAction={this.props.onClickEventAction} countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
+				)} />
+				<Route path="/calendar/edit" render={
+					() => (<EditCalendar onClickEventAction={this.props.onClickEventAction} editCal={this.editCalName} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
+				)} />
+				<Route path="/calendar/contributor" render = {
+					() => (<AddContributor onClickEventAction={this.props.onClickEventAction} editCal={this.addContributors} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} />
+				)} />
+				<Route path="/calendar/add" render={
+					() => (<AddCalendar onClickEventAction={this.props.onClickEventAction} addCal={this.addCalendar} handleName={event => this.handleNameChange(event)} />
+				)} />
+				<Route exact path="/" render={this.renderMainCal} />
         </div>
       );
    }

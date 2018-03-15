@@ -126,6 +126,29 @@ router.post('/login', function(req, res, next) {
   });
 });
 
+router.post('/login/guest', function(req, res, next) {
+
+  // look up guest email set in env file 
+  User.findOne({email: process.env.GUEST_EMAIL}, function(err, user) {
+		if(!user){
+			return res.status(403).send({
+			  error: true,
+			  message: 'Guest access is not available.'
+			});
+		}
+
+		getUserCalendar(user, function(err,calendar) {
+		   // Make a token and return it as JSON
+		   var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
+		      expiresIn: 60 * 60 * 3 // expires in 3 hours
+		   });
+			user.guest=true;
+		   res.send({user: user, calendar: calendar, token: token});
+		});
+
+	});
+});
+
 
 /* POST /auth/signup route */
 router.post('/signup', function(req, res, next) {
