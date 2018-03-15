@@ -31,7 +31,7 @@ class EditEvent extends Component {
 
       this.setState({
          _id: cc._id,
-         eventName: cc.name,
+         name: cc.name,
          startDate: cc.startDate,
          startTime: cc.startTime,
          endDate: cc.endDate,

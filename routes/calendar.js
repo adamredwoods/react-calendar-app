@@ -309,8 +309,8 @@ router.post('/events', function(req,res,next){
 });
 
 router.post('/one', function(req,res,next){
-	console.log("/one");
-    console.log(req.body);
+	console.log("POST /one");
+	
     Calendar.findOne({_id: req.body.calendar._id},function(err,calendar){
         if(err){
             console.log(err);

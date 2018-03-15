@@ -26,7 +26,7 @@ class AddEvent extends EditEvent {
 
       this.setState({
          _id: 0,
-         eventName: "",
+         name: "",
          startDate: sd,
          startTime: "09:00",
          endDate: ed,
