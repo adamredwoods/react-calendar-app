@@ -37,27 +37,23 @@ class Day extends Component {
       return arr;
    }
 
-   onClickDelete = (eventObj,e) => {
+   onClickDelete = (e, eventObj, history) => {
       e.stopPropagation();
       this.props.deleteEvent(eventObj);
+		history.push("/event/delete");
    }
 
-   onClickAdd = (eventObj, e) => {
-      e.stopPropagation();
-      //this.props.addEvent(eventObj);
-
-   }
 
 	onClickEdit(e, eventObj, history) {
 		this.props.onClickEditDayEvent(eventObj);
 		history.push("/event/edit");
 	}
 
-    render(){
+    render() {
       //parse through props.viewDate to match what is in the props.calendar
-      var arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
+      let arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
 
-		const list = arr.map((eventObj) => {
+		let list = arr.map((eventObj) => {
 		    let spanInfo;
 		    if(eventObj.startDate !== eventObj.endDate){
 		        spanInfo = eventObj.startDate.date("YYYY-MM-DD")+"-"+eventObj.endDate.date("YYYY-MM-DD");
@@ -70,7 +66,7 @@ class Day extends Component {
 					   <Row>
 					      <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
 					      <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
-					      <Col xs={3}><button className="delete-btn btn pill" onClick={this.onClickDelete.bind(this,eventObj)}>Delete</button></Col>
+					      <Col xs={3}><button className="delete-btn btn pill" onClick={(e)=> (this.onClickDelete(e,eventObj,history))}>Delete</button></Col>
 					  </Row>
 					  <div>
 					          <span>{spanInfo}</span>

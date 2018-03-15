@@ -301,7 +301,7 @@ router.post('/events', function(req,res,next){
 			         console.log(err);
 			     }
 			     if (events) {
-			       console.log(events);
+			       //console.log(events);
 					 res.json({events: events});
 			     }
 			  });
@@ -422,40 +422,47 @@ router.post('/one', function(req,res,next){
 	});
 });
 
+//TODO: cleanup!!!
+//TODO: don't json return entire calendar!!!
 router.post('/editone', function(req, res, next) {
-  console.log("delete");
+  console.log("/editone");
   console.log(req.body);
-  let editEventId = req.body.eventObj._id;
-  let eventName = req.body.eventObj.eventName;
-  let startDate = Number(req.body.eventObj.startDate.date('U'));
-  let startTime = req.body.eventObj.startTime;
-  let endDate = Number(req.body.eventObj.endDate.date('U'));
-  let endTime = req.body.eventObj.endTime;
-  let priority = req.body.eventObj.priority;
-  let eventType = req.body.eventObj.eventType;
+
+  let eventObj = {
+	  _id: req.body.eventObj._id,
+	  name: req.body.eventObj.name,
+	  eventTypeId: req.body.eventObj.eventType,
+	  startDate: Number(req.body.eventObj.startDate.date('U')),
+	  endDate: Number(req.body.eventObj.endDate.date('U')),
+	  startTime: req.body.eventObj.startTime,
+	  endTime: req.body.eventObj.endTime,
+	  priority: req.body.eventObj.priority
+  }
+
   Calendar.findOne({_id: req.body.calendarId},function(err, calendar){
       if(err){
           console.log(err);
       }
       if(calendar){
           if(calendar.userId == req.body.user.id){
-              Calendar.findOneAndUpdate({"_id": req.body.calendarId, "events._id": editEventId
-                        },{
-                            "$set":{
-                                "events.$.name": eventName,
-                                "events.$.eventTypeId": eventType,
-                                "events.$.startDate": startDate,
-                                "events.$.startTime": startTime,
-                                "events.$.endDate": endDate,
-                                "events.$.endTime": endTime,
-                                "events.$.priority": priority
-                            }
-                        },function(err,updatedEvent){
-                            if(err){
-                                console.log('err updating event',err);
-                            }
-                            res.json({updatedEvent: updatedEvent});
-                        });
+              Calendar.findOneAndUpdate({"_id": req.body.calendarId, "events._id": eventObj._id
+					 },{
+						  "$set":{
+								"events.$.name": eventObj.name,
+								"events.$.eventTypeId": eventObj.eventTypeId,
+								"events.$.startDate": eventObj.startDate,
+								"events.$.startTime": eventObj.startTime,
+								"events.$.endDate": eventObj.endDate,
+								"events.$.endTime": eventObj.endTime,
+								"events.$.priority": eventObj.priority
+						  }
+					 },function(err,updatedEvent){
+						  if(err){
+								console.log('err updating event',err);
+						  }
+						  //--returning the original object
+						  res.json({updatedEvent: eventObj});
+					 });
           }else if(calendar.people){
               for(let i=0; i<calendar.people.length; i++){
                   if(calendar.people[i].userId == req.body.user.id && calendar.people[i].permission == "edit"){
@@ -474,7 +481,8 @@ router.post('/editone', function(req, res, next) {
                             if(err){
                                 console.log('err updating event',err);
                             }
-                            res.json({updatedEvent: updatedEvent});
+									 //--returning the original object
+                            res.json({updatedEvent: eventObj});
                         });
                   }else{
                       res.status(500).send({error: true, message: 'uh oh! You do not have editing permissions. Talk to the calendar owner! '+error.message});

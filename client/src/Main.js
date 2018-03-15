@@ -53,8 +53,6 @@ class Main extends Component {
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
       //this.handleAddEventChange = this.handleAddEventChange.bind(this);
-      this.handleTypeChange = this.handleTypeChange.bind(this);
-      this.handlePriorityChange = this.handlePriorityChange.bind(this);
       this.handleEditEventChange = this.handleEditEventChange.bind(this);
       this.onClickEditDayEvent = this.onClickEditDayEvent.bind(this);
     }
@@ -79,7 +77,7 @@ class Main extends Component {
        calendar: currentCalendar,
        user: currentUser
      }).then(response => {
-       console.log(response.data);
+       //console.log(response.data);
        base.setState({calendar: response.data.events});
      }).catch(err => {
        console.log('backend cal err on db send - '+err);
@@ -104,13 +102,10 @@ class Main extends Component {
      this.setState({ [en]: et });
    }
 
-   handleTypeChange = (event) => {
-     this.setState({eventType: event.target.value})
-   }
 
    clickChangeDay = (newDate) => {
       console.log("..click: change date",newDate);
-      //-- watch for race conditions
+      //-- changing months, watch for race conditions
       if (newDate.date("YYYY-MM")!==(this.state.viewDate.date("YYYY-MM"))) {
             let ym = newDate.date("YYYY-MM");
             this.getAllEvents([ ym+"-01", ym+"-31" ]);
@@ -138,9 +133,7 @@ class Main extends Component {
         });
     }
 
-    handlePriorityChange = (event) => {
-      this.setState({eventPriority: event.target.value});
-    }
+
 
     handleNameChange = (event) => {
         this.setState({calName: event.target.value});
@@ -155,43 +148,52 @@ class Main extends Component {
     }
 
     addHolidays = (event) => {
-        event.preventDefault();
-        let base = this;
-        let currentUser = this.props.user;
-        let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-        let currentYear = this.state.currentYear;
-        let holidays = this.state.currentYearHolidays;
+		event.preventDefault();
+		let base = this;
+		let currentUser = this.props.user;
+		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let currentYear = this.state.currentYear;
+		let holidays = this.state.currentYearHolidays;
 		axios.post('/calendar/addHoliday',{
-            holidays: holidays,
-            year: currentYear,
-            user: currentUser,
-            calendar: currentCalendar
-        }).then(response => {
-            localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
-            base.setState({ fullCalendar: response.data.calendar});
-            // base.getAllEvents([
-            //   new Date.format("YYYY-MM") + "-01",
-            //   new Date.format("YYYY-MM") + "-31"
-            // ]);
-            base.props.onClickEventAction(0);
-        }).catch(err => {
-            console.log('backend error we hope', err);
-        });
+		   holidays: holidays,
+		   year: currentYear,
+		   user: currentUser,
+		   calendar: currentCalendar
+		}).then(response => {
+		   localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
+		   base.setState({ fullCalendar: response.data.calendar});
+		   // base.getAllEvents([
+		   //   new Date.format("YYYY-MM") + "-01",
+		   //   new Date.format("YYYY-MM") + "-31"
+		   // ]);
+		   base.props.onClickEventAction(0);
+		}).catch(err => {
+		   console.log('backend error we hope', err);
+		});
     }
 
+	 copyEvent(src, dst) {
+		 dst.name = src.name;
+		 dst.startDate = src.startDate;
+		 dst.startTime = src.startTime;
+		 dst.endDate = src.endDate;
+		 dst.endTime = src.endTime;
+		 dst.priority = src.priority;
+		 dst.eventTypeId = src.eventTypeId;
+	 }
 
     //
     //-- this is the new way to add events, call this from inside the editing component and send an object
-    addEvent = (eventObject) => {
+    addEvent = (eventObj, history) => {
 
-      let name = eventObject.eventName;
+      let name = eventObj.name;
       let base = this;
-      let priority = eventObject.eventPriority;
-      let startDate = eventObject.startDate;
-      let startTime = eventObject.startTime;
-      let endDate = eventObject.endDate;
-      let endTime = eventObject.endTime;
-      let eventType = eventObject.eventTypeId;
+      let priority = eventObj.priority;
+      let startDate = eventObj.startDate;
+      let startTime = eventObj.startTime;
+      let endDate = eventObj.endDate;
+      let endTime = eventObj.endTime;
+      let eventType = eventObj.eventTypeId;
       let currentUser = this.props.user;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
       axios.post('/calendar/one',{
@@ -205,43 +207,44 @@ class Main extends Component {
         priority: priority,
         calendar: currentCalendar
       }).then(response => {
-        console.log(response.data);
-        this.props.onClickEventAction(0);
+        //console.log(response.data);
+
+		  //-- update the calendar state
+		  let calendar = base.state.calendar;
+		  calendar.events.push(eventObj)
+		  base.setState({calendar: calendar});
+        //TODO: revese lookup this link
+		  history.push("/")
       }).catch(err => {
         console.log('backend err w add event', err);
       });
     }
 
-    editEvent = (eventObj) => {
+    editEvent = (eventObj, history) => {
       let currentEvent = JSON.parse(localStorage.getItem('currentEvent'));
       console.log('edit?');
-      console.log(eventObj);
-      let currentEventObj = eventObj;
-      // let name = this.state.eventName;
-      // let base = this;
-      // let priority = this.state.eventPriority;
-      // let startDate = this.state.eStartDate;
-      // let startTime = this.state.eStartTime;
-      // let endDate = this.state.eEndDate;
-      // let endTime = this.state.eEndTime;
-      // let eventType = this.state.eventType;
+      //console.log(eventObj);
       let currentUser = this.props.user;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let base = this;
       axios.post("/calendar/editone", {
-        // name: name,
-        eventObj: currentEventObj,
+        eventObj: eventObj,
         currentEvent: currentEvent,
-        // startDate: startDate,
-        // startTime: startTime,
-        // endDate: endDate,
-        // endTime: endTime,
-        // eventType: eventType,
         user: currentUser,
-        // priority: priority,
         calendarId: currentCalendar._id
       }).then(response =>{
-        console.log(response.data);
-        this.props.onClickEventAction(0);
+      	//console.log(response.data);
+
+			//-- update the calendar state
+			let calendar = base.state.calendar;
+			calendar.forEach( (c) => {
+				if (c.events._id===eventObj._id) {
+					base.copyEvent(eventObj,c.events);
+				}
+			});
+			base.setState({calendar: calendar});
+			//TODO: revese lookup this link
+			history.push("/")
       }).catch(err=>{
         console.log('backend error with edit',err);
       });
@@ -355,7 +358,7 @@ class Main extends Component {
 					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} initialValues={this.props.eventObject} />
 				)} />
 				<Route path="/event/edit" render={
-					 () => (<EditEvent handlePriorityChange={event => this.handlePriorityChange(event)} handleEventNameChange={event => this.handleEventNameChange(event)} onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
+					 () => (<EditEvent onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} handleChange={this.handleEditEventChange} handleTypeChange={event => this.handleTypeChange(event)} />
 				)} />
 				<Route path="/event/delete" render={
 					() => (<DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>

@@ -11,7 +11,6 @@ class AddEvent extends EditEvent {
    constructor(props){
       super(props);
 
-      this.editCurrentEvent = this.editCurrentEvent.bind(this);
    }
 
    componentDidMount() {
@@ -36,6 +35,17 @@ class AddEvent extends EditEvent {
          priority: 0,
          error: null
       });
+   }
+
+   editCurrentEvent = (e, history) => {
+       e.preventDefault();
+       if(this.state.startDate.date('U') > this.state.endDate.date('U')){
+            this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
+       }else{
+            let eventObj = this.state;
+				//-- pass history back to parent to call page change after backend updates
+            this.props.addEvent(eventObj, history);
+       }
    }
 
 }
