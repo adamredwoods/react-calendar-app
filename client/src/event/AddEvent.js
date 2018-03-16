@@ -6,6 +6,7 @@ import "date-format-lite";
 import MiniCalendarPicker from "../helper/MiniCalendarPicker";
 import Holidays from 'date-holidays';
 import EditEvent from './EditEvent.js';
+import EventObject from '../event/EventObject.js';
 
 class AddEvent extends EditEvent {
    constructor(props){
@@ -42,7 +43,9 @@ class AddEvent extends EditEvent {
        if(this.state.startDate.date('U') > this.state.endDate.date('U')){
             this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
        }else{
-            let eventObj = this.state;
+            let eventObj = new EventObject(this.state);
+				eventObj.setId(this.state._id);
+
 				//-- pass history back to parent to call page change after backend updates
             this.props.addEvent(eventObj, history);
        }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Route} from 'react-router';
 import { Row, Col } from 'react-grid-system';
 import '../css/Day.css';
+import EventObject from '../event/EventObject.js';
 
 class Day extends Component {
    constructor(props) {
@@ -22,7 +23,7 @@ class Day extends Component {
         if(calendar[i].events) day = calendar[i].events.startDate.date('MM-DD');
 
         if (day === date.date('MM-DD')) {
-           arr[j] = (calendar[i].events);
+           arr[j] = new EventObject(calendar[i].events);
            j++;
         }
       }

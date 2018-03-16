@@ -51,7 +51,10 @@ class MiniCalendarPicker extends Component {
    }
 
    componentWillMount() {
-      this.setState({ viewDate: new Date() });
+		let d = this.props.value;
+		if (d) this.setState({ selectedDay: d });
+		if (!d) d = new Date();
+      this.setState({ viewDate: d });
    }
 
    findWeekDayNum= (date) => {

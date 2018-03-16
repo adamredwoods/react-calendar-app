@@ -310,7 +310,7 @@ router.post('/events', function(req,res,next){
 
 router.post('/one', function(req,res,next){
 	console.log("POST /one");
-	
+
     Calendar.findOne({_id: req.body.calendar._id},function(err,calendar){
         if(err){
             console.log(err);
@@ -429,7 +429,7 @@ router.post('/editone', function(req, res, next) {
   console.log(req.body);
 
   let eventObj = {
-	  _id: req.body.eventObj._id,
+	  _id: req.body.eventObj.id,
 	  name: req.body.eventObj.name,
 	  eventTypeId: req.body.eventObj.eventType,
 	  startDate: Number(req.body.eventObj.startDate.date('U')),
