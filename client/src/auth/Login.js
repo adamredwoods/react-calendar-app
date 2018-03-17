@@ -41,8 +41,9 @@ class Login extends Component {
       return (<Redirect to="/" />);
     }
     else {
-      form = (<form onSubmit={this.handleSubmit}>
+      form = (<form onSubmit={this.handleSubmit} className="nice-form">
                 <div>
+					 	<h4>Email:</h4>
                   <input name="Email"
                        placeholder="Enter your email"
                        value={this.state.email}
@@ -50,6 +51,7 @@ class Login extends Component {
                   />
                 </div>
                 <div>
+					 	<h4>Password:</h4>
                   <input name="Password"
                        placeholder="Enter your password"
                        type="password"
@@ -57,7 +59,7 @@ class Login extends Component {
                        onChange={this.handlePasswordChange}
                   />
                 </div>
-                <input type="submit" value="Login" className="btn-primary" />
+                <input type="submit" value="Login" className="btn-primary margin-30" />
               </form>);
     }
     return (

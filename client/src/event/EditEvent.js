@@ -9,7 +9,9 @@ import MiniCalendarPicker from "../helper/MiniCalendarPicker";
 import Holidays from 'date-holidays';
 import EventObject from '../event/EventObject.js';
 
-
+//
+//
+//--we need to treat the dates as YYYY-MM-DD for the input to work properly
 class EditEvent extends Component {
    constructor(props){
       super(props);
@@ -26,7 +28,6 @@ class EditEvent extends Component {
 
    }
 
-
    componentDidMount() {
       // let cc = JSON.parse(localStorage.getItem("currentEvent"));
 		let cc = this.props.eventToEdit;
@@ -35,9 +36,9 @@ class EditEvent extends Component {
 	      this.setState({
 	         id: cc.id,
 	         name: cc.name,
-	         startDate: cc.startDate,
+	         startDate: cc.startDate.date('YYYY-MM-DD') ,
 	         startTime: cc.startTime,
-	         endDate: cc.endDate,
+	         endDate: cc.endDate.date('YYYY-MM-DD') ,
 	         endTime: cc.endTime,
 	         eventType: cc.eventType,
 	         priority: cc.priority,
@@ -79,15 +80,12 @@ class EditEvent extends Component {
             return (<Redirect to="/" />);
       }
 
-		//let startDate, endDate = "";
-		//startDate = (this.state.startDate.date('YYYY')>'1900') ? startDate = this.state.startDate.date('YYYY-MM-DD') : "";
-		//startDate = (this.state.endDate) ? startDate = this.state.endDate.date('YYYY-MM-DD') : "";
 
 
       return (
 			<Route render={({history}) => (
 				<div className="nice-form-div">
-				    <form name="Edit Event" className="nice-form" onSubmit={(event)=> (this.editCurrentEvent(event,history))}>
+				    <form name="Edit Event" className="nice-form" >
 				      <h3>Event Name</h3>
 				      <input type="text" name="name" onChange={this.handleChange} value={this.state.name} />
 						<h5>Start Time</h5>
@@ -123,7 +121,7 @@ class EditEvent extends Component {
 				      </div>
 				      <div className="margin-top-50">
 				        <input type="hidden" value={this.state._id} />
-				        <button className="btn blue round large">Submit</button>
+				        <button className="btn blue round large" onClick={(event)=> (this.editCurrentEvent(event,history))}>Submit</button>
 				      </div>
 				    </form>
 				    <Link className="btn outline margin-top-10" to="/">

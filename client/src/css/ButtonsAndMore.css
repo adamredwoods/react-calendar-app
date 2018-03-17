@@ -150,7 +150,8 @@
 
 .nice-form input[type=time],
 .nice-form input[type=date],
-.nice-form input[type=text] {
+.nice-form input[type=text],
+.nice-form input {
 	padding: 0.4rem 1rem;
 	font-size: 1.1rem;
 	border: 1px solid #ddd;

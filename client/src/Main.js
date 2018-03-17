@@ -49,7 +49,7 @@ class Main extends Component {
         fullCalendar: null,
         eventToEdit: null
       }
-      this.handleCountryCodeChange = this.handleCountryCodeChange.bind(this);
+		
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
@@ -120,13 +120,7 @@ class Main extends Component {
       });
    }
 
-   handleCountryCodeChange = (event) => {
-        this.setState({countryCode: event.target.value}, () => {
-            let holidays = new Holidays(this.state.countryCode);
-            let allHolidays = holidays.getHolidays(this.state.currentYear);
-            this.setState({currentYearHolidays: allHolidays});
-        });
-    }
+
 
 
 

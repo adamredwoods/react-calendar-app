@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router';
+import {Link, Redirect} from 'react-router-dom';
 import '../css/Edit.css';
 import '../css/ButtonsAndMore.css';
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';
@@ -6,9 +8,7 @@ import "date-format-lite";
 
 //TODO: functional component
 class EditCalendar extends Component {
-    onClickCancel = (e) => {
-      this.props.onClickEventAction(0);
-   }
+
     render(){
         console.log('we tried to render edit cal');
 
@@ -21,7 +21,9 @@ class EditCalendar extends Component {
                     </div>
                     <input type="submit" value="Edit Calendar" />
                 </form>
-                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
+                <Link className="btn outline margin-top-10" to="/">
+				      Cancel
+				    </Link>
             </div>
         );
     }

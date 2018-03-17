@@ -2,7 +2,7 @@
    position: fixed;
    right: -22rem;
    top: 3.2rem;
-   background-color: #eee;
+   background-color: #ccc;
    z-index: 999;
    width: 22rem;
 }
@@ -13,7 +13,7 @@
    width: 3.2rem;
    height: 3.2rem;
    line-height: 3.2rem;
-   background-color: #eee;
+   background-color: #ccc;
    font-size: 2.0rem;
    cursor: pointer;
 }

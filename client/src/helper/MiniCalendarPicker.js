@@ -41,6 +41,7 @@ export const DaysOfWeek = () => {
    );
 }
 
+
 class MiniCalendarPicker extends Component {
    constructor(props) {
       super(props);
@@ -151,8 +152,9 @@ class MiniCalendarPicker extends Component {
    onClickDay = (day) => {
       //--get new day data from backend
 
-      //--send new date
-      let newDate = (this.state.viewDate.date("YYYY-MM")+"-"+day).date();
+      //--send new date, and unfortunately, the date format npm wants the date to be perfect or it will not work
+		let addZero = (day<10) ? "0" : "";
+      let newDate = (this.state.viewDate.date("YYYY-MM")+"-"+addZero+day); //.date();
       this.setState({selectedDay: newDate});
 
       if (this.props.onClick) {

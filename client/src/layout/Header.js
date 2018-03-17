@@ -20,9 +20,15 @@ class Header extends Component {
       }
    }
 
-   onClickToggleMenu = (e) => {
-      e.preventDefault();
-      this.setState({showMenu: !this.state.showMenu});
+   onClickToggleMenu = (toggle) => {
+
+		let state = this.state.showMenu;
+		if (toggle<0) {
+			this.setState({showMenu: false});
+		} else {
+			this.setState({showMenu: !state});
+
+		}
    }
 
   render(){
@@ -44,7 +50,7 @@ class Header extends Component {
          <div className="nav">
             {links}
           </div>
-        <Menu calendar={this.props.calendar} user={this.props.user} onClickToggleMenu={this.onClickToggleMenu} showMenu={this.state.showMenu} onClickEventAction={this.props.onClickEventAction}/>
+        <Menu onClickToggleMenu={this.onClickToggleMenu} showMenu={this.state.showMenu} />
         </div>
       );
   }
