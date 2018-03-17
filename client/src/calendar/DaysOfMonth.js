@@ -54,7 +54,7 @@ class SingleDay extends Component {
                   hasEvents = <div className="days-background3">{circle3}</div>;
                }
             } else if(this.props.events[i].eventTypeId===0) {
-               svg = <img src="icon-star.svg" width="10" height="10"/>;
+               svg = <img src="icon-star.svg" width="10" height="10" />;
             } else {
                //-- only certain events get the actual circle
                hasEvents = <div className="days-background3">{circle3}</div>;
@@ -220,7 +220,7 @@ class DaysOfMonth extends Component {
                d++;
                let todayBoolean = (d===today) ? true : false;
                let selectBoolean = (d===selectedDay) ? true : false;
-               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} selected={selectBoolean} events={eventsArray[d]} onClickDay={this.onClickDay} yearMonth={yearMonth}/></Col>);
+               row.push (<Col ><SingleDay dayNum={d} today={todayBoolean} selected={selectBoolean} events={eventsArray[d]} onClickDay={this.onClickDay} yearMonth={yearMonth} key={"dd"+d}/></Col>);
             }
          }
          output.push(<Row>{row}</Row>);

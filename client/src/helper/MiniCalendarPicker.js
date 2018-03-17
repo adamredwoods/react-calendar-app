@@ -11,8 +11,8 @@ var mondayIsFirst= true;
 
 
 export const DaysOfWeek = () => {
-   let weekStyle = {fontSize: "0.5rem"}
-  let daysOfWeek = (mondayIsFirst) ?
+	let weekStyle = {fontSize: "0.5rem"}
+ 	let daysOfWeek = (mondayIsFirst) ?
      (<Row>
        <Col style={weekStyle}>m</Col>
        <Col style={weekStyle}>t</Col>
@@ -46,7 +46,8 @@ class MiniCalendarPicker extends Component {
       super(props);
       this.state = {
          viewDate: "",
-         selectedDay: ""
+         selectedDay: "",
+			currentDate: ""
       }
    }
 
@@ -54,7 +55,7 @@ class MiniCalendarPicker extends Component {
 		let d = this.props.value;
 		if (d) this.setState({ selectedDay: d });
 		if (!d) d = new Date();
-      this.setState({ viewDate: d });
+      this.setState({ viewDate: d, currentDate: d });
    }
 
    findWeekDayNum= (date) => {
@@ -83,9 +84,11 @@ class MiniCalendarPicker extends Component {
          return <div></div>
       }
 
+		let inputDay = this.props.value || this.state.selectedDay;
+
       //leap year
       let year = parseInt(date.date("YYYY"));
-      let selectedDay = parseInt(this.state.selectedDay.date("DD"));
+      let selectedDay = parseInt(inputDay.date("DD"));
       let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
       let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
@@ -93,7 +96,7 @@ class MiniCalendarPicker extends Component {
 
 
 
-      if (date.date("YYYY-MM") !== this.state.selectedDay.date("YYYY-MM")) selectedDay = 0;
+      if (date.date("YYYY-MM") !== inputDay.date("YYYY-MM")) selectedDay = 0;
 
       if(mondayIsFirst) {
          wkStart = (wkStart===0) ? 6 : wkStart-1;
@@ -107,42 +110,42 @@ class MiniCalendarPicker extends Component {
          let row=[];
          for(let i=0; i<7; i++) {
             if (i<wkStart && d===0 || d>=maxDay) {
-               row.push (<Col ></Col>);
+               row.push (<Col key={i} ></Col>);
             }
             if ((i===wkStart || d>0) && d<maxDay) {
                d++;
 
                let classSelect = (d===selectedDay) ? "day-single mini-selected" : "day-single";
-               row.push (<div className={classSelect} onClick={this.onClickDay.bind(this,d)}>{d}</div>);
+               row.push (<div className={classSelect} onClick={this.onClickDay.bind(this,d)} key={"k"+i}>{d}</div>);
             }
          }
-         output.push(<Row>{row}</Row>);
+         output.push(<Row key={"r"+k}>{row}</Row>);
       }
       return output;
    }
 
    prevMonth = (e) => {
-      let m = parseInt(this.state.viewDate.date("MM"));
-      let y = parseInt(this.state.viewDate.date("YYYY"));
+      let m = parseInt(this.state.currentDate.date("MM"));
+      let y = parseInt(this.state.currentDate.date("YYYY"));
       m=m-1;
       if (m<1) {
          m=12;
          y=y-1;
       }
       let newDate = (y+"-"+m+"-"+"1").date("YYYY-MM-DD");
-      this.setState({viewDate: newDate});
+      this.setState({viewDate: newDate, currentDate: newDate});
    }
 
    nextMonth = (e) => {
-      let m = parseInt(this.state.viewDate.date("MM"));
-      let y = parseInt(this.state.viewDate.date("YYYY"));
+      let m = parseInt(this.state.currentDate.date("MM"));
+      let y = parseInt(this.state.currentDate.date("YYYY"));
       m=m+1;
       if (m>12) {
          m=1;
          y=y+1;
       }
       let newDate = (y+"-"+m+"-"+"1").date();
-      this.setState({viewDate: newDate});
+      this.setState({viewDate: newDate, currentDate: newDate});
    }
 
    onClickDay = (day) => {
@@ -160,7 +163,12 @@ class MiniCalendarPicker extends Component {
 
    render() {
 
-      let month = this.state.viewDate.date("MMMM")+" "+this.state.viewDate.date("YYYY");
+
+		let month = "";
+		if (this.state.currentDate) {
+			month = this.state.currentDate.date("MMMM")+" "+this.state.currentDate.date("YYYY");
+		}
+
 
       return (
          <div className="mini-calendar-picker">
@@ -175,7 +183,7 @@ class MiniCalendarPicker extends Component {
             </Row>
             <Row>
                <Col sm={12}>{
-                  this.showDays(this.state.viewDate)
+                  this.showDays(this.state.currentDate)
                }</Col>
             </Row>
          </div>

@@ -62,10 +62,6 @@ class EditEvent extends Component {
       this.setState({[e.target.name]: e.target.value, error: null});
    }
 
-   handleTypeChange = (event) => {
-     this.setState({eventTypeId: event.target.value});
-   }
-
 
    render() {
        let errorMessage;
@@ -83,29 +79,31 @@ class EditEvent extends Component {
             return (<Redirect to="/" />);
       }
 
-      let startDate = this.state.startDate.date('YYYY-MM-DD');
-      let endDate = this.state.endDate.date('YYYY-MM-DD');
+		//let startDate, endDate = "";
+		//startDate = (this.state.startDate.date('YYYY')>'1900') ? startDate = this.state.startDate.date('YYYY-MM-DD') : "";
+		//startDate = (this.state.endDate) ? startDate = this.state.endDate.date('YYYY-MM-DD') : "";
+
 
       return (
 			<Route render={({history}) => (
 				<div className="nice-form-div">
 				    <form name="Edit Event" className="nice-form" onSubmit={(event)=> (this.editCurrentEvent(event,history))}>
 				      <h3>Event Name</h3>
-				      <input type="text" name="eventName" onChange={this.handleChange} value={this.state.name} />
+				      <input type="text" name="name" onChange={this.handleChange} value={this.state.name} />
 						<h5>Start Time</h5>
 						<input type="time" name="startTime" onChange={this.handleChange} value={this.state.startTime} />
 				      <h4>Start Date</h4>
-				      <input type="date" name="startDate" onChange={this.handleChange} value={startDate} />
+				      <input type="date" name="startDate" onChange={this.handleChange} value={this.state.startDate} />
 				      <div className="spacer-30" />
-				      <MiniCalendarPicker name="startDate" onClick={this.handleChange} value={startDate} />
+				      <MiniCalendarPicker name="startDate" onClick={this.handleChange} value={this.state.startDate} />
 
 
 						<h5>End Time</h5>
 						<input type="time" name="endTime" onChange={this.handleChange} value={this.state.endTime} />
 				      <h4>End Date</h4>
-				      <input type="date" name="endDate" onChange={this.handleChange} value={endDate} />
+				      <input type="date" name="endDate" onChange={this.handleChange} value={this.state.endDate} />
 				      <div className="spacer-30" />
-				      <MiniCalendarPicker name="endDate" onClick={this.handleChange} value={endDate} />
+				      <MiniCalendarPicker name="endDate" onClick={this.handleChange} value={this.state.endDate} />
 						<hr />
 						<div>
 				        <select value={this.state.eventType} onChange={this.handleChange} name="eventType">
@@ -125,11 +123,11 @@ class EditEvent extends Component {
 				      </div>
 				      <div className="margin-top-50">
 				        <input type="hidden" value={this.state._id} />
-				        <input type="submit" value="Submit" />
+				        <button className="btn blue round large">Submit</button>
 				      </div>
 				    </form>
-				    <Link className="btn outline margin-10" to="/">
-				      cancel
+				    <Link className="btn outline margin-top-10" to="/">
+				      Cancel
 				    </Link>
 				    {errorMessage}
 				</div>

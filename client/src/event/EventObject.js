@@ -2,14 +2,16 @@
 class EventObject {
 
 	constructor(obj) {
-		this.name = obj.name || obj.eventName;
-		this.priority = obj.priority;
-		this.startDate = obj.startDate;
-		this.startTime = obj.startTime;
-		this.endDate = obj.endDate;
-		this.endTime = obj.endTime;
-		this.eventType = obj.eventType || obj.eventTypeId;
-		this.id = obj.id || obj._id;
+		if (obj) {
+			this.name = obj.name || obj.eventName;
+			this.priority = obj.priority;
+			this.startDate = obj.startDate;
+			this.startTime = obj.startTime;
+			this.endDate = obj.endDate;
+			this.endTime = obj.endTime;
+			this.eventType = obj.eventType || obj.eventTypeId;
+			this.id = obj.id || obj._id;
+		}
 	}
 
 	set(obj) {

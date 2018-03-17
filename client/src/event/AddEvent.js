@@ -18,7 +18,6 @@ class AddEvent extends EditEvent {
 
       let sd, ed;
       if(this.props.viewDate) {
-         //console.log(this.props.initialValues);
          sd = ed = this.props.viewDate;
 
       } else {

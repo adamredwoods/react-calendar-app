@@ -89,13 +89,7 @@ class Main extends Component {
      this.setState({eventName: event.target.value});
    }
 
-   handleAddEventChange = (event) => {
-    //  let stateChange =  event.target.name;
-     console.log(event.target.name);
-     var en=event.target.name;
-     var et=event.target.value;
-    this.setState({ [en]: et});
-   }
+
 
    handleEditEventChange = (event) => {
      var en = event.target.name;
@@ -348,7 +342,7 @@ class Main extends Component {
       return (
         <div className="main-home">
 				<Route path="/event/add" render = {
-					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} initialValues={this.props.eventObject} />
+					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} eventToEdit={new EventObject()} />
 				)} />
 				<Route path="/event/edit" render={
 					 () => (<EditEvent onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} eventToEdit={this.state.eventToEdit} handleTypeChange={event => this.handleTypeChange(event)} />

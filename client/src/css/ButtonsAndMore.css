@@ -3,7 +3,7 @@
 	color:#333333;
 	font-size:12px;
 	font-weight:bold;
-	padding:0 15px;
+	padding:5px 20px 5px 20px;
 	line-height:32px;
 	height: auto;
 	display:inline-block;
@@ -69,6 +69,10 @@
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
+}
+
+.btn.large {
+	font-size: 130%;
 }
 
 .btn-circle {
@@ -174,6 +178,10 @@
 /* MARGINS --------------------------------------- */
 .margin-10 {
 	margin: 10px;
+}
+
+.margin-top-10{
+	margin-top:10px;
 }
 
 .margin-30 {
