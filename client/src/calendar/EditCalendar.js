@@ -13,12 +13,16 @@ class EditCalendar extends Component {
 
         return(
             <div className="form edit-form nice-form-div">
-                <form name="Edit Calendar" className="nice-form" onSubmit={this.props.editCal}>
+                <form name="Edit Calendar" className="nice-form" >
                     <div className="form-field-container">
-                        <h3>Calendar Name</h3>
+                        <h3>New Calendar Name:</h3>
                         <input className="form-field" onChange={this.props.handleName} type="text" value={this.props.name} />
                     </div>
-                    <input type="submit" value="Edit Calendar" />
+						  <div className="margin-top-50">
+                    <Route render={({history}) => (
+							  <Link to="/" onClick={(e)=>this.props.editCal(e,history)}><input type="submit" value="Update" /></Link>
+						  )} />
+						  </div>
                 </form>
                 <Link className="btn outline margin-top-10" to="/">
 				      Cancel

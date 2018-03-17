@@ -137,7 +137,7 @@ class Main extends Component {
 		   //base.setState({ fullCalendar: response.data.calendar});
 
 			this.clickChangeDay(this.state.viewDate);
-			
+
 		}).catch(err => {
 		   console.log('backend error we hope', err);
 		});
@@ -230,7 +230,7 @@ class Main extends Component {
       });
     }
 
-    editCalName = (event) => {
+    editCalName = (event, history) => {
       event.preventDefault();
       let base = this;
       let currentUser = this.props.user;
@@ -241,14 +241,17 @@ class Main extends Component {
         calendar: currentCalendar._id,
         name: name
       }).then(response => {
-        console.log(response.data);
-        this.props.onClickEventAction(0);
+        //console.log(response.data);
+		  //--update state
+		  this.props.updateCalendarName(name);
+        //TODO: revese lookup this link
+		  history.push("/");
       }).catch(err => {
         console.log('err editing calendar - '+err);
       });
     }
 
-    addCalendar = (event) => {
+    addCalendar = (event, history) => {
       event.preventDefault();
       let base = this;
       let currentUser = this.props.user;
@@ -258,12 +261,14 @@ class Main extends Component {
         name: name
       }).then(response => {
         console.log(response.data);
+		  //TODO: revese lookup this link
+		  history.push("/");
       }).catch(err=> {
         console.log('err adding calendar - '+err);
       });
     }
 
-    addContributors = (event) => {
+    addContributors = (event, history) => {
         event.preventDefault();
         let base = this;
         let email = this.state.email;
@@ -277,7 +282,8 @@ class Main extends Component {
             permission: permission
         }).then(response => {
             console.log(response.data);
-            this.props.onClickEventAction(0);
+            //TODO: revese lookup this link
+				history.push("/");
         }).catch(err => {
             console.log('backend error with change database and send', err);
         });

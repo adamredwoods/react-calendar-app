@@ -24,9 +24,11 @@ class AddContributor extends Component {
                             <option value="view">View Only</option>
                         </select>
                     </div>
+						  <div className="margin-top-50">
 						  <Route render={({history}) => (
-                    		<Link to="/" onClick={(e)=>this.props.editCal(e,history)}><input type="submit" value="Edit Contributors" /></Link>
+                    		<Link to="/" onClick={(e)=>this.props.editCal(e,history)}><input type="submit" value="Update" /></Link>
 							)} />
+							</div>
                 </form>
                 <Link className="btn outline margin-10" to="/">
 	  				 	cancel

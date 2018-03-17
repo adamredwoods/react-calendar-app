@@ -17,7 +17,11 @@ class AddCalendar extends Component {
                         <h3>Calendar Name</h3>
                         <input className="form-field" onChange={this.props.handleName} type="text" />
                     </div>
-                    <input type="submit" value="Add Calendar" />
+						  <div className="margin-top-50">
+						  <Route render={({history}) => (
+                    		<Link to="/" onClick={(e)=>this.props.addCal(e,history)}><input type="submit" value="Add Calendar" /></Link>
+							)} />
+							</div>
                 </form>
 					 <Link className="btn outline margin-10" to="/">
 						cancel

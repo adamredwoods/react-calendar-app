@@ -70,6 +70,12 @@ class App extends Component {
     this.getUser();
   }
 
+  updateCalendarName = (name) => {
+	  let c = JSON.parse(JSON.stringify(this.state.calendar));
+	  c.name = name;
+	  this.setState({calendar: c});
+  }
+
   setFlash = (t, msg) => {
     this.setState({
       flash: msg,
@@ -104,7 +110,7 @@ class App extends Component {
 	              <Route path="/profile" render={
 	                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} />)} />
 					  <Route path="/" render={
-						 () => <Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} />} />
+						 () => <Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} updateCalendarName={this.updateCalendarName}/>} />
 				  </Switch>
 				</div>
           </div>
