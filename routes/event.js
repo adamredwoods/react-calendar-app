@@ -13,8 +13,9 @@ var CalEvent = require('../models/calendar').CalEvent;
 var Mongoose = require("mongoose");
 require('date-format-lite');
 
-
+//
 //-- /calendar/event route
+//
 router.post('/', function(req,res,next){
 
     var start = Number(req.body.startDate.date('U'));
@@ -37,6 +38,7 @@ router.post('/', function(req,res,next){
 	}
 });
 
+//-- /calendar/event/add
 router.post('/add', function(req,res,next){
 	console.log("POST /event/add");
 
@@ -151,6 +153,7 @@ router.post('/add', function(req,res,next){
 	});
 });
 
+//-- /calendar/event/edit
 //TODO: cleanup!!!
 //-- don't json return entire calendar!!!
 router.post('/edit', function(req, res, next) {
@@ -223,6 +226,7 @@ router.post('/edit', function(req, res, next) {
   });
 });
 
+//-- /calendar/event/delete 
 router.post('/delete',function(req,res,next){
     console.log('delete');
     console.log(req.body);

@@ -13,7 +13,7 @@ class AddContributor extends Component {
         //let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
             <div className="form edit-form nice-form-div">
-                <form name="Edit Contributors" className="nice-form" onSubmit={this.props.editCal}>
+                <form name="Edit Contributors" className="nice-form" >
                     <div className="form-field-container">
                         <h3>Add Contributor by Email</h3>
                         <input className="form-field" type="text" onChange={this.props.handleChange} value={this.props.email} />
@@ -24,7 +24,9 @@ class AddContributor extends Component {
                             <option value="view">View Only</option>
                         </select>
                     </div>
-                    <input type="submit" value="Edit Contributors" />
+						  <Route render={({history}) => (
+                    		<Link to="/" onClick={(e)=>this.props.editCal(e,history)}><input type="submit" value="Edit Contributors" /></Link>
+							)} />
                 </form>
                 <Link className="btn outline margin-10" to="/">
 	  				 	cancel

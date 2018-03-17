@@ -110,6 +110,8 @@ router.post('/add', function(req,res,next){
 });
 
 router.post('/addHoliday', function(req, res, next){
+	console.log("POST /calendar/addHoliday");
+
 	User.findOne({_id: req.body.user.id}, function(err, user) {
 		if(err){
 	     	console.log(err);
@@ -126,8 +128,8 @@ router.post('/addHoliday', function(req, res, next){
                     let startTime = holiday.start.date("HH:MM");
                     let holiEnd = Number(holiday.end.date('U'));
                     let endTime = holiday.end.date("HH:MM");
-                    console.log('start', holiStart, typeof holiStart);
-                    let holiType = holiday.type
+                  //   console.log('start', holiStart, typeof holiStart);
+                    let holiType = holiday.type;
                     if(calendar.events){
                         Calendar.update({ _id: calendar._id },
                             { $push: {
@@ -168,9 +170,7 @@ router.post('/addHoliday', function(req, res, next){
                             }
                         });
                     }
-                    console.log('still in the map');
                 });
-                console.log('finished the map');
             }
         }).then(function(updatedCalendar){
             // res.json({calendar: updatedCalendar});

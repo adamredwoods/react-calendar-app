@@ -120,13 +120,13 @@ class Main extends Component {
         this.setState({permission: event.target.value});
     }
 
-    addHolidays = (event) => {
-		event.preventDefault();
+    addHolidays = (holidays) => {
+
 		let base = this;
 		let currentUser = this.props.user;
 		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
 		let currentYear = this.state.currentYear;
-		let holidays = this.state.currentYearHolidays;
+
 		axios.post('/calendar/addHoliday',{
 		   holidays: holidays,
 		   year: currentYear,
@@ -134,12 +134,10 @@ class Main extends Component {
 		   calendar: currentCalendar
 		}).then(response => {
 		   localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
-		   base.setState({ fullCalendar: response.data.calendar});
-		   // base.getAllEvents([
-		   //   new Date.format("YYYY-MM") + "-01",
-		   //   new Date.format("YYYY-MM") + "-31"
-		   // ]);
-		   base.props.onClickEventAction(0);
+		   //base.setState({ fullCalendar: response.data.calendar});
+
+			this.clickChangeDay(this.state.viewDate);
+			
 		}).catch(err => {
 		   console.log('backend error we hope', err);
 		});

@@ -19,7 +19,7 @@ class AddHoliday extends Component {
 		this.state = {
 			countryCode: "",
 			currentYear: 0,
-
+			currentYearHolidays: []
 		}
 	}
 
@@ -29,6 +29,21 @@ class AddHoliday extends Component {
 		   let allHolidays = holidays.getHolidays(this.state.currentYear);
 		   this.setState({currentYearHolidays: allHolidays});
 		});
+	}
+
+	submitHolidays = (e, history) => {
+		e.preventDefault();
+		this.props.addHolidays(this.state.currentYearHolidays);
+		//TODO: reverse lookup
+		history.push("/");
+	}
+
+	listHolidays = () => {
+		let out=""
+		 this.state.currentYearHolidays.map(function(h) {
+			out+= ""+h.name+" "+h.date+"\n"
+		})
+		return out;
 	}
 
     render(){
@@ -42,13 +57,23 @@ class AddHoliday extends Component {
                 <option value={country}>{countries[country]}</option>
             );
         }
+
         return (
             <div className="country-codes-form nice-form-div">
-                <form name="Country Code" className="nice-form" onSubmit={this.props.addHolidays}>
+                <form name="Country Code" className="nice-form" >
                     <select value={this.state.countryCode} onChange={this.handleChange}>
                         {countryOptions}
                     </select>
-                    <Link to="/"><input type="submit" value="Add Holidays" /></Link>
+						  <div className="margin-top-10">
+						  		<textarea rows="10" cols="60" id="holiday-text-area" value={this.listHolidays()} readOnly></textarea>
+
+
+						  </div>
+						  <div className="margin-top-50">
+						  		<Route render={({history}) => (
+									<Link to="/" onClick={(e)=>this.submitHolidays(e,history)}><input type="submit" value="Add Holidays" /></Link>
+								)} />
+							</div>
                 </form>
 			 		 <Link className="btn outline margin-10" to="/">
 		  				 cancel
