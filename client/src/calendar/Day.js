@@ -50,6 +50,12 @@ class Day extends Component {
 		history.push("/event/edit");
 	}
 
+	deleteButtonDiv = (eventObj, history) => {
+		if(eventObj.eventType && !eventObj.isHoliday()) {
+			return <button className="delete-btn btn pill" onClick={(e)=> (this.onClickDelete(e,eventObj,history))}>Delete</button>
+		}
+	}
+
     render() {
       //parse through props.viewDate to match what is in the props.calendar
       let arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
@@ -57,7 +63,7 @@ class Day extends Component {
 		let list = arr.map((eventObj) => {
 		    let spanInfo;
 		    if(eventObj.startDate !== eventObj.endDate){
-		        spanInfo = eventObj.startDate.date("YYYY-MM-DD")+"-"+eventObj.endDate.date("YYYY-MM-DD");
+		        spanInfo = eventObj.startDate.date("YYYY-MM-DD")+" - "+eventObj.endDate.date("YYYY-MM-DD");
 		    }else{
 		        spanInfo = eventObj.startDate.date("YYYY-MM-DD");
 		    }
@@ -65,11 +71,11 @@ class Day extends Component {
 				 <Route render={ ({history}) => (
 					<div className="day-card" onClick={(e)=> (this.onClickEdit(e, eventObj, history))} >
 					   <Row>
-					      <Col xs={3}><div className="day-time btn pill">{eventObj.startTime}</div></Col>
+					      <Col xs={3}>{eventObj.startTime && <div className="day-time btn pill">{eventObj.startTime}</div>} </Col>
 					      <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
-					      <Col xs={3}><button className="delete-btn btn pill" onClick={(e)=> (this.onClickDelete(e,eventObj,history))}>Delete</button></Col>
+					      <Col xs={3}>{this.deleteButtonDiv(eventObj, history)}</Col>
 					  </Row>
-					  <div>
+					  <div className="day-mini-date">
 					          <span>{spanInfo}</span>
 					  </div>
 					  <hr />

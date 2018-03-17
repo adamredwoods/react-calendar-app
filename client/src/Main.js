@@ -49,7 +49,7 @@ class Main extends Component {
         fullCalendar: null,
         eventToEdit: null
       }
-		
+
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
@@ -72,6 +72,8 @@ class Main extends Component {
 	    let currentUser = this.props.user;
 	    let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
 	    let base = this;
+		 //--clearing it out first will prevent old data flashing
+		 this.setState({calendar: 0});
 	    axios.post('/calendar/events', {
 	       startDate: startDate,
 	       endDate: endDate,
@@ -205,7 +207,7 @@ class Main extends Component {
 			//-- update the calendar state
 			let calendar = base.state.calendar.slice();
 			calendar.forEach( (c) => {
-				if (c.events._id===eventObj.id || c.events.id===eventObj.id) {
+				if ((c.events.id && c.events.id===eventObj.id) || (c.events._id && c.events._id===eventObj.id )) {
 					eventObj.copyTo(c.events);
 				}
 			});
@@ -336,25 +338,25 @@ class Main extends Component {
       return (
         <div className="main-home">
 				<Route path="/event/add" render = {
-					() => (<AddEvent viewDate={this.state.viewDate} onClickEventAction={this.props.onClickEventAction} addEvent={this.addEvent} eventToEdit={new EventObject()} />
+					() => (<AddEvent viewDate={this.state.viewDate} addEvent={this.addEvent} eventToEdit={new EventObject()} />
 				)} />
 				<Route path="/event/edit" render={
-					 () => (<EditEvent onClickEventAction={this.props.onClickEventAction} editEvent={this.editEvent} eventToEdit={this.state.eventToEdit} handleTypeChange={event => this.handleTypeChange(event)} />
+					 () => (<EditEvent editEvent={this.editEvent} eventToEdit={this.state.eventToEdit} handleTypeChange={event => this.handleTypeChange(event)} />
 				)} />
 				<Route path="/event/delete" render={
-					() => (<DeleteEvent onClickEventAction={this.props.onClickEventAction} onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
+					() => (<DeleteEvent onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
 				)} />
 				<Route path="/calendar/holidays" render = {
-					() => (<AddHoliday onClickEventAction={this.props.onClickEventAction} countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
+					() => (<AddHoliday countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
 				)} />
 				<Route path="/calendar/edit" render={
-					() => (<EditCalendar onClickEventAction={this.props.onClickEventAction} editCal={this.editCalName} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
+					() => (<EditCalendar editCal={this.editCalName} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
 				)} />
 				<Route path="/calendar/contributor" render = {
-					() => (<AddContributor onClickEventAction={this.props.onClickEventAction} editCal={this.addContributors} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} />
+					() => (<AddContributor editCal={this.addContributors} handlePermChange={event => this.handlePermissionChange(event)} handleChange={event => this.handleEmailChange(event)} permission={this.state.permission} email={this.state.email} />
 				)} />
 				<Route path="/calendar/add" render={
-					() => (<AddCalendar onClickEventAction={this.props.onClickEventAction} addCal={this.addCalendar} handleName={event => this.handleNameChange(event)} />
+					() => (<AddCalendar addCal={this.addCalendar} handleName={event => this.handleNameChange(event)} />
 				)} />
 				<Route exact path="/" render={this.renderMainCal} />
         </div>

@@ -6,9 +6,7 @@ import "date-format-lite";
 
 // TODO: functional component
 class AddContributor extends Component {
-    onClickCancel = (e) => {
-      this.props.onClickEventAction(0);
-   }
+
     render(){
         //let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
         return(
@@ -26,7 +24,9 @@ class AddContributor extends Component {
                     </div>
                     <input type="submit" value="Edit Contributors" />
                 </form>
-                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
+                <Link className="btn outline margin-10" to="/">
+	  				 	cancel
+	  			  	 </Link>
             </div>
         );
     }

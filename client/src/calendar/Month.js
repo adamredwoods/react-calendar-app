@@ -6,15 +6,14 @@ import MonthHeader from './MonthHeader.js';
 
 
 
-class Month extends Component {
-    render(){
+const Month = (props) => {
         return (
             <div className="month-container">
-                <MonthHeader viewDate={this.props.viewDate} clickChangeDay={this.props.clickChangeDay}/>
-                <DaysOfMonth currentDate={this.props.currentDate} viewDate={this.props.viewDate} onClickDay={this.props.clickChangeDay} calendar={this.props.calendar}/>
+                <MonthHeader viewDate={props.viewDate} clickChangeDay={props.clickChangeDay}/>
+                <DaysOfMonth currentDate={props.currentDate} viewDate={props.viewDate} onClickDay={props.clickChangeDay} calendar={props.calendar}/>
             </div>
         );
     }
-}
+
 
 export default Month;

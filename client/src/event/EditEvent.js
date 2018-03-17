@@ -53,7 +53,9 @@ class EditEvent extends Component {
             this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
        }else{
             let eventObj = new EventObject(this.state);
-				eventObj.setId(this.state._id);
+				eventObj.setId(this.state.id);
+				//-- convert dates back to millisecs
+				eventObj.convertDatesToMillisecs();
 				//-- pass history back to parent to call page change after backend updates
             this.props.editEvent(eventObj, history);
        }
@@ -108,7 +110,7 @@ class EditEvent extends Component {
 				          <option value="1">Meeting</option>
 				          <option value="2">Work</option>
 				          <option value="3">Appointment</option>
-				          <option value="4">Birthday</option>
+				          <option value="4">Celebration</option>
 				          <option value="0">Holiday</option>
 				        </select>
 				        <select value={this.state.priority} onChange={this.handleChange} name="priority">
@@ -120,7 +122,7 @@ class EditEvent extends Component {
 				        </select>
 				      </div>
 				      <div className="margin-top-50">
-				        <input type="hidden" value={this.state._id} />
+				        <input type="hidden" value={this.state.id} />
 				        <button className="btn blue round large" onClick={(event)=> (this.editCurrentEvent(event,history))}>Submit</button>
 				      </div>
 				    </form>

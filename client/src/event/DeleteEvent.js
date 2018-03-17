@@ -9,7 +9,7 @@ import MiniCalendarPicker from "../helper/MiniCalendarPicker";
 import Holidays from 'date-holidays';
 
 const DeleteEvent = (props)=> {
-	
+
 	const onClickDelete = (e, history) => {
 		e.preventDefault();
 		props.onClickDelete(props.eventObject, history);
@@ -54,7 +54,7 @@ const DeleteEvent = (props)=> {
                </div>
                <div className="margin-top-50">
 
-               <input type="hidden" value={props.eventObject._id} />
+               <input type="hidden" value={props.eventObject.id} />
                <input type="submit" value="Delete Event" />
                </div>
            </form>

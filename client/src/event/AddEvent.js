@@ -25,7 +25,7 @@ class AddEvent extends EditEvent {
       }
 
       this.setState({
-         _id: 0,
+         id: 0,
          name: "",
          startDate: sd,
          startTime: "09:00",
@@ -43,8 +43,9 @@ class AddEvent extends EditEvent {
             this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
        }else{
             let eventObj = new EventObject(this.state);
-				eventObj.setId(this.state._id);
-
+				eventObj.setId(this.state.id);
+				//-- convert dates back to millisecs
+				eventObj.convertDatesToMillisecs();
 				//-- pass history back to parent to call page change after backend updates
             this.props.addEvent(eventObj, history);
        }

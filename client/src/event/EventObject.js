@@ -2,6 +2,12 @@
 class EventObject {
 
 	constructor(obj) {
+		const EVENT_HOLIDAY=0;
+		const EVENT_MEETING=1;
+		const EVENT_WORK=2;
+		const EVENT_APPOINTMENT=3;
+		const EVENT_CELEBRATION=4;
+
 		if (obj) {
 			this.name = obj.name || obj.eventName;
 			this.priority = obj.priority;
@@ -44,7 +50,18 @@ class EventObject {
 		return this.id;
 	}
 
+	isHoliday() {
+		return (this.eventType===this.EVENT_HOLIDAY);
+	}
 
+	convertDatesToMillisecs() {
+		if (parseInt(this.startDate)===NaN) {
+			this.startDate = this.startDate.date();
+		}
+		if (parseInt(this.endDate)===NaN) {
+			this.endDate = this.endDate.date();
+		}
+	}
 }
 
 export default EventObject;

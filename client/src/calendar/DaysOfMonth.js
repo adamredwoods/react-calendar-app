@@ -38,7 +38,7 @@ class SingleDay extends Component {
       if (this.props.today) currentDay = <div className="days-background">{circle2}</div>;
       // if (this.props.selected) addClass=addClass+" day-selected";
       if (this.props.selected) {
-         selectedDay = <div className="days-background">{circle2}</div>;
+         selectedDay = <div className="days-background day-selected-circle">{circle2}</div>;
          addClass=addClass+" day-selected";
       }
 
@@ -56,7 +56,7 @@ class SingleDay extends Component {
             } else if(this.props.events[i].eventTypeId===0) {
                svg = <img src="icon-star.svg" width="10" height="10" />;
             } else {
-               //-- only certain events get the actual circle
+               //-- only certain events get the event circle
                hasEvents = <div className="days-background3">{circle3}</div>;
                svg = circleSvg;
             }
@@ -72,8 +72,8 @@ class SingleDay extends Component {
                <div className="days-num">{this.props.dayNum}</div>
                <div className="days-event">{events}</div>
                {hasEvents}
-               {currentDay}
                {selectedDay}
+					{currentDay}
             </div>
 
          </div>

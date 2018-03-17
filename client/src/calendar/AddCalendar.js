@@ -6,9 +6,7 @@ import "date-format-lite";
 
 // TODO: functional component
 class AddCalendar extends Component {
-    onClickCancel = (e) => {
-        this.props.onClickEventAction(0);
-    }
+
     render(){
         return(
             <div className="nice-form-div">
@@ -19,7 +17,9 @@ class AddCalendar extends Component {
                     </div>
                     <input type="submit" value="Add Calendar" />
                 </form>
-                <div className="btn outline margin-10" onClick={this.onClickCancel}>cancel</div>
+					 <Link className="btn outline margin-10" to="/">
+						cancel
+					 </Link>
             </div>
         );
     }

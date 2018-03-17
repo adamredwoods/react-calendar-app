@@ -99,8 +99,8 @@
    color: #f0f0f0;
 }
 
-.day-selected svg {
-   /*border: 0.5px solid #9040b0;*/
+.day-selected-circle svg {
+	stroke: #102030;
    fill: #102030;
 }
 

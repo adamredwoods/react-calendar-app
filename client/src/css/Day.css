@@ -6,12 +6,17 @@
 
 .day-card {
    margin: 0;
-   padding: 0;
+   padding: 12px 0 0 0;
    width: 100%;
 }
 
+.day-card hr {
+	margin: 0;
+	padding: 0;
+}
+
 .day-card:hover {
-   background-color: #eee;
+   background-color: #fff;
    cursor: pointer;
 }
 
@@ -26,4 +31,8 @@
    font-weight: 700;
    margin-right: 0.3rem;
    text-align: right;
+}
+
+.day-mini-date {
+	margin: 0 0 5px 0;
 }
