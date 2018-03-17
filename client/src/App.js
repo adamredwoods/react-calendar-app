@@ -11,8 +11,6 @@ import Profile from './Profile.js';
 import Signup from './auth/Signup.js';
 
 
-
-
 class App extends Component {
   constructor(props){
     super(props);
@@ -90,17 +88,12 @@ class App extends Component {
     });
   }
 
-  onClickEventAction = (actionType, obj) => {
-     console.log("event action x", actionType);
-     this.setState({eventAction: actionType, eventObject: obj});
- }
-
   render() {
     return (
       <div className="App">
         <BrowserRouter>
           <div>
-            <Header user={this.state.user} calendar={this.state.calendar} onClickEventAction={this.onClickEventAction}/>
+            <Header user={this.state.user} calendar={this.state.calendar} />
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
 				  <Switch>
@@ -109,9 +102,9 @@ class App extends Component {
 	              <Route path="/signup" render={
 	                () => (<Signup calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
 	              <Route path="/profile" render={
-	                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} onClickEventAction={this.onClickEventAction}/>)} />
+	                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} />)} />
 					  <Route path="/" render={
-						 () => <Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} onClickEventAction={this.onClickEventAction} />} />
+						 () => <Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} />} />
 				  </Switch>
 				</div>
           </div>
