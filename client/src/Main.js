@@ -53,8 +53,7 @@ class Main extends Component {
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
-      //this.handleAddEventChange = this.handleAddEventChange.bind(this);
-      this.handleEditEventChange = this.handleEditEventChange.bind(this);
+
       this.onClickEditDayEvent = this.onClickEditDayEvent.bind(this);
     }
 
@@ -87,17 +86,6 @@ class Main extends Component {
 	     });
    }
 
-   handleEventNameChange = (event) => {
-     this.setState({eventName: event.target.value});
-   }
-
-
-
-   handleEditEventChange = (event) => {
-     var en = event.target.name;
-     var et = event.target.value;
-     this.setState({ [en]: et });
-   }
 
 
    clickChangeDay = (newDate) => {
@@ -113,18 +101,12 @@ class Main extends Component {
    }
 
    onClickEditDayEvent = (eventObj) => {
-      //console.log(eventObj);
-      //localStorage.setItem('currentEvent', JSON.stringify(eventObj))
       this.setState({eventToEdit: eventObj}, () => {
         //console.log(this.state.eventToEdit);
         //--********* This is a bug, we lose eventToEdit when this.props.onClickEventAction is called!!!!!
         //this.props.onClickEventAction(5);
       });
    }
-
-
-
-
 
     handleNameChange = (event) => {
         this.setState({calName: event.target.value});
@@ -162,7 +144,6 @@ class Main extends Component {
 		   console.log('backend error we hope', err);
 		});
     }
-
 
 
     //
@@ -334,20 +315,20 @@ class Main extends Component {
 				<div className="main-no-user"><h1>Please login or signup.</h1></div>
 			);
       }
-		
+
       return (
         <div className="main-home">
 				<Route path="/event/add" render = {
 					() => (<AddEvent viewDate={this.state.viewDate} addEvent={this.addEvent} eventToEdit={new EventObject()} />
 				)} />
 				<Route path="/event/edit" render={
-					 () => (<EditEvent editEvent={this.editEvent} eventToEdit={this.state.eventToEdit} handleTypeChange={event => this.handleTypeChange(event)} />
+					 () => (<EditEvent editEvent={this.editEvent} eventToEdit={this.state.eventToEdit} />
 				)} />
 				<Route path="/event/delete" render={
 					() => (<DeleteEvent onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
 				)} />
 				<Route path="/calendar/holidays" render = {
-					() => (<AddHoliday countryCode={this.state.countryCode} handleChange={event => this.handleCountryCodeChange(event)} addHolidays={this.addHolidays} />
+					() => (<AddHoliday countryCode={this.state.countryCode} addHolidays={this.addHolidays} />
 				)} />
 				<Route path="/calendar/edit" render={
 					() => (<EditCalendar editCal={this.editCalName} name={this.state.calName} handleName={event => this.handleNameChange(event)} />
