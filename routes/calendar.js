@@ -286,7 +286,7 @@ router.post('/editName', function(req,res,next){
     });
 });
 
-router.post('/events', function(req,res,next){
+router.post('/event', function(req,res,next){
 
     var start = Number(req.body.startDate.date('U'));
     var end = Number(req.body.endDate.date('U'));
@@ -308,8 +308,8 @@ router.post('/events', function(req,res,next){
 	}
 });
 
-router.post('/one', function(req,res,next){
-	console.log("POST /one");
+router.post('/event/add', function(req,res,next){
+	console.log("POST /event/add");
 
     Calendar.findOne({_id: req.body.calendar._id},function(err,calendar){
         if(err){
@@ -424,8 +424,8 @@ router.post('/one', function(req,res,next){
 
 //TODO: cleanup!!!
 //-- don't json return entire calendar!!!
-router.post('/editone', function(req, res, next) {
-  console.log("/editone");
+router.post('/event/edit', function(req, res, next) {
+  console.log("/event/edit");
 
   let eventObj = {
 	  _id: req.body.eventObj.id,

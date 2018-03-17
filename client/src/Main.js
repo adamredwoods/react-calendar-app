@@ -73,7 +73,7 @@ class Main extends Component {
 	    let base = this;
 		 //--clearing it out first will prevent old data flashing
 		 this.setState({calendar: 0});
-	    axios.post('/calendar/events', {
+	    axios.post('/calendar/event', {
 	       startDate: startDate,
 	       endDate: endDate,
 	       calendar: currentCalendar,
@@ -89,7 +89,7 @@ class Main extends Component {
 
 
    clickChangeDay = (newDate) => {
-      console.log("..click: change date",newDate);
+      //console.log("..click: change date",newDate);
       //-- changing months, watch for race conditions
       if (newDate.date("YYYY-MM")!==(this.state.viewDate.date("YYYY-MM"))) {
             let ym = newDate.date("YYYY-MM");
@@ -155,7 +155,7 @@ class Main extends Component {
 
       let currentUser = this.props.user;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
-      axios.post('/calendar/one',Object.assign(eventObj,{
+      axios.post('/calendar/event/add',Object.assign(eventObj,{
         user: currentUser,
         calendar: currentCalendar
 	  	})).then(response => {
@@ -178,7 +178,7 @@ class Main extends Component {
       //console.log(eventObj);
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
 		let base = this;
-      axios.post("/calendar/editone", {
+      axios.post("/calendar/event/edit", {
         eventObj: eventObj,
         user: this.props.user,
         calendarId: currentCalendar._id

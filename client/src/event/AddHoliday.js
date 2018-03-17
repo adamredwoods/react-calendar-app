@@ -45,10 +45,10 @@ class AddHoliday extends Component {
         return (
             <div className="country-codes-form nice-form-div">
                 <form name="Country Code" className="nice-form" onSubmit={this.props.addHolidays}>
-                    <select value={this.props.countryCode} onChange={this.handleChange}>
+                    <select value={this.state.countryCode} onChange={this.handleChange}>
                         {countryOptions}
                     </select>
-                    <input type="submit" value="Add Holidays" />
+                    <Link to="/"><input type="submit" value="Add Holidays" /></Link>
                 </form>
 			 		 <Link className="btn outline margin-10" to="/">
 		  				 cancel
