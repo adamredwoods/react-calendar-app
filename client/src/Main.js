@@ -334,7 +334,7 @@ class Main extends Component {
 				<div className="main-no-user"><h1>Please login or signup.</h1></div>
 			);
       }
-
+		
       return (
         <div className="main-home">
 				<Route path="/event/add" render = {

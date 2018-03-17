@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router';
+import {Link, Redirect} from 'react-router-dom';
 import '../css/Edit.css';
 import '../css/ButtonsAndMore.css';
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';

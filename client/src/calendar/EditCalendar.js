@@ -10,7 +10,6 @@ import "date-format-lite";
 class EditCalendar extends Component {
 
     render(){
-        console.log('we tried to render edit cal');
 
         return(
             <div className="form edit-form nice-form-div">

@@ -423,10 +423,9 @@ router.post('/one', function(req,res,next){
 });
 
 //TODO: cleanup!!!
-//TODO: don't json return entire calendar!!!
+//-- don't json return entire calendar!!!
 router.post('/editone', function(req, res, next) {
   console.log("/editone");
-  console.log(req.body);
 
   let eventObj = {
 	  _id: req.body.eventObj.id,
