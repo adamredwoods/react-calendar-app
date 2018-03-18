@@ -37,7 +37,7 @@ class Main extends Component {
         currentYear: '2018',
         currentYearHolidays: [],
         dateQuery: ['2018-01-01', '2018-02-18'],
-        calendar: null,
+        calendar: null, 
         calendarEvents: null,
         fullCalendar: null,
         eventToEdit: null
@@ -65,11 +65,11 @@ class Main extends Component {
 	    let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
 	    let base = this;
 		 //--clearing it out first will prevent old data flashing
-		 this.setState({calendar: 0});
+		 this.setState({calendarEvents: 0});
 	    axios.post('/calendar/event', {
 	       startDate: startDate,
 	       endDate: endDate,
-	       calendar: currentCalendar,
+	       calendar: this.props.calendar,
 	       user: currentUser
 	     }).then(response => {
 	       //console.log(response.data);
