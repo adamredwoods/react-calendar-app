@@ -13,19 +13,19 @@ const daysInMonth = [
 //TODO: mondayIsFirst is user defined
 var mondayIsFirst = true;
 
-var starSvg, circleSvg;
+var starSvg, circleTiny;
 
 class SingleDay extends Component {
 
    render() {
 
 
-      const circleSvg = <span className="circle-svg"><svg className="circle-svg" xmlns="http://www.w3.org/2000/svg"><circle cx='5' cy='5' r='5'></circle></svg></span>;
+      const circleTiny = (c) => <svg className="circle-svg" xmlns="http://www.w3.org/2000/svg"><circle cx='5' cy='5' r='5' fill={c}></circle></svg>;
 
 		const circle1 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='25%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
       const circle2 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='40%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
       const circle3 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='35%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet' stroke="#a0b0c0" strokeWidth="2px" fill="none"></circle></g></svg>
-      const bar = <svg style={{width:'100%',height:'100%'}} xmlns="http://www.w3.org/2000/svg"><g><rect x='0' y='10%' width='100%' height='5%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></rect></g></svg>
+      const bar = (c) => <svg style={{width:'100%',height:'100%'}} xmlns="http://www.w3.org/2000/svg"><g><rect x='0' y='10%' width='100%' height='5%' fill={c} viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></rect></g></svg>
 
       //display the bar: if enddate!==startdate don't display dot
       //check ends, startdate and end date for surrent display day for end bars.
@@ -49,17 +49,19 @@ class SingleDay extends Component {
             //console.log(this.props.events[i].startDate.date("YYYY-MM"),"   ",this.props.yearMonth);
             if (this.props.events[i].spanning) {
                //-- spanning is an internal variable to set the bar
-               hasBar.push( <div className="bar-svg">{bar}</div> );
+               hasBar.push( <div className="bar-svg">{bar('rgba(100,120,130,0.2)')}</div> );
                //-- add circle for first day in spanning event
                if (this.props.events[i].spanningStart===this.props.dayNum) {
-                  hasEvents = <div className="days-background3">{circle3}</div>;
+                  hasEvents = <div className="days-background3" >{circle3}</div>;
                }
             } else if(this.props.events[i].isHoliday()) {
                svg = <img src="icon-star.svg" width="10" height="10" />;
             } else {
                //-- only certain events get the event circle
-               hasEvents = <div className="days-background3">{circle3}</div>;
-               svg = circleSvg;
+               hasEvents = <div className="days-background3" >{circle3}</div>;
+					let c = this.props.events[i].getEventColor();
+					if (!c) c='#777';
+               svg = <span className="circle-svg">{circleTiny(c)}</span>;
             }
 
             events.push(svg);
