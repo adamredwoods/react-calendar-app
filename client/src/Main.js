@@ -38,14 +38,7 @@ class Main extends Component {
         currentYearHolidays: [],
         dateQuery: ['2018-01-01', '2018-02-18'],
         calendar: null,
-        eventName: '',
-        eventId: '',
-        eStartDate: '',
-        eStartTime: '',
-        eEndDate: '',
-        eEndTime: '',
-        eventType: '3',
-        eventPriority: '2',
+        calendarEvents: null,
         fullCalendar: null,
         eventToEdit: null
       }
@@ -83,8 +76,8 @@ class Main extends Component {
 			 //
 			 //-- convert all events into event objects
 			 let events = response.data.events.map( (e)=> new EventObject(e.events));
-			 
-	       base.setState({calendar: events});
+
+	       base.setState({calendarEvents: events});
 	     }).catch(err => {
 	       console.log('backend cal err on db send - '+err);
 	     });
@@ -164,9 +157,9 @@ class Main extends Component {
         //console.log(response.data);
 
 		  //-- update the calendar state
-		  let calendar = base.state.calendar;
-		  calendar.push({"events":eventObj});
-		  base.setState({calendar: calendar});
+		  let c = base.state.calendarEvents;
+		  c.push({"events":eventObj});
+		  base.setState({calendarEvents: c});
 
         //TODO: revese lookup this link
 		  history.push("/")
@@ -188,13 +181,13 @@ class Main extends Component {
       	//console.log(response.data);
 
 			//-- update the calendar state
-			let calendar = base.state.calendar.slice();
-			calendar.forEach( (c) => {
-				if ((c.events.id && c.events.id===eventObj.id) || (c.events._id && c.events._id===eventObj.id )) {
+			let ce = base.state.calendarEvents.slice();
+			ce.forEach( (c) => {
+				if ((c.id && c.id===eventObj.id) || (c._id && c._id===eventObj.id )) {
 					eventObj.copyTo(c.events);
 				}
 			});
-			base.setState({calendar: calendar});
+			base.setState({calendarEvents: ce});
 			//TODO: revese lookup this link
 			history.push("/")
       }).catch(err=>{
@@ -216,16 +209,15 @@ class Main extends Component {
       }).then(response =>{
         console.log(response);
          //--refresh view
-			let calendar = base.state.calendar.slice();
+			let ce = base.state.calendarEvents.slice();
 			let arr=[];
-			calendar.forEach( (c) => {
-				if ((c.events.id && c.events.id!==eventObj.id) || (c.events._id && c.events._id!==eventObj.id )) {
+			ce.forEach( (c) => {
+				if ((c.id && c.id!==eventObj.id) || (c._id && c._id!==eventObj.id )) {
 					arr.push(c);
 				}
 			});
-			calendar=arr;
-			console.log(calendar);
-			base.setState({calendar: calendar});
+			console.log(arr);
+			base.setState({calendarEvents: arr});
 
 			//TODO: revese lookup this link
 			history.push("/");
@@ -298,10 +290,10 @@ class Main extends Component {
 			 <div className="main-page">
 				 <Row nogutter>
 					 <Col sm={8}>
-						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendar}/>
+						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendarEvents}/>
 					 </Col>
 					 <Col sm={4}>
-						 <Day deleteEvent={(o)=>this.props.onClickEventAction(6,o)} viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendar} handlePriorityChange={(event)=>this.handlePriorityChange(event)} handleEventNameChange={(event) => this.handleEventNameChange(event)} onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange} handleTypeChange={(event)=>this.handleTypeChange(event)} />
+						 <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendarEvents}  onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange}  />
 					 </Col>
 				 </Row>
 				 <Hidden xs sm>
