@@ -71,7 +71,8 @@ class Day extends Component {
 				 <Route render={ ({history}) => (
 					<div className="day-card" onClick={(e)=> (this.onClickEdit(e, eventObj, history))} >
 					   <Row>
-					      <Col xs={3}>{eventObj.startTime && <div className="day-time btn pill">{eventObj.startTime}</div>} </Col>
+					      <Col xs={3}>{eventObj.startTime && <div className="day-time btn pill" style={{backgroundColor: eventObj.getEventColor()}}>{eventObj.startTime}</div>}
+							</Col>
 					      <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
 					      <Col xs={3}>{this.deleteButtonDiv(eventObj, history)}</Col>
 					  </Row>

@@ -85,53 +85,55 @@ class EditEvent extends Component {
 
 
       return (
-			<Route render={({history}) => (
-				<div className="nice-form-div">
-				    <form name="Edit Event" className="nice-form" >
-				      <h3>Event Name</h3>
-				      <input type="text" name="name" onChange={this.handleChange} value={this.state.name} />
-						<h5>Start Time</h5>
-						<input type="time" name="startTime" onChange={this.handleChange} value={this.state.startTime} />
-				      <h4>Start Date</h4>
-				      <input type="date" name="startDate" onChange={this.handleChange} value={this.state.startDate} />
-				      <div className="spacer-30" />
-				      <MiniCalendarPicker name="startDate" onClick={this.handleChange} value={this.state.startDate} />
+
+			<div className="nice-form-div">
+			    <form name="Edit Event" className="nice-form" >
+			      <h3>Event Name</h3>
+			      <input type="text" name="name" onChange={this.handleChange} value={this.state.name} />
+					<h5>Start Time</h5>
+					<input type="time" name="startTime" onChange={this.handleChange} value={this.state.startTime} />
+			      <h4>Start Date</h4>
+			      <input type="date" name="startDate" onChange={this.handleChange} value={this.state.startDate} />
+			      <div className="spacer-30" />
+			      <MiniCalendarPicker name="startDate" onClick={this.handleChange} value={this.state.startDate} />
 
 
-						<h5>End Time</h5>
-						<input type="time" name="endTime" onChange={this.handleChange} value={this.state.endTime} />
-				      <h4>End Date</h4>
-				      <input type="date" name="endDate" onChange={this.handleChange} value={this.state.endDate} />
-				      <div className="spacer-30" />
-				      <MiniCalendarPicker name="endDate" onClick={this.handleChange} value={this.state.endDate} />
-						<hr />
-						<div>
-				        <select value={this.state.eventType} onChange={this.handleChange} name="eventType">
-				          <option value="1">Meeting</option>
-				          <option value="2">Work</option>
-				          <option value="3">Appointment</option>
-				          <option value="4">Celebration</option>
-				          <option value="0">Holiday</option>
-				        </select>
-				        <select value={this.state.priority} onChange={this.handleChange} name="priority">
-				          <option value="0">Lowest Priority</option>
-				          <option value="1">Low Priority</option>
-				          <option value="2">Medium Priority</option>
-				          <option value="3">High Priority</option>
-				          <option value="4">Highest Priority</option>
-				        </select>
-				      </div>
-				      <div className="margin-top-50">
-				        <input type="hidden" value={this.state.id} />
-				        <button className="btn blue round large" onClick={(event)=> (this.editCurrentEvent(event,history))}>Submit</button>
-				      </div>
-				    </form>
-				    <Link className="btn outline margin-top-10" to="/">
-				      Cancel
-				    </Link>
-				    {errorMessage}
-				</div>
-			)} />
+					<h5>End Time</h5>
+					<input type="time" name="endTime" onChange={this.handleChange} value={this.state.endTime} />
+			      <h4>End Date</h4>
+			      <input type="date" name="endDate" onChange={this.handleChange} value={this.state.endDate} />
+			      <div className="spacer-30" />
+			      <MiniCalendarPicker name="endDate" onClick={this.handleChange} value={this.state.endDate} />
+					<hr />
+					<div>
+			        <select value={this.state.eventType} onChange={this.handleChange} name="eventType">
+			          <option value="1">Meeting</option>
+			          <option value="2">Work</option>
+			          <option value="3">Appointment</option>
+			          <option value="4">Celebration</option>
+			          <option value="0">Holiday</option>
+			        </select>
+			        <select value={this.state.priority} onChange={this.handleChange} name="priority">
+			          <option value="0">Lowest Priority</option>
+			          <option value="1">Low Priority</option>
+			          <option value="2">Medium Priority</option>
+			          <option value="3">High Priority</option>
+			          <option value="4">Highest Priority</option>
+			        </select>
+			      </div>
+			      <div className="margin-top-50">
+						<input type="hidden" value={this.state.id} />
+						<Route render={({history}) => (
+			        		<button className="btn blue round large" onClick={(event)=> (this.editCurrentEvent(event,history))}>Submit</button>
+						)} />
+			      </div>
+			    </form>
+			    <Link className="btn outline margin-top-10" to="/">
+			      Cancel
+			    </Link>
+			    {errorMessage}
+			</div>
+
       );
    }
 }

@@ -23,6 +23,7 @@
 
 .btn.red{
 	background-color:#E53C38;
+	color:#fff;
 }
 
 .btn.red:hover{
@@ -47,6 +48,7 @@
 
 .btn.green{
 	background-color:#4BC94D;
+	color:#fff;
 }
 
 .btn.green:hover{
@@ -55,6 +57,7 @@
 
 .btn.blue{
 	background-color:#5DADE2;
+	color:#fff;
 }
 
 .btn.blue:hover{

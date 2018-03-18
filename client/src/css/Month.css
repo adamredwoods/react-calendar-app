@@ -92,7 +92,7 @@
 }
 
 .day-current {
-   background-color: #bbccdd
+   background-color: rgba(137,154,171,0.75);
 }
 
 .day-selected {

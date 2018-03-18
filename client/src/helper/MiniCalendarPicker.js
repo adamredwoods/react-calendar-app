@@ -85,7 +85,7 @@ class MiniCalendarPicker extends Component {
          return <div></div>
       }
 
-		let inputDay = this.props.value || this.state.selectedDay;
+		let inputDay = this.state.selectedDay ||this.props.value;
 
       //leap year
       let year = parseInt(date.date("YYYY"));

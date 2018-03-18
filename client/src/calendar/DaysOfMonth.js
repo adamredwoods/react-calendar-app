@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from 'react-grid-system';
 import "../css/Month.css";
 import "date-format-lite";
+import EventObject from '../event/EventObject.js';
 
 const daysInMonth = [
            [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
@@ -21,6 +22,7 @@ class SingleDay extends Component {
 
       const circleSvg = <span className="circle-svg"><svg className="circle-svg" xmlns="http://www.w3.org/2000/svg"><circle cx='5' cy='5' r='5'></circle></svg></span>;
 
+		const circle1 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='25%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
       const circle2 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='40%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></circle></g></svg>
       const circle3 = <svg style={{width:"100%",height:"100%"}} xmlns="http://www.w3.org/2000/svg"><g><circle cx='50%' cy='50%' r='35%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet' stroke="#a0b0c0" strokeWidth="2px" fill="none"></circle></g></svg>
       const bar = <svg style={{width:'100%',height:'100%'}} xmlns="http://www.w3.org/2000/svg"><g><rect x='0' y='10%' width='100%' height='5%' viewBox='0 0 80 80' preserveAspectRatio='xMinYMin meet'></rect></g></svg>
@@ -34,9 +36,8 @@ class SingleDay extends Component {
       let svg = "";
       let currentDay = "", selectedDay="", hasEvents="", hasBar=[];
 
-      //if (this.props.today) addClass=addClass+" day-current";
-      if (this.props.today) currentDay = <div className="days-background">{circle2}</div>;
-      // if (this.props.selected) addClass=addClass+" day-selected";
+      if (this.props.today) currentDay = <div className="days-background">{circle1}</div>;
+
       if (this.props.selected) {
          selectedDay = <div className="days-background day-selected-circle">{circle2}</div>;
          addClass=addClass+" day-selected";
@@ -53,7 +54,7 @@ class SingleDay extends Component {
                if (this.props.events[i].spanningStart===this.props.dayNum) {
                   hasEvents = <div className="days-background3">{circle3}</div>;
                }
-            } else if(this.props.events[i].eventTypeId===0) {
+            } else if(this.props.events[i].isHoliday()) {
                svg = <img src="icon-star.svg" width="10" height="10" />;
             } else {
                //-- only certain events get the event circle
@@ -172,7 +173,7 @@ class DaysOfMonth extends Component {
           //if(!arr[day])arr[day]=[];
           for (let j=daystart; j<=dayend; j++) {
              //-- push SAME event into our month bucket
-             arr[j].push(calendar[i].events);
+             arr[j].push(new EventObject(calendar[i].events));
           }
         }
       }

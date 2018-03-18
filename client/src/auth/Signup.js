@@ -45,7 +45,7 @@ class Signup extends Component {
       return (<Redirect to="/" />);
     }
     else {
-      form = (<form onSubmit={this.handleSubmit}>
+      form = (<form onSubmit={this.handleSubmit} className="nice-form">
                 <div>
                   <input name="Name"
                        placeholder="What is your first name?"
@@ -66,7 +66,8 @@ class Signup extends Component {
                      value={this.state.password}
                      onChange={this.handlePasswordChange} />
                  </div>
-                 <input type="submit" value="Sign up!" className="btn-primary" />
+					  <h6>Warning: This site is currently unsecure. Please do not use real data</h6>
+                 <input type="submit" value="Sign up!" className="btn-primary margin-top-50" />
               </form>);
     }
     return (

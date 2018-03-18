@@ -34,5 +34,6 @@
 }
 
 .day-mini-date {
-	margin: 0 0 5px 0;
+	margin: 0 0 5px 1.0rem;
+	text-align: left;
 }

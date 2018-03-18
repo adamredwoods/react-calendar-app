@@ -2,11 +2,16 @@
 class EventObject {
 
 	constructor(obj) {
-		const EVENT_HOLIDAY=0;
-		const EVENT_MEETING=1;
-		const EVENT_WORK=2;
-		const EVENT_APPOINTMENT=3;
-		const EVENT_CELEBRATION=4;
+
+
+		//-- colors can be overwritten by user settings
+		EventObject.eventColor = {
+			"0": "#FFDC00",
+			"1": "#3D9970",
+			"2": "#7FDBFF",
+			"3": "#FF851B",
+			"4": "#B10DC9",
+		}
 
 		if (obj) {
 			this.name = obj.name || obj.eventName;
@@ -17,6 +22,7 @@ class EventObject {
 			this.endTime = obj.endTime;
 			this.eventType = obj.eventType || obj.eventTypeId;
 			this.id = obj.id || obj._id;
+			this.spanning = obj.spanning;
 		}
 	}
 
@@ -29,6 +35,7 @@ class EventObject {
 		this.endTime = obj.endTime;
 		this.eventType = obj.eventType || obj.eventTypeId;
 		this.id = obj.id || obj._id;
+		this.spanning = obj.spanning;
 	}
 
 	copyTo(dst) {
@@ -39,6 +46,7 @@ class EventObject {
 		dst.endTime = this.endTime;
 		dst.priority = this.priority;
 		dst.eventTypeId = dst.eventType = this.eventType;
+		dst.spanning = this.spanning;
 	}
 
 	//-- can use these to be explicit, if we find too many problems with Mongo's _id vs id
@@ -50,8 +58,12 @@ class EventObject {
 		return this.id;
 	}
 
+	getEventColor() {
+		return EventObject.eventColor[this.eventType];
+	}
+
 	isHoliday() {
-		return (this.eventType===this.EVENT_HOLIDAY);
+		return (this.eventType===EventObject.EVENT_HOLIDAY);
 	}
 
 	convertDatesToMillisecs() {
@@ -63,5 +75,12 @@ class EventObject {
 		}
 	}
 }
+
+//-- consts 
+EventObject.EVENT_HOLIDAY=0;
+EventObject.EVENT_MEETING=1;
+EventObject.EVENT_WORK=2;
+EventObject.EVENT_APPOINTMENT=3;
+EventObject.EVENT_CELEBRATION=4;
 
 export default EventObject;
