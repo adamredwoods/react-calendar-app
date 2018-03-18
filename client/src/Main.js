@@ -184,7 +184,7 @@ class Main extends Component {
 			let ce = base.state.calendarEvents.slice();
 			ce.forEach( (c) => {
 				if ((c.id && c.id===eventObj.id) || (c._id && c._id===eventObj.id )) {
-					eventObj.copyTo(c.events);
+					eventObj.copyTo(c);
 				}
 			});
 			base.setState({calendarEvents: ce});

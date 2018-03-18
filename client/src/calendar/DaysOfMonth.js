@@ -146,34 +146,35 @@ class DaysOfMonth extends Component {
 
       for(let i=0; i<calendar.length; i++) {
         daystart = 0;
-        if(calendar[i].events.startDate) {
-           daystart = parseInt(calendar[i].events.startDate.date('DD'));
+		  let event = calendar[i];
+        if(event.startDate) {
+           daystart = parseInt(event.startDate.date('DD'));
            //-- add in spanning dates
-           dayend = parseInt(calendar[i].events.endDate.date('DD'));
+           dayend = parseInt(event.endDate.date('DD'));
            //--catch 0 enddate
-           if (calendar[i].events.endDate===0) dayend=daystart;
+           if (event.endDate===0) dayend=daystart;
             //--dont span holidays
-            if (calendar[i].events.eventTypeId===0) {
+            if (event.isHoliday()) {
                dayend = daystart;
             }
             //-- default spanning event is false, create new variable for our internal use
-           calendar[i].events.spanning = false;
+           event.spanning = false;
 
-           if (daystart !== dayend) calendar[i].events.spanning = true;
+           if (daystart !== dayend) event.spanning = true;
            //-- spans past current month, set end day to last day
-           if (calendar[i].events.startDate.date('MM') !== calendar[i].events.endDate.date('MM') && calendar[i].events.endDate!==0) {
+           if (event.startDate.date('MM') !== event.endDate.date('MM') && event.endDate!==0) {
              dayend = 31;
-             calendar[i].events.spanning = true; //-- catch the case where days are same, but month is diff
+             event.spanning = true; //-- catch the case where days are same, but month is diff
 
           }
           //--let's make sure we know the first day of a spanning, in case we want to show special graphical cases
-          if(calendar[i].events.spanning && (calendar[i].events.startDate.date('MM') === date.date('MM'))) calendar[i].events.spanningStart = daystart;
+          if(event.spanning && (event.startDate.date('MM') === date.date('MM'))) event.spanningStart = daystart;
 
 
           //if(!arr[day])arr[day]=[];
           for (let j=daystart; j<=dayend; j++) {
              //-- push SAME event into our month bucket
-             arr[j].push((calendar[i].events));
+             arr[j].push(event);
           }
         }
       }

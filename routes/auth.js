@@ -4,7 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
 var Calendar = require('../models/calendar').Calendar;
-var getUserCalendar = require('./calendar.js').getuserCalendar;
+var getUserCalendar = require('./calendar.js').getUserCalendar;
 var makeNewCalendar = require('./calendar.js').makeNewCalendar;
 var bcrypt = require('bcrypt');
 // Used for creating and sending tokens and protecting backend routes
