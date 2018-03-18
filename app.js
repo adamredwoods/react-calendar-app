@@ -30,7 +30,7 @@ app.use(function(req, res, next) {
 
 // Controllers
 app.use('/auth', require('./routes/auth'));
-app.use('/calendar', require('./routes/calendar'));
+app.use('/calendar', require('./routes/calendar').router);
 app.use('/calendar/event', require('./routes/event'));
 
 app.get('*', function(req, res, next) {
