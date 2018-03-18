@@ -66,7 +66,7 @@ class EventObject {
 	}
 
 	isHoliday() {
-		return (this.eventType===EventObject.EVENT_HOLIDAY);
+		return (this.eventType===EventObject.EVENT_HOLIDAY || this.eventTypeId===EventObject.EVENT_HOLIDAY);
 	}
 
 	convertDatesToMillisecs() {

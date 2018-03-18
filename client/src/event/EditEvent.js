@@ -49,7 +49,8 @@ class EditEvent extends Component {
 
    editCurrentEvent = (e, history) => {
        e.preventDefault();
-       if(this.state.startDate.date('U') > this.state.endDate.date('U')){
+
+       if(this.state.startDate.date('U') > this.state.endDate.date('U') && (this.state.endDate)){
             this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
        }else{
             let eventObj = new EventObject(this.state);

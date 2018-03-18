@@ -16,7 +16,7 @@ import {Router, Route, Switch} from 'react-router';
 import {Link, BrowserRouter} from 'react-router-dom';
 import { Row, Col, Hidden, ClearFix } from 'react-grid-system';
 import EventObject from './event/EventObject.js';
-import "date-format-lite";
+import 'date-format-lite';
 const hd = new Holidays();
 
 const daysInMonth = [
@@ -53,23 +53,35 @@ class Main extends Component {
    componentDidMount() {
       let date = this.state.viewDate;
       if(date ===null) date = new Date();
-      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") });
-      this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"])
+      this.setState({ currentDate: date, viewDate: date.format("YYYY-MM-DD") }, function() {
+			this.getAllEvents([date.format("YYYY-MM")+"-01", date.format("YYYY-MM")+"-31"]);
+		});
 
     }
 
-	 getAllEvents = (dateQuery) => {
+	 //--componentDidMount does not pick up a late transfer of calendar, and views don't update, so we can catch it here
+	 componentWillReceiveProps(nextProps) {
+		 if(nextProps.calendar) {
+			 let date = nextProps.viewDate || this.state.viewDate;
+			 if(!date) date = new Date();
+			 this.getAllEvents([date.date("YYYY-MM")+"-01", date.date("YYYY-MM")+"-31"], nextProps.calendar)
+		 }
+	 }
+
+	 getAllEvents = (dateQuery, calendar) => {
+		 if(!calendar) calendar=this.props.calendar; //JSON.parse(localStorage.getItem('calendar'));
 	    let startDate = dateQuery[0];
 	    let endDate = dateQuery[1];
 	    let currentUser = this.props.user;
-	    let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
+
 	    let base = this;
 		 //--clearing it out first will prevent old data flashing
 		 this.setState({calendarEvents: 0});
+
 	    axios.post('/calendar/event', {
 	       startDate: startDate,
 	       endDate: endDate,
-	       calendar: this.props.calendar,
+	       calendar: calendar,
 	       user: currentUser
 	     }).then(response => {
 	       //console.log(response.data);
@@ -290,7 +302,7 @@ class Main extends Component {
 			 <div className="main-page">
 				 <Row nogutter>
 					 <Col sm={8}>
-						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendarEvents={this.state.calendarEvents}/>
+						 <Month calendar={this.props.calendar} viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendarEvents={this.state.calendarEvents}/>
 					 </Col>
 					 <Col sm={4}>
 						 <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendarEvents={this.state.calendarEvents}  onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange}  />

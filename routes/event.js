@@ -31,7 +31,7 @@ router.post('/', function(req,res,next){
 			         console.log(err);
 			     }
 			     if (events) {
-			       //console.log(events);
+			       
 					 res.json({events: events});
 			     }
 			  });
