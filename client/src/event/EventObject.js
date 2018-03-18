@@ -20,9 +20,9 @@ class EventObject {
 			this.startTime = obj.startTime;
 			this.endDate = obj.endDate;
 			this.endTime = obj.endTime;
-			this.eventType = obj.eventType || obj.eventTypeId;
+			this.eventType = obj.eventType || obj.eventTypeId || 0;
 			this.id = obj.id || obj._id;
-			this.spanning = obj.spanning;
+			this.spanning = obj.spanning || false;
 			this.spanningStart = obj.spanningStart;
 		}
 	}

@@ -69,7 +69,8 @@ class Main extends Component {
 	 }
 
 	 getAllEvents = (dateQuery, calendar) => {
-		 if(!calendar) calendar=this.props.calendar; //JSON.parse(localStorage.getItem('calendar'));
+		 calendar= calendar || this.props.calendar; //JSON.parse(localStorage.getItem('calendar'));
+		 if(!calendar) return null;
 	    let startDate = dateQuery[0];
 	    let endDate = dateQuery[1];
 	    let currentUser = this.props.user;

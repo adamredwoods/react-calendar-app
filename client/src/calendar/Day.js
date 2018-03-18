@@ -29,10 +29,15 @@ class Day extends Component {
         }
       }
 
-      //TODO: sort by time HH:MM 24-hr system
+      //sort by time HH:MM 24-hr system
       arr = arr.sort(function(a,b) {
          if(a.startTime<b.startTime) return -1;
          if(a.startTime>b.startTime) return 1;
+         return 0;
+      })
+		// sort by holiday
+		arr = arr.sort(function(a,b) {
+         if(b.isHoliday) return 1;
          return 0;
       })
 
@@ -72,9 +77,9 @@ class Day extends Component {
 				 <Route render={ ({history}) => (
 					<div className="day-card" onClick={(e)=> (this.onClickEdit(e, eventObj, history))} >
 					   <Row>
-					      <Col xs={3}>{eventObj.startTime && !eventObj.isHoliday() && <div className="day-time btn pill" style={{backgroundColor: eventObj.getEventColor()}}>{eventObj.startTime}</div>}
-							</Col>
-					      <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>
+					      {!eventObj.isHoliday() && eventObj.startTime && <Col xs={3}><div className="day-time btn pill" style={{backgroundColor: eventObj.getEventColor()}}>{eventObj.startTime}</div> </Col>}
+					      {!eventObj.isHoliday() && <Col xs={6}><div className="day-title">{eventObj.name}</div></Col>}
+							{eventObj.isHoliday() && <Col xs={9}><div className="day-title">{eventObj.name}</div></Col>}
 					      <Col xs={3}>{this.deleteButtonDiv(eventObj, history)}</Col>
 					  </Row>
 					  <div className="day-mini-date">

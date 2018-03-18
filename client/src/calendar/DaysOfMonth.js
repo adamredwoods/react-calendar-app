@@ -17,6 +17,12 @@ var starSvg, circleTiny;
 
 class SingleDay extends Component {
 
+	barColorAdjust = (c,n) => {
+		if(!c) return 'rgba(100,120,130,0.2)';
+		let cx = [parseInt(c.slice(1,3),16)-n*20,parseInt(c.slice(3,5),16)-n*20,parseInt(c.slice(5,7),16)-n*20];
+		return 'rgba('+cx[0]+','+cx[1]+','+cx[2]+',0.5)'
+	}
+
    render() {
 
 
@@ -34,7 +40,7 @@ class SingleDay extends Component {
       let addClass = "days-card";
       let events = [];
       let svg = "";
-      let currentDay = "", selectedDay="", hasEvents="", hasBar=[];
+      let currentDay = "", selectedDay="", hasEvents="", hasBar=[], barnum=0, barColorAdjust=[0,0,0];
 
       if (this.props.today) currentDay = <div className="days-background">{circle1}</div>;
 
@@ -49,7 +55,8 @@ class SingleDay extends Component {
             //console.log(this.props.events[i].startDate.date("YYYY-MM"),"   ",this.props.yearMonth);
             if (this.props.events[i].spanning) {
                //-- spanning is an internal variable to set the bar
-               hasBar.push( <div className="bar-svg">{bar('rgba(100,120,130,0.2)')}</div> );
+               hasBar.push( <div className="bar-svg">{bar(this.barColorAdjust(this.props.events[i].getEventColor(),barnum))}</div> );
+					barnum++;
                //-- add circle for first day in spanning event
                if (this.props.events[i].spanningStart===this.props.dayNum) {
                   hasEvents = <div className="days-background3" >{circle3}</div>;
