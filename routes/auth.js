@@ -4,92 +4,15 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
 var Calendar = require('../models/calendar').Calendar;
+var getUserCalendar = require('./calendar.js').getuserCalendar;
+var makeNewCalendar = require('./calendar.js').makeNewCalendar;
 var bcrypt = require('bcrypt');
 // Used for creating and sending tokens and protecting backend routes
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 
 
-function makeNewCalendar(user, callback) {
-   var userCalendar = {};
-   Calendar.create({
-     name: 'My Calendar',
-     userId: user._id,
-     eventTypes: [{eventTypeId: 0, name: 'Holiday'},{eventTypeId: 1, name: 'Meeting'},{eventTypeId: 2,name: 'Work'},{eventTypeId:3, name:'Appointment'},{eventTypeId: 4, name: 'Birthday'}],
-     people: [{
-       userId: user._id,
-       permission: 'edit'
-     }]
-   }, function(err, calendar){
-     if (err){
-       console.log('Cal DB create error: ', err);
-       //res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
-       return callback( err, null);
-     }
 
-     //--write calendar id back to user
-     userCalendar = calendar;
-     console.log("makeNewCalendar:",calendar);
-     if(user.calendars) {
-      //   user.calendars.push({calendarId: calendar._id});
-      console.log('did this cal add...from push');
-      console.log(userCalendar);
-      console.log(userCalendar._id);
-         User.update({_id: user.id},{$push: {
-           calendars: {calendarId: userCalendar._id}
-          }}, function(err,userCalendar){
-            if(err){
-              console.log(err)
-            }
-          }); //TODO: return function that return callback with calendar
-     } else {
-       console.log("did this cal add...from set");
-       console.log(userCalendar);
-       console.log(userCalendar._id);
-      //   user.calendars = [{calendarId: calendar._id}];
-         User.update({_id: user.id},{$addToSet: {
-           calendars: {calendarId: userCalendar._id}
-          }}, function(err,userCalendar){
-            if(err){
-              console.log(err)
-            }
-          });
-     }
-   })
-}
-
-//-- do not return entire calendar, no events
-function getUserCalendar(user, callback) {
-   var userCalendar = {};
-   //-- user must always have a calendar[0]
-   if(!user.calendars || !user.calendars[0]) {
-      makeNewCalendar(user, function(err, calendar) {
-         if(err) {
-            console.log("db error: could not make new calendar: ",err);
-            return callback( err, null);
-         } else {
-            Calendar.findOne({_id: calendar._id}, function(err, calendar){
-               if(err){
-                  console.log('DB error - calendar not found: ', err);
-                  return callback( err, null);
-               }
-
-               callback(null, calendar);
-            });
-         }
-      });
-   } else {
-      Calendar.findOne({_id: user.calendars[0].calendarId}).select({events:0}).exec(function(err, calendar){
-         if(err){
-            console.log('DB error - calendar not found: ', err);
-            return callback( err, null);
-         }
-			console.log(calendar);
-         callback(null, calendar);
-      });
-
-   }
-}
 
 // POST /auth/login route - returns a JWT
 router.post('/login', function(req, res, next) {
