@@ -20,10 +20,11 @@ class Day extends Component {
 
       for(let i=0; i<calendar.length; i++) {
         let day = 0
-        if(calendar[i].events) day = calendar[i].events.startDate.date('MM-DD');
+        if(calendar[i]) day = calendar[i].startDate.date('MM-DD');
 
         if (day === date.date('MM-DD')) {
-           arr[j] = new EventObject(calendar[i].events);
+			  //-- these should already be event objects
+           arr[j] = new EventObject(calendar[i]);
            j++;
         }
       }
@@ -58,7 +59,7 @@ class Day extends Component {
 
     render() {
       //parse through props.viewDate to match what is in the props.calendar
-      let arr = this.getDayEvents(this.props.viewDate, this.props.calendar);
+      let arr = this.getDayEvents(this.props.viewDate, this.props.calendarEvents);
 
 		let list = arr.map((eventObj) => {
 		    let spanInfo;

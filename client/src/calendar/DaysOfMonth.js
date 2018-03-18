@@ -191,7 +191,7 @@ class DaysOfMonth extends Component {
       let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
 
       //if (Array.isArray(this.props.calendar) && this.props.calendar.length>0) {
-         eventsArray = this.sortEventsToArray(date, this.props.calendar, leapyear);
+         eventsArray = this.sortEventsToArray(date, this.props.calendarEvents, leapyear);
       //}
 
       //leap year
@@ -239,7 +239,7 @@ class DaysOfMonth extends Component {
    }
 
    render() {
-      //console.log(this.props.calendar);
+      //console.log(this.props.calendarEvents);
       //-- find out first day of week and start loop there
       return (
          <div>

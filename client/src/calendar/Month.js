@@ -10,7 +10,7 @@ const Month = (props) => {
         return (
             <div className="month-container">
                 <MonthHeader viewDate={props.viewDate} clickChangeDay={props.clickChangeDay}/>
-                <DaysOfMonth currentDate={props.currentDate} viewDate={props.viewDate} onClickDay={props.clickChangeDay} calendar={props.calendar}/>
+                <DaysOfMonth currentDate={props.currentDate} viewDate={props.viewDate} onClickDay={props.clickChangeDay} calendarEvents={props.calendarEvents}/>
             </div>
         );
     }

@@ -37,7 +37,7 @@ class Main extends Component {
         currentYear: '2018',
         currentYearHolidays: [],
         dateQuery: ['2018-01-01', '2018-02-18'],
-        calendar: null, 
+        calendar: null,
         calendarEvents: null,
         fullCalendar: null,
         eventToEdit: null
@@ -290,10 +290,10 @@ class Main extends Component {
 			 <div className="main-page">
 				 <Row nogutter>
 					 <Col sm={8}>
-						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendar={this.state.calendarEvents}/>
+						 <Month viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendarEvents={this.state.calendarEvents}/>
 					 </Col>
 					 <Col sm={4}>
-						 <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendar={this.state.calendarEvents}  onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange}  />
+						 <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendarEvents={this.state.calendarEvents}  onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange}  />
 					 </Col>
 				 </Row>
 				 <Hidden xs sm>
