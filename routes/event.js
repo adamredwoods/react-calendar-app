@@ -154,7 +154,7 @@ router.post('/add', function(req,res,next){
 });
 
 //-- /calendar/event/edit
-//TODO: cleanup!!!
+//-- TODO: cleanup!!!
 //-- don't json return entire calendar!!!
 router.post('/edit', function(req, res, next) {
   console.log("/event/edit");
@@ -226,7 +226,7 @@ router.post('/edit', function(req, res, next) {
   });
 });
 
-//-- /calendar/event/delete 
+//-- /calendar/event/delete
 router.post('/delete',function(req,res,next){
     console.log('delete');
     console.log(req.body);

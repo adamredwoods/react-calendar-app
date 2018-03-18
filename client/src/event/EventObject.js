@@ -4,7 +4,7 @@ class EventObject {
 	constructor(obj) {
 
 
-		//-- colors can be overwritten by user settings
+		//-- TODO: colors can be overwritten by user settings
 		EventObject.eventColor = {
 			"0": "#FFDC00",
 			"1": "#3D9970",
@@ -23,6 +23,7 @@ class EventObject {
 			this.eventType = obj.eventType || obj.eventTypeId;
 			this.id = obj.id || obj._id;
 			this.spanning = obj.spanning;
+			this.spanningStart = obj.spanningStart;
 		}
 	}
 
@@ -36,6 +37,7 @@ class EventObject {
 		this.eventType = obj.eventType || obj.eventTypeId;
 		this.id = obj.id || obj._id;
 		this.spanning = obj.spanning;
+		this.spanningStart = obj.spanningStart;
 	}
 
 	copyTo(dst) {
@@ -47,6 +49,7 @@ class EventObject {
 		dst.priority = this.priority;
 		dst.eventTypeId = dst.eventType = this.eventType;
 		dst.spanning = this.spanning;
+		dst.spanningStart = this.spanningStart;
 	}
 
 	//-- can use these to be explicit, if we find too many problems with Mongo's _id vs id
@@ -76,7 +79,7 @@ class EventObject {
 	}
 }
 
-//-- consts 
+//-- consts
 EventObject.EVENT_HOLIDAY=0;
 EventObject.EVENT_MEETING=1;
 EventObject.EVENT_WORK=2;

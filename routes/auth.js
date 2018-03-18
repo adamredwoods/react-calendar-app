@@ -58,6 +58,7 @@ function makeNewCalendar(user, callback) {
    })
 }
 
+//-- do not return entire calendar, no events
 function getUserCalendar(user, callback) {
    var userCalendar = {};
    //-- user must always have a calendar[0]
@@ -72,18 +73,18 @@ function getUserCalendar(user, callback) {
                   console.log('DB error - calendar not found: ', err);
                   return callback( err, null);
                }
-               //userCalendar = calendar;
+
                callback(null, calendar);
             });
          }
       });
    } else {
-      Calendar.findOne({_id: user.calendars[0].calendarId}, function(err, calendar){
+      Calendar.findOne({_id: user.calendars[0].calendarId}).select({events:0}).exec(function(err, calendar){
          if(err){
             console.log('DB error - calendar not found: ', err);
             return callback( err, null);
          }
-         //userCalendar = calendar;
+			console.log(calendar);
          callback(null, calendar);
       });
 
@@ -128,7 +129,7 @@ router.post('/login', function(req, res, next) {
 
 router.post('/login/guest', function(req, res, next) {
 
-  // look up guest email set in env file 
+  // look up guest email set in env file
   User.findOne({email: process.env.GUEST_EMAIL}, function(err, user) {
 		if(!user){
 			return res.status(403).send({

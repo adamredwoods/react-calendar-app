@@ -80,7 +80,11 @@ class Main extends Component {
 	       user: currentUser
 	     }).then(response => {
 	       //console.log(response.data);
-	       base.setState({calendar: response.data.events});
+			 //
+			 //-- convert all events into event objects
+			 let events = response.data.events.map( (e)=> new EventObject(e.events));
+			 
+	       base.setState({calendar: events});
 	     }).catch(err => {
 	       console.log('backend cal err on db send - '+err);
 	     });

@@ -173,7 +173,7 @@ class DaysOfMonth extends Component {
           //if(!arr[day])arr[day]=[];
           for (let j=daystart; j<=dayend; j++) {
              //-- push SAME event into our month bucket
-             arr[j].push(new EventObject(calendar[i].events));
+             arr[j].push((calendar[i].events));
           }
         }
       }
