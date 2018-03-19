@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
@@ -22,7 +23,7 @@ class Signup extends Component {
     this.setState({password: e.target.value})
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, history) => {
     e.preventDefault();
     axios.post('/auth/signup', {
       name: this.state.name,
@@ -33,6 +34,7 @@ class Signup extends Component {
       localStorage.setItem('calendar', result.data.calendar);
       localStorage.setItem('user', result.data.user);
       this.props.updateUser();
+		history.push("/");
     }).catch(error => {
       console.log(error.response);
       this.props.setFlash('error', error.response.status + ': ' + (error.response.data && error.response.data.error ? error.response.data.message : error.response.statusText));
@@ -45,7 +47,8 @@ class Signup extends Component {
       return (<Redirect to="/" />);
     }
     else {
-      form = (<form onSubmit={this.handleSubmit} className="nice-form">
+      form = (<div>
+					 <form className="nice-form">
                 <div>
                   <input name="Name"
                        placeholder="What is your first name?"
@@ -58,17 +61,23 @@ class Signup extends Component {
                        placeholder="What is your email?"
                        value={this.state.email}
                        onChange={this.handleEmailChange} />
-               </div>
-               <div>
-                  <input name="Password"
-                     placeholder="Choose a password"
-                     type="password"
-                     value={this.state.password}
-                     onChange={this.handlePasswordChange} />
-                 </div>
-					  <h6>Warning: This site is currently unsecure. Please do not use real data</h6>
-                 <input type="submit" value="Sign up!" className="btn-primary margin-top-50" />
-              </form>);
+	               </div>
+	               <div>
+	                  <input name="Password"
+	                     placeholder="Choose a password"
+	                     type="password"
+	                     value={this.state.password}
+	                     onChange={this.handlePasswordChange} />
+	                 </div>
+						  <h6>Warning: This site is currently unsecure. Please do not use real data</h6>
+
+	              </form>
+					  <Route render={({history}) => (
+
+						  <button className="btn cyan margin-top-50" onClick={(e)=>this.handleSumbit(e,history)}>Sign up</button>
+					  )} />
+				  </div>
+				);
     }
     return (
       <div>

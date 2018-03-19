@@ -53,8 +53,7 @@ class MiniCalendarPicker extends Component {
    }
 
    componentDidMount() {
-		console.log(this.props.value)
-		let d = this.props.value || new Date().date('YYYY-MM-DD');
+		let d = this.props.value || new Date().format('YYYY-MM-DD');
       this.setState({ selectedDay: d, currentDate: d });
    }
 

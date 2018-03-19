@@ -60,6 +60,13 @@
 	color:#fff;
 }
 
+.btn.cyan {
+	background-color:#00C5BE;
+	color:#fff;
+	padding: 10px 50px;
+	font-size: 0.8rem;
+}
+
 .btn.blue:hover{
 	background-color:#7dbde8;
 }
@@ -146,9 +153,12 @@
 	color: #fff;
 	font-size: 0.8rem;
 	padding: 10px 50px;
-	text-transform: uppercase;
 	font-weight: normal;
 	cursor: pointer;
+}
+
+.nice-form button:hover {
+	background-color: #00e5de;
 }
 
 .nice-form input[type=time],

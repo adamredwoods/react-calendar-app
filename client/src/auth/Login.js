@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 
 class Login extends Component {
@@ -65,6 +65,9 @@ class Login extends Component {
     return (
       <div>
         {form}
+		  <div>
+		  		<Link to="/login/guest"><button className="btn blue margin-30">Guest Login</button></Link>
+		  </div>
       </div>
     );
   }

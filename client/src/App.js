@@ -9,6 +9,7 @@ import Header from './layout/Header.js';
 import Login from './auth/Login.js';
 import Profile from './Profile.js';
 import Signup from './auth/Signup.js';
+import GuestLogin from './auth/GuestLogin.js';
 
 
 class App extends Component {
@@ -95,6 +96,7 @@ class App extends Component {
   }
 
   render() {
+
     return (
       <div className="App">
         <BrowserRouter>
@@ -103,12 +105,15 @@ class App extends Component {
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
 				  <Switch>
+				  	  <Route exact path="/login/guest" render={
+					  	 () => (<GuestLogin updateUser={this.updateUser} setFlash={this.setFlash} user={this.state.user} />)} />
 	              <Route path="/login" render={
 	                () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
 	              <Route path="/signup" render={
 	                () => (<Signup calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
 	              <Route path="/profile" render={
 	                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} />)} />
+
 					  <Route path="/" render={
 						 () => <Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} updateCalendarName={this.updateCalendarName}/>} />
 				  </Switch>
