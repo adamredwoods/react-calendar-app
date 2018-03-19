@@ -3,7 +3,7 @@
 	color:#333333;
 	font-size:12px;
 	font-weight:bold;
-	padding:0 15px;
+	padding:5px 20px 5px 20px;
 	line-height:32px;
 	height: auto;
 	display:inline-block;
@@ -23,6 +23,7 @@
 
 .btn.red{
 	background-color:#E53C38;
+	color:#fff;
 }
 
 .btn.red:hover{
@@ -47,6 +48,7 @@
 
 .btn.green{
 	background-color:#4BC94D;
+	color:#fff;
 }
 
 .btn.green:hover{
@@ -55,6 +57,14 @@
 
 .btn.blue{
 	background-color:#5DADE2;
+	color:#fff;
+}
+
+.btn.cyan {
+	background-color:#00C5BE;
+	color:#fff;
+	padding: 10px 50px;
+	font-size: 0.8rem;
 }
 
 .btn.blue:hover{
@@ -69,6 +79,10 @@
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
+}
+
+.btn.large {
+	font-size: 130%;
 }
 
 .btn-circle {
@@ -139,14 +153,18 @@
 	color: #fff;
 	font-size: 0.8rem;
 	padding: 10px 50px;
-	text-transform: uppercase;
 	font-weight: normal;
 	cursor: pointer;
 }
 
+.nice-form button:hover {
+	background-color: #00e5de;
+}
+
 .nice-form input[type=time],
 .nice-form input[type=date],
-.nice-form input[type=text] {
+.nice-form input[type=text],
+.nice-form input {
 	padding: 0.4rem 1rem;
 	font-size: 1.1rem;
 	border: 1px solid #ddd;
@@ -174,6 +192,10 @@
 /* MARGINS --------------------------------------- */
 .margin-10 {
 	margin: 10px;
+}
+
+.margin-top-10{
+	margin-top:10px;
 }
 
 .margin-30 {

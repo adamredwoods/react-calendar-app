@@ -30,12 +30,12 @@ class Profile extends Component {
       axios.post('/calendar/all',{
         user: user
       }).then(response => {
-        console.log(response.data);
+        //console.log(response.data);
           let calId = response.data.calendars[0].calendars.calendarId;
           axios.post('/calendar/oneCal',{
             calendarId: calId
           }).then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             this.setState({calendar: response.data});
           }).catch(err=>{
             console.log(err);
@@ -43,7 +43,7 @@ class Profile extends Component {
       }).catch(err => {
         console.log(err);
       });
-      
+
     }
     handleCalClick = (e) => {
       this.setState({clicked: false});

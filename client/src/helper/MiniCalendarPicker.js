@@ -11,8 +11,8 @@ var mondayIsFirst= true;
 
 
 export const DaysOfWeek = () => {
-   let weekStyle = {fontSize: "0.5rem"}
-  let daysOfWeek = (mondayIsFirst) ?
+	let weekStyle = {fontSize: "0.5rem"}
+ 	let daysOfWeek = (mondayIsFirst) ?
      (<Row>
        <Col style={weekStyle}>m</Col>
        <Col style={weekStyle}>t</Col>
@@ -41,17 +41,20 @@ export const DaysOfWeek = () => {
    );
 }
 
+
 class MiniCalendarPicker extends Component {
    constructor(props) {
       super(props);
       this.state = {
          viewDate: "",
-         selectedDay: ""
+         selectedDay: "",
+			currentDate: ""
       }
    }
 
-   componentWillMount() {
-      this.setState({ viewDate: new Date() });
+   componentDidMount() {
+		let d = this.props.value || new Date().format('YYYY-MM-DD');
+      this.setState({ selectedDay: d, currentDate: d });
    }
 
    findWeekDayNum= (date) => {
@@ -80,9 +83,11 @@ class MiniCalendarPicker extends Component {
          return <div></div>
       }
 
+		let inputDay = this.props.value;
+
       //leap year
       let year = parseInt(date.date("YYYY"));
-      let selectedDay = parseInt(this.state.selectedDay.date("DD"));
+      let selectedDay = parseInt(inputDay.date("DD"));
       let leapyear =((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 1:0;
       let maxDay = daysInMonth[leapyear][parseInt(date.date("MM"))];
       let wkStart = this.findWeekDayNum(date);
@@ -90,7 +95,7 @@ class MiniCalendarPicker extends Component {
 
 
 
-      if (date.date("YYYY-MM") !== this.state.selectedDay.date("YYYY-MM")) selectedDay = 0;
+      if (date.date("YYYY-MM") !== inputDay.date("YYYY-MM")) selectedDay = 0;
 
       if(mondayIsFirst) {
          wkStart = (wkStart===0) ? 6 : wkStart-1;
@@ -104,49 +109,56 @@ class MiniCalendarPicker extends Component {
          let row=[];
          for(let i=0; i<7; i++) {
             if (i<wkStart && d===0 || d>=maxDay) {
-               row.push (<Col ></Col>);
+               row.push (<Col key={i} ></Col>);
             }
             if ((i===wkStart || d>0) && d<maxDay) {
                d++;
 
                let classSelect = (d===selectedDay) ? "day-single mini-selected" : "day-single";
-               row.push (<div className={classSelect} onClick={this.onClickDay.bind(this,d)}>{d}</div>);
+               row.push (<div className={classSelect} onClick={this.onClickDay.bind(this,d)} key={"k"+i}>{d}</div>);
             }
          }
-         output.push(<Row>{row}</Row>);
+         output.push(<Row key={"r"+k}>{row}</Row>);
       }
       return output;
    }
 
    prevMonth = (e) => {
-      let m = parseInt(this.state.viewDate.date("MM"));
-      let y = parseInt(this.state.viewDate.date("YYYY"));
+      let m = parseInt(this.state.currentDate.date("MM"));
+      let y = parseInt(this.state.currentDate.date("YYYY"));
       m=m-1;
       if (m<1) {
          m=12;
          y=y-1;
       }
-      let newDate = (y+"-"+m+"-"+"1").date("YYYY-MM-DD");
-      this.setState({viewDate: newDate});
+      let newDate = (y+"-"+m+"-"+"1").date('YYYY-MM-DD');
+      this.setState({selectedDay: newDate, currentDate: newDate});
+		if (this.props.onClick) {
+         this.props.onClick({target: {name:this.props.name, value:newDate}});
+      }
    }
 
    nextMonth = (e) => {
-      let m = parseInt(this.state.viewDate.date("MM"));
-      let y = parseInt(this.state.viewDate.date("YYYY"));
+      let m = parseInt(this.state.currentDate.date("MM"));
+      let y = parseInt(this.state.currentDate.date("YYYY"));
       m=m+1;
       if (m>12) {
          m=1;
          y=y+1;
       }
-      let newDate = (y+"-"+m+"-"+"1").date();
-      this.setState({viewDate: newDate});
+      let newDate = (y+"-"+m+"-"+"1").date('YYYY-MM-DD');
+      this.setState({selectedDay: newDate, currentDate: newDate});
+		if (this.props.onClick) {
+         this.props.onClick({target: {name:this.props.name, value:newDate}});
+      }
    }
 
    onClickDay = (day) => {
       //--get new day data from backend
 
-      //--send new date
-      let newDate = (this.state.viewDate.date("YYYY-MM")+"-"+day).date();
+      //--send new date, and unfortunately, the date format npm wants the date to be perfect or it will not work
+		let addZero = (day<10) ? "0" : "";
+      let newDate = (this.state.selectedDay.date("YYYY-MM")+"-"+addZero+day); //.date();
       this.setState({selectedDay: newDate});
 
       if (this.props.onClick) {
@@ -157,7 +169,11 @@ class MiniCalendarPicker extends Component {
 
    render() {
 
-      let month = this.state.viewDate.date("MMMM")+" "+this.state.viewDate.date("YYYY");
+
+		let month = "";
+		if (this.props.value) {
+			month = this.props.value.date("MMMM")+" "+this.props.value.date("YYYY");
+		}
 
       return (
          <div className="mini-calendar-picker">
@@ -172,7 +188,7 @@ class MiniCalendarPicker extends Component {
             </Row>
             <Row>
                <Col sm={12}>{
-                  this.showDays(this.state.viewDate)
+                  this.showDays(this.props.value)
                }</Col>
             </Row>
          </div>

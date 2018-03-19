@@ -2,9 +2,11 @@
    position: fixed;
    right: -22rem;
    top: 3.2rem;
-   background-color: #eee;
+   background-color: #00C5BE;
+	color: #fff;
    z-index: 999;
    width: 22rem;
+	height: 100%;
 }
 
 .menu-button {
@@ -13,9 +15,14 @@
    width: 3.2rem;
    height: 3.2rem;
    line-height: 3.2rem;
-   background-color: #eee;
+   background-color: #00C5BE;
+	color: #fff;
    font-size: 2.0rem;
    cursor: pointer;
+}
+
+.menu-page a {
+	color: #fff;
 }
 
 .menu-item {
@@ -31,8 +38,8 @@
 }
 
 .menu-item:hover{
-   background-color: #777;
-   color:#eee;
+   background-color: #00f5ee;
+   color:#444;
 }
 
 .menu-spacer {

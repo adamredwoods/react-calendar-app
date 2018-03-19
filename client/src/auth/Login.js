@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 
 class Login extends Component {
@@ -31,7 +31,6 @@ class Login extends Component {
       this.setState({ success: true });
       this.props.updateUser();
     }).catch((error) => {
-      console.log('error returned', error.response.data);
       this.props.setFlash('error', error.response.status + ': ' + (error.response.data && error.response.data.error ? error.response.data.message : error.response.statusText));
     });
   }
@@ -42,8 +41,9 @@ class Login extends Component {
       return (<Redirect to="/" />);
     }
     else {
-      form = (<form onSubmit={this.handleSubmit}>
+      form = (<form onSubmit={this.handleSubmit} className="nice-form">
                 <div>
+					 	<h4>Email:</h4>
                   <input name="Email"
                        placeholder="Enter your email"
                        value={this.state.email}
@@ -51,6 +51,7 @@ class Login extends Component {
                   />
                 </div>
                 <div>
+					 	<h4>Password:</h4>
                   <input name="Password"
                        placeholder="Enter your password"
                        type="password"
@@ -58,12 +59,15 @@ class Login extends Component {
                        onChange={this.handlePasswordChange}
                   />
                 </div>
-                <input type="submit" value="Login" className="btn-primary" />
+                <input type="submit" value="Login" className="btn-primary margin-30" />
               </form>);
     }
     return (
       <div>
         {form}
+		  <div>
+		  		<Link to="/login/guest"><button className="btn blue margin-30">Guest Login</button></Link>
+		  </div>
       </div>
     );
   }

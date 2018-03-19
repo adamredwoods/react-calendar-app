@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter, Route , Switch} from 'react-router-dom';
 import './css/App.css';
 import axios from 'axios';
 import Flash from './layout/Flash.js';
@@ -9,8 +9,7 @@ import Header from './layout/Header.js';
 import Login from './auth/Login.js';
 import Profile from './Profile.js';
 import Signup from './auth/Signup.js';
-
-
+import GuestLogin from './auth/GuestLogin.js';
 
 
 class App extends Component {
@@ -72,6 +71,12 @@ class App extends Component {
     this.getUser();
   }
 
+  updateCalendarName = (name) => {
+	  let c = JSON.parse(JSON.stringify(this.state.calendar));
+	  c.name = name;
+	  this.setState({calendar: c});
+  }
+
   setFlash = (t, msg) => {
     this.setState({
       flash: msg,
@@ -90,30 +95,31 @@ class App extends Component {
     });
   }
 
-  onClickEventAction = (actionType, obj) => {
-     console.log("event action x", actionType);
-     this.setState({eventAction: actionType, eventObject: obj});
- }
-
   render() {
+
     return (
       <div className="App">
-        <Router>
+        <BrowserRouter>
           <div>
-            <Header user={this.state.user} calendar={this.state.calendar} onClickEventAction={this.onClickEventAction}/>
+            <Header user={this.state.user} calendar={this.state.calendar} />
             <div className="space">
               <Flash flashType={this.state.flashType} flash={this.state.flash} setFlash={this.setFlash} cancelFlash={this.cancelFlash} />
+				  <Switch>
+				  	  <Route exact path="/login/guest" render={
+					  	 () => (<GuestLogin updateUser={this.updateUser} setFlash={this.setFlash} user={this.state.user} />)} />
+	              <Route path="/login" render={
+	                () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
+	              <Route path="/signup" render={
+	                () => (<Signup calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
+	              <Route path="/profile" render={
+	                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} />)} />
 
-              <Route exact path="/" component={() => (<Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} onClickEventAction={this.onClickEventAction} />)} />
-              <Route path="/login" component={
-                () => (<Login calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
-              <Route path="/signup" component={
-                () => (<Signup calendar={this.state.calendar} user={this.state.user} setFlash={this.setFlash} updateUser={this.updateUser} />)} />
-              <Route path="/profile" component={
-                () => (<Profile onClickShowCal={this.onClickShowCal} user={this.state.user} setFlash={this.setFlash} eventAction={this.state.eventAction} onClickEventAction={this.onClickEventAction}/>)} />
-            </div>
+					  <Route path="/" render={
+						 () => <Main calendar={this.state.calendar} user={this.state.user} eventAction={this.state.eventAction} eventObject={this.state.eventObject} updateCalendarName={this.updateCalendarName}/>} />
+				  </Switch>
+				</div>
           </div>
-        </Router>
+        </BrowserRouter>
       </div>
     );
   }

@@ -5,6 +5,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var https = require('https');
+var http = require('http');
 var app = express();
 
 // Mongoose stuff
@@ -28,10 +30,13 @@ app.use(function(req, res, next) {
 
 // Controllers
 app.use('/auth', require('./routes/auth'));
-app.use('/calendar', require('./routes/calendar'));
+app.use('/calendar', require('./routes/calendar').router);
+app.use('/calendar/event', require('./routes/event'));
 
 app.get('*', function(req, res, next) {
 	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
+
+
 
 module.exports = app;
