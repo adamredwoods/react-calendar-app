@@ -18,10 +18,9 @@ class AddEvent extends EditEvent {
 
       let sd, ed;
       if(this.props.viewDate) {
-         sd = ed = this.props.viewDate;
-
+         sd = ed = this.props.viewDate.date("YYYY-MM-DD");
       } else {
-         sd = ed = new Date();
+         sd = ed = new Date().date("YYYY-MM-DD");
       }
 
       this.setState({
@@ -31,7 +30,7 @@ class AddEvent extends EditEvent {
          startTime: "09:00",
          endDate: ed,
          endTime: "",
-         eventTypeId: 1,
+         eventType: 1,
          priority: 0,
          error: null
       });
@@ -39,7 +38,7 @@ class AddEvent extends EditEvent {
 
    editCurrentEvent = (e, history) => {
        e.preventDefault();
-       if(this.state.startDate.date('U') > this.state.endDate.date('U')){
+       if(this.state.startDate.date('U') > this.state.endDate.date('U') && (this.state.endDate)){
             this.setState({error: 'Uh oh! Before submitting, please enter a start date that is prior to your end date!'});
        }else{
             let eventObj = new EventObject(this.state);

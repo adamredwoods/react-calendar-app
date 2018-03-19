@@ -37,7 +37,7 @@ class Day extends Component {
       })
 		// sort by holiday
 		arr = arr.sort(function(a,b) {
-         if(b.isHoliday) return 1;
+         if(a.isHoliday()) return 1;
          return 0;
       })
 
