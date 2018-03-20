@@ -29,11 +29,12 @@ class Signup extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password
-    }).then(result => {
+	}).then(result => {
       localStorage.setItem('mernToken', result.data.token);
       localStorage.setItem('calendar', result.data.calendar);
       localStorage.setItem('user', result.data.user);
       this.props.updateUser();
+		console.log(123);
 		history.push("/");
     }).catch(error => {
       console.log(error.response);
@@ -74,7 +75,7 @@ class Signup extends Component {
 	              </form>
 					  <Route render={({history}) => (
 
-						  <button className="btn cyan margin-top-50" onClick={(e)=>this.handleSumbit(e,history)}>Sign up</button>
+						  <button className="btn cyan margin-top-50" onClick={(e)=>this.handleSubmit(e,history)}>Sign up</button>
 					  )} />
 				  </div>
 				);
