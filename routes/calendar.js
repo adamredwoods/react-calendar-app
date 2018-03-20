@@ -29,16 +29,16 @@ function makeNewCalendar(user, callback) {
      if (err){
        console.log('Cal DB create error: ', err);
        //res.status(500).send({error: true, message: 'Calendar Database Error - ' + err.message});
-       return callback( err, null);
+       return callback( err, null, null);
      }
 
      //--write calendar id back to user
      userCalendar = calendar;
-     console.log("makeNewCalendar:",calendar);
+     console.log("makeNewCalendar:");
      if(user.calendars) {
       //   user.calendars.push({calendarId: calendar._id});
       console.log('did this cal add...from push');
-      console.log(userCalendar);
+      // console.log(userCalendar);
       console.log(userCalendar._id);
          User.update({_id: user.id},{$push: {
            calendars: {calendarId: userCalendar._id}
@@ -46,11 +46,12 @@ function makeNewCalendar(user, callback) {
             if(err){
               console.log(err)
             }
+				return callback(null, user, userCalendar);
           }); //TODO: return function that return callback with calendar
      } else {
        console.log("did this cal add...from set");
-       console.log(userCalendar);
-       console.log(userCalendar._id);
+       //console.log(userCalendar);
+       //console.log(userCalendar._id);
       //   user.calendars = [{calendarId: calendar._id}];
          User.update({_id: user.id},{$addToSet: {
            calendars: {calendarId: userCalendar._id}
@@ -58,6 +59,7 @@ function makeNewCalendar(user, callback) {
             if(err){
               console.log(err)
             }
+				return callback(null, user, userCalendar);
           });
      }
    })
