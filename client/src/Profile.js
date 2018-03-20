@@ -3,7 +3,6 @@ import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import { Row, Col } from 'react-grid-system';
 import './css/App.css';
-import { Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
 
 
 class ProfileCalendar extends Component {
