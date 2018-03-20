@@ -16,7 +16,6 @@ var jwt = require('jsonwebtoken');
 
 // POST /auth/login route - returns a JWT
 router.post('/login', function(req, res, next) {
-  console.log('/auth/login post route', req.body);
   var hashedPass = '';
   var passwordMatch = false;
   // look up user
@@ -76,7 +75,7 @@ router.post('/login/guest', function(req, res, next) {
 
 /* POST /auth/signup route */
 router.post('/signup', function(req, res, next) {
-  console.log('/auth/signup post route', req.body);
+  console.log('/auth/signup post route');
   // Find by email
   User.findOne({ email: req.body.email }, function(err, user) {
     if (user) {
@@ -94,7 +93,7 @@ router.post('/signup', function(req, res, next) {
           res.status(500).send({error: true, message: 'Database Error - ' + err.message});
         }
         else {
-          makeNewCalendar(user, function(err){
+          makeNewCalendar(user, function(err, user, calendar){
              if (err){
                console.log('DB error: user update: ', err);
                //could send error
@@ -102,11 +101,11 @@ router.post('/signup', function(req, res, next) {
              }
              // make a token & send it as JSON
              var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
-                   expiresIn: 60 * 60 * 24 // expires in 24 hours
-                });
-                res.send({user: user, calendar: userCalendar, token: token});
+                expiresIn: 60 * 60 * 24 // expires in 24 hours
              });
-          }
+             res.send({user: user, calendar: calendar, token: token});
+          });
+        }
       });
     }
   });
