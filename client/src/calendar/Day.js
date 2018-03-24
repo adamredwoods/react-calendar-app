@@ -46,13 +46,13 @@ class Day extends Component {
 
    onClickDelete = (e, eventObj, history) => {
       e.stopPropagation();
-      this.props.deleteEvent(eventObj);
+      this.props.setEditDayEvent(eventObj);
 		history.push("/event/delete");
    }
 
 
 	onClickEdit(e, eventObj, history) {
-		this.props.onClickEditDayEvent(eventObj);
+		this.props.setEditDayEvent(eventObj);
 		history.push("/event/edit");
 	}
 

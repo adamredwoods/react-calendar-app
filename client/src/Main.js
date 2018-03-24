@@ -46,8 +46,6 @@ class Main extends Component {
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePermissionChange = this.handlePermissionChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
-
-      this.onClickEditDayEvent = this.onClickEditDayEvent.bind(this);
     }
 
    componentDidMount() {
@@ -68,55 +66,51 @@ class Main extends Component {
 		 }
 	 }
 
-	 getAllEvents = (dateQuery, calendar) => {
-		 calendar= calendar || this.props.calendar; //JSON.parse(localStorage.getItem('calendar'));
-		 if(!calendar) return null;
-	    let startDate = dateQuery[0];
-	    let endDate = dateQuery[1];
-	    let currentUser = this.props.user;
+	getAllEvents = (dateQuery, calendar) => {
+	 calendar= calendar || this.props.calendar; //JSON.parse(localStorage.getItem('calendar'));
+	 if(!calendar) return null;
+	 let startDate = dateQuery[0];
+	 let endDate = dateQuery[1];
+	 let currentUser = this.props.user;
 
-	    let base = this;
-		 //--clearing it out first will prevent old data flashing
-		 this.setState({calendarEvents: 0});
+	 let base = this;
+	 //--clearing it out first will prevent old data flashing
+	 this.setState({calendarEvents: 0});
 
-	    axios.post('/calendar/event', {
-	       startDate: startDate,
-	       endDate: endDate,
-	       calendar: calendar,
-	       user: currentUser
-	     }).then(response => {
-	       //console.log(response.data);
-			 //
-			 //-- convert all events into event objects
-			 let events = response.data.events.map( (e)=> new EventObject(e.events));
+	 axios.post('/calendar/event', {
+	    startDate: startDate,
+	    endDate: endDate,
+	    calendar: calendar,
+	    user: currentUser
+	  }).then(response => {
+	    //console.log(response.data);
+		 //
+		 //-- convert all events into event objects
+		 let events = response.data.events.map( (e)=> new EventObject(e.events));
 
-	       base.setState({calendarEvents: events});
-	     }).catch(err => {
-	       console.log('backend cal err on db send - '+err);
-	     });
-   }
+	    base.setState({calendarEvents: events});
+	  }).catch(err => {
+	    console.log('backend cal err on db send - '+err);
+	  });
+	}
 
 
 
-   clickChangeDay = (newDate) => {
-      //console.log("..click: change date",newDate);
-      //-- changing months, watch for race conditions
-      if (newDate.date("YYYY-MM")!==(this.state.viewDate.date("YYYY-MM"))) {
-            let ym = newDate.date("YYYY-MM");
-            this.getAllEvents([ ym+"-01", ym+"-31" ]);
-      }
-      this.setState({viewDate: newDate}, function(err, result) {
+	clickChangeDay = (newDate) => {
+		//console.log("..click: change date",newDate);
+		//-- changing months, watch for race conditions
+		if (newDate.date("YYYY-MM")!==(this.state.viewDate.date("YYYY-MM"))) {
+		      let ym = newDate.date("YYYY-MM");
+		      this.getAllEvents([ ym+"-01", ym+"-31" ]);
+		}
+		this.setState({viewDate: newDate}, function(err, result) {
 
-      });
-   }
+		});
+	}
 
-   onClickEditDayEvent = (eventObj) => {
-      this.setState({eventToEdit: eventObj}, () => {
-        //console.log(this.state.eventToEdit);
-        //--********* This is a bug, we lose eventToEdit when this.props.onClickEventAction is called!!!!!
-        //this.props.onClickEventAction(5);
-      });
-   }
+	setEditDayEvent = (eventObj) => {
+		this.setState({eventToEdit: eventObj});
+	}
 
     handleNameChange = (event) => {
         this.setState({calName: event.target.value});
@@ -208,7 +202,7 @@ class Main extends Component {
       });
     }
 
-    handleDeleteEvent = (eventObj, history) => {
+    deleteEvent = (eventObj, history) => {
       let base = this;
       let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
 		//-- embarrassing
@@ -306,7 +300,7 @@ class Main extends Component {
 						 <Month calendar={this.props.calendar} viewDate={this.state.viewDate} currentDate={this.state.currentDate} clickChangeDay={this.clickChangeDay} calendarEvents={this.state.calendarEvents}/>
 					 </Col>
 					 <Col sm={4}>
-						 <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendarEvents={this.state.calendarEvents}  onClickEditDayEvent={this.onClickEditDayEvent} handleChange={this.handleEditEventChange}  />
+						 <Day viewDate={this.state.viewDate} currentDate={this.state.currentDate} calendarEvents={this.state.calendarEvents}  setEditDayEvent={this.setEditDayEvent} handleChange={this.handleEditEventChange}  />
 					 </Col>
 				 </Row>
 				 <Hidden xs sm>
@@ -338,7 +332,7 @@ class Main extends Component {
 					 () => (<EditEvent editEvent={this.editEvent} eventToEdit={this.state.eventToEdit} />
 				)} />
 				<Route path="/event/delete" render={
-					() => (<DeleteEvent onClickDelete={this.handleDeleteEvent} eventObject={this.props.eventObject}/>
+					() => (<DeleteEvent onClickDelete={this.deleteEvent} eventObject={this.state.eventToEdit}/>
 				)} />
 				<Route path="/calendar/holidays" render = {
 					() => (<AddHoliday countryCode={this.state.countryCode} addHolidays={this.addHolidays} />
