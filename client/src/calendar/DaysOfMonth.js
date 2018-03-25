@@ -220,7 +220,7 @@ class DaysOfMonth extends Component {
       let d=0, output=[];
       let yearMonth = date.date("YYYY-MM"); //--used to filter events forn the big calendar list
 
-      for(let k=0; k<5; k++) {
+      for(let k=0; k<6; k++) {
 
          let row=[];
          for(let i=0; i<7; i++) {
