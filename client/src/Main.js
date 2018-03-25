@@ -161,13 +161,13 @@ class Main extends Component {
 
 	//
 	//-- this is the new way to add events, call this from inside the editing component and send an object
-	addEvent = (eventObj, history) => {
+	addEvent = (eventObj, history, calendar) => {
 
 		let name = eventObj.name;
 		let base = this;
 
 		let currentUser = this.props.user;
-		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let currentCalendar = calendar || this.props.calendar;;
 		axios.post('/calendar/event/add',Object.assign(eventObj,{
 			user: currentUser,
 			calendar: currentCalendar
@@ -186,10 +186,10 @@ class Main extends Component {
 		});
 	}
 
-	editEvent = (eventObj, history) => {
+	editEvent = (eventObj, history, calendar) => {
 		console.log('POST editone');
 		//console.log(eventObj);
-		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let currentCalendar = calendar || this.props.calendar;;
 		let base = this;
 		axios.post("/calendar/event/edit", {
 			eventObj: eventObj,
@@ -213,9 +213,9 @@ class Main extends Component {
 		});
 	}
 
-	deleteEvent = (eventObj, history) => {
+	deleteEvent = (eventObj, history, calendar) => {
 		let base = this;
-		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let currentCalendar = calendar || this.props.calendar;;
 		//-- embarrassing
 		let eventId = eventObj._id || eventObj.id;
 		let currentUser = this.props.user;
@@ -244,12 +244,12 @@ class Main extends Component {
 		});
 	}
 
-	editCalName = (event, history) => {
+	editCalName = (event, history, calendar) => {
 		event.preventDefault();
 		let base = this;
 		let currentUser = this.props.user;
 		let name = this.state.calName;
-		let currentCalendar = JSON.parse(localStorage.getItem('calendar'));
+		let currentCalendar = calendar || this.props.calendar;;
 		axios.post('/calendar/editName',{
 			user: currentUser,
 			calendar: currentCalendar._id,
@@ -282,13 +282,13 @@ class Main extends Component {
 		});
 	}
 
-	addContributors = (event, history) => {
+	addContributors = (event, history, calendar) => {
 		event.preventDefault();
 		let base = this;
 		let email = this.state.email;
 		let currentUser = this.props.user;
 		let permission = this.state.permission;
-		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let currentCalendar = calendar || this.props.calendar;
 		axios.post('/calendar/edit',{
 			user: currentUser,
 			calendarId: currentCalendar._id,
