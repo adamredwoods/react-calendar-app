@@ -93,7 +93,6 @@ class Main extends Component {
 			user: currentUser
 		}).then(response => {
 			//console.log(response.data);
-			//
 			//-- convert all events into event objects
 			let events = response.data.events.map( (e)=> new EventObject(e.events));
 
@@ -103,7 +102,12 @@ class Main extends Component {
 		});
 	}
 
-
+	reloadMonthEvents = (date) => {
+		let y = date.date("YYYY");
+		let m = date.date("MM");
+		let lastday = daysInMonth[isLeapYear(parseInt(y))][parseInt(m)];
+		this.getAllEvents([ y+"-"+m+"-01", y+"-"+m+"-"+lastday ]);
+	}
 
 	clickChangeDay = (newDate) => {
 		//console.log("..click: change date",newDate);
@@ -135,11 +139,11 @@ class Main extends Component {
 		this.setState({permission: event.target.value});
 	}
 
-	addHolidays = (holidays) => {
+	addHolidays = (holidays, calendar) => {
 
 		let base = this;
 		let currentUser = this.props.user;
-		let currentCalendar = JSON.parse(localStorage.getItem("calendar"));
+		let currentCalendar = calendar || this.props.calendar;
 		let currentYear = this.state.currentYear;
 
 		axios.post('/calendar/addHoliday',{
@@ -148,11 +152,7 @@ class Main extends Component {
 			user: currentUser,
 			calendar: currentCalendar
 		}).then(response => {
-			localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
-			//base.setState({ fullCalendar: response.data.calendar});
-
-			this.clickChangeDay(this.state.viewDate);
-
+			this.reloadMonthEvents(this.state.viewDate);
 		}).catch(err => {
 			console.log('backend error we hope', err);
 		});
