@@ -16,6 +16,7 @@ require('date-format-lite');
 //
 //-- /calendar/event route
 //
+//-- fetch events in range
 router.post('/', function(req,res,next){
 
     var start = Number(req.body.startDate.date('U'));
@@ -31,7 +32,7 @@ router.post('/', function(req,res,next){
 			         console.log(err);
 			     }
 			     if (events) {
-			       
+
 					 res.json({events: events});
 			     }
 			  });

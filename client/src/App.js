@@ -32,7 +32,7 @@ class App extends Component {
     var calendar = localStorage.getItem('calendar');
     if (token === 'undefined' || token === null || token === '' || token === undefined) {
       localStorage.removeItem('mernToken');
-      localStorage.removeItem('calendar');
+      //localStorage.removeItem('calendar');
       localStorage.removeItem('user');
       this.setState({
         token: '',
@@ -47,7 +47,7 @@ class App extends Component {
       }).then(response => {
         //   Store the token and user
         localStorage.setItem('mernToken', response.data.token);
-        localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
+        //localStorage.setItem('calendar', JSON.stringify(response.data.calendar));
         localStorage.setItem('user', JSON.stringify(response.data.user._id));
         this.setState({
           token: response.data.token,
@@ -72,7 +72,7 @@ class App extends Component {
   }
 
   updateCalendarName = (name) => {
-	  let c = JSON.parse(JSON.stringify(this.state.calendar));
+	  let c = JSON.parse(JSON.stringify(this.state.calendar)); //copy object
 	  c.name = name;
 	  this.setState({calendar: c});
   }
