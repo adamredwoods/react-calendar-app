@@ -73,7 +73,7 @@ router.post('/add', function(req,res,next){
                         if(err){
                             console.log(err);
                         }
-                        res.json({event: newEvent});
+                        res.json({event: {startDate: startDate, endDate:endDate }});
                     }
                 );
             }else{
