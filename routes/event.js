@@ -48,9 +48,9 @@ router.post('/add', function(req,res,next){
             console.log(err);
         }
         let name = req.body.name;
-        let startDate = Number(req.body.startDate.date('UZ'));
+        let startDate = Number((req.body.startDate+"Z+0").date('U'));
         let startTime = req.body.startTime;
-        let endDate = Number(req.body.endDate.date('UZ'));
+        let endDate = Number((req.body.endDate+"Z+0").date('U'));
         let endTime = req.body.endTime;
         let eventType = req.body.eventType;
         let priority = req.body.priority;
