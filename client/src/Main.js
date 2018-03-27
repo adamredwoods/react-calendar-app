@@ -172,7 +172,7 @@ class Main extends Component {
 			user: currentUser,
 			calendar: currentCalendar
 		})).then(response => {
-			//console.log(response.data);
+			console.log("ADD EVENT:",response.data);
 
 			//-- update the calendar state
 			let c = base.state.calendarEvents;
