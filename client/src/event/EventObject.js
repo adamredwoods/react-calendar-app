@@ -71,10 +71,10 @@ class EventObject {
 
 	convertDatesToMillisecs() {
 		if (parseInt(this.startDate)===NaN) {
-			this.startDate = this.startDate.date('U');
+			this.startDate ;//= this.startDate.date('U');
 		}
 		if (parseInt(this.endDate)===NaN) {
-			this.endDate = this.endDate.date('U');
+			this.endDate ;//= this.endDate.date('U');
 		}
 	}
 }
