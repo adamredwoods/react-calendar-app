@@ -1,3 +1,4 @@
+import "date-format-lite";
 
 class EventObject {
 
@@ -16,9 +17,9 @@ class EventObject {
 		if (obj) {
 			this.name = obj.name || obj.eventName;
 			this.priority = obj.priority;
-			this.startDate = obj.startDate;
+			this.startDate = obj.startDate.date('YYYY-MM-DD','+00');
 			this.startTime = obj.startTime;
-			this.endDate = obj.endDate;
+			this.endDate = obj.endDate.date('YYYY-MM-DD','+00');
 			this.endTime = obj.endTime;
 			this.eventType = obj.eventType || obj.eventTypeId || 0;
 			this.id = obj.id || obj._id;
@@ -30,9 +31,9 @@ class EventObject {
 	set(obj) {
 		this.name = obj.name || obj.eventName;
 		this.priority = obj.priority;
-		this.startDate = obj.startDate;
+		this.startDate = obj.startDate.date('YYYY-MM-DD','+00');
 		this.startTime = obj.startTime;
-		this.endDate = obj.endDate;
+		this.endDate = obj.endDate.date('YYYY-MM-DD','+00');
 		this.endTime = obj.endTime;
 		this.eventType = obj.eventType || obj.eventTypeId;
 		this.id = obj.id || obj._id;
@@ -70,11 +71,11 @@ class EventObject {
 	}
 
 	convertDatesToMillisecs() {
-		if (parseInt(this.startDate)===NaN) {
-			this.startDate = this.startDate.date('U');
+		if (Number.isInteger(this.startDate)===false) {
+			this.startDate = Number(this.startDate.concat("T00:00:00Z").date('U',"+00"));
 		}
-		if (parseInt(this.endDate)===NaN) {
-			this.endDate = this.endDate.date('U');
+		if (Number.isInteger(this.endDate)===false) {
+			this.endDate = Number(this.endDate.concat("T00:00:00Z").date('U',"+00"));
 		}
 	}
 }

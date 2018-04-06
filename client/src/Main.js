@@ -78,8 +78,8 @@ class Main extends Component {
 	getAllEvents = (dateQuery, calendar) => {
 		calendar= calendar || this.props.calendar; //JSON.parse(localStorage.getItem('calendar'));
 		if(!calendar) return null;
-		let startDate = dateQuery[0].date('iso');
-		let endDate = dateQuery[1].date('iso');
+		let startDate = dateQuery[0].concat('T00:00:00Z').date('iso');
+		let endDate = dateQuery[1].concat('T00:00:00Z').date('iso');
 		let currentUser = this.props.user;
 
 		let base = this;
@@ -168,6 +168,8 @@ class Main extends Component {
 
 		let currentUser = this.props.user;
 		let currentCalendar = calendar || this.props.calendar;;
+		//--if we convert here, we avoid server timezone issues
+		eventObj.convertDatesToMillisecs();
 		axios.post('/calendar/event/add',Object.assign(eventObj,{
 			user: currentUser,
 			calendar: currentCalendar
@@ -191,6 +193,7 @@ class Main extends Component {
 		//console.log(eventObj);
 		let currentCalendar = calendar || this.props.calendar;;
 		let base = this;
+		eventObj.convertDatesToMillisecs();
 		axios.post("/calendar/event/edit", {
 			eventObj: eventObj,
 			user: this.props.user,
