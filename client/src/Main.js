@@ -170,6 +170,7 @@ class Main extends Component {
 		let currentCalendar = calendar || this.props.calendar;;
 		//--if we convert here, we avoid server timezone issues
 		eventObj.convertDatesToMillisecs();
+
 		axios.post('/calendar/event/add',Object.assign(eventObj,{
 			user: currentUser,
 			calendar: currentCalendar
@@ -193,7 +194,9 @@ class Main extends Component {
 		//console.log(eventObj);
 		let currentCalendar = calendar || this.props.calendar;;
 		let base = this;
+		//--if we convert here, we avoid server timezone issues
 		eventObj.convertDatesToMillisecs();
+
 		axios.post("/calendar/event/edit", {
 			eventObj: eventObj,
 			user: this.props.user,
@@ -222,6 +225,7 @@ class Main extends Component {
 		//-- embarrassing
 		let eventId = eventObj._id || eventObj.id;
 		let currentUser = this.props.user;
+		eventObj.convertDatesToMillisecs();
 
 		axios.post('/calendar/event/delete',{
 			calendarId: currentCalendar._id,
